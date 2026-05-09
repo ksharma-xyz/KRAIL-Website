@@ -185,7 +185,7 @@
   }
   .nav-links a:hover::after { transform: scaleX(1); }
 
-  /* Nav CTA — solid dark stamp, matches store buttons */
+  /* Nav CTA — solid dark stamp, always-visible shadow */
   .pill-cta {
     display: inline-flex; align-items: center; gap: 8px;
     background: var(--ink);
@@ -200,15 +200,16 @@
     letter-spacing: -0.01em;
     cursor: pointer;
     text-decoration: none;
-    transition: transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s ease;
+    box-shadow: 4px 4px 0 var(--brand-pink);
+    transition: transform .14s ease, box-shadow .14s ease;
   }
   .pill-cta:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 var(--brand-pink);
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--brand-pink);
   }
   .pill-cta:active {
-    transform: translate(0, 0);
-    box-shadow: 2px 2px 0 var(--brand-pink);
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--brand-pink);
   }
   .pill-cta svg { width: 14px; height: 14px; }
 
@@ -448,8 +449,8 @@
   }
   .hero-sub b { color: var(--ink); font-weight: 700; }
 
-  /* Store buttons · solid dark "stamp" with hard pink shadow on
-     hover — inspired by Sumi's stamp-on-paper interaction. */
+  /* Store buttons · solid dark "stamp" — shadow visible by default,
+     button presses flat when clicked (HueZoo / Sumi pattern). */
   .store-row {
     display: inline-flex;
     flex-wrap: nowrap;
@@ -465,23 +466,21 @@
     background: var(--ink);
     color: #fff;
     border: 2px solid var(--ink);
-    border-radius: 0;                /* sharp stamp corners */
+    border-radius: 0;
     cursor: pointer;
     text-align: left;
     white-space: nowrap;
-    transition:
-      transform .22s cubic-bezier(.2,.7,.3,1),
-      box-shadow .22s ease,
-      background .2s ease;
+    box-shadow: 5px 5px 0 var(--brand-pink);   /* always raised */
+    transition: transform .14s ease, box-shadow .14s ease, background .2s ease;
   }
   .store-btn:hover {
-    transform: translate(-3px, -3px);
     background: #000;
-    box-shadow: 6px 6px 0 var(--brand-pink);
+    box-shadow: 7px 7px 0 var(--brand-pink);
+    transform: translate(-2px, -2px);
   }
   .store-btn:active {
-    transform: translate(0, 0);
-    box-shadow: 3px 3px 0 var(--brand-pink);
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 0 var(--brand-pink);
   }
   .store-btn .badge-icon {
     width: 24px; height: 24px;
@@ -1165,15 +1164,16 @@
     color: var(--ink);
     cursor: pointer;
     padding: 0;
-    transition: transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s ease, background .2s ease;
+    box-shadow: 4px 4px 0 var(--accent, var(--ferry));
+    transition: transform .14s ease, box-shadow .14s ease;
   }
   .testi-arrow:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 4px 4px 0 var(--accent, var(--ferry));
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--accent, var(--ferry));
   }
   .testi-arrow:active {
-    transform: translate(0, 0);
-    box-shadow: 2px 2px 0 var(--accent, var(--ferry));
+    transform: translate(4px, 4px);
+    box-shadow: 0 0 0 var(--accent, var(--ferry));
   }
 
   /* ===========================================================
@@ -1294,16 +1294,17 @@
     font-size: 15px;
     letter-spacing: -0.01em;
     text-decoration: none;
-    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, background .2s ease;
+    box-shadow: 5px 5px 0 var(--accent, var(--brand-pink));
+    transition: transform .14s ease, box-shadow .14s ease, background .2s ease;
   }
   .founder .meta-link:hover {
-    transform: translate(-3px, -3px);
     background: #000;
-    box-shadow: 6px 6px 0 var(--accent, var(--brand-pink));
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--accent, var(--brand-pink));
   }
   .founder .meta-link:active {
-    transform: translate(0, 0);
-    box-shadow: 3px 3px 0 var(--accent, var(--brand-pink));
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 0 var(--accent, var(--brand-pink));
   }
   .founder .founder-link {
     color: var(--accent, var(--brand-pink));
@@ -1476,16 +1477,17 @@
     font-size: 18px;
     letter-spacing: -0.01em;
     text-decoration: none;
-    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, background .2s ease;
+    box-shadow: 5px 5px 0 var(--brand-pink);
+    transition: transform .14s ease, box-shadow .14s ease, background .2s ease;
   }
   .email-pill:hover {
-    transform: translate(-3px, -3px);
     background: #000;
-    box-shadow: 6px 6px 0 var(--brand-pink);
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--brand-pink);
   }
   .email-pill:active {
-    transform: translate(0, 0);
-    box-shadow: 3px 3px 0 var(--brand-pink);
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 0 var(--brand-pink);
   }
   .email-pill .ico {
     color: var(--brand-pink);
@@ -1679,23 +1681,7 @@
     filter: drop-shadow(0 2px 8px rgba(28,27,26,0.20));
   }
 
-  /* CTA-final store buttons: dark stamp on pale bg (matches hero) */
-  .cta-final .store-btn {
-    background: var(--ink);
-    color: #fff;
-    border: 2px solid var(--ink);
-  }
-  .cta-final .store-btn .badge-icon { color: #fff; }
-  .cta-final .store-btn .big { color: #fff; }
-  .cta-final .store-btn:hover {
-    background: #000;
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--brand-pink);
-  }
-  .cta-final .store-btn:active {
-    transform: translate(0, 0);
-    box-shadow: 3px 3px 0 var(--brand-pink);
-  }
+  /* CTA-final store buttons inherit the new always-shadow stamp pattern */
   .cta-final .pledge {
     margin-top: 28px;
     font-size: 13px; color: rgba(255,255,255,0.85);
@@ -2057,15 +2043,18 @@
     text-decoration: none;
     transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, background .2s ease, border-color .2s ease;
   }
+  .social-stamps a {
+    box-shadow: 5px 5px 0 var(--c);
+  }
   .social-stamps a:hover {
     background: rgba(255,255,255,0.08);
     border-color: var(--c);
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 0 var(--c);
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--c);
   }
   .social-stamps a:active {
-    transform: translate(0, 0);
-    box-shadow: 3px 3px 0 var(--c);
+    transform: translate(5px, 5px);
+    box-shadow: 0 0 0 var(--c);
   }
   .social-stamps a svg { width: 18px; height: 18px; color: var(--c); }
   /* Per-platform colour from KRAIL palette */
