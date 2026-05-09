@@ -1719,12 +1719,13 @@
       var(--lr) 66.6%, var(--lr) 83.3%,
       var(--coach) 83.3%, var(--coach) 100%);
   }
-  /* Center the block as a whole, but left-align children so the
-     "Built with ♥..." line starts at the same x as the # of #LET'S KRAIL */
+  /* Center both lines on screen. The rotator has min-width: 28ch so
+     its slot is fixed regardless of content — "Built with ♥" never
+     shifts as the text rotates. */
   .foot-mark {
-    display: table;
+    display: block;
     margin: 0 auto 72px;
-    text-align: left;
+    text-align: center;
   }
   .foot-mark .lets-krail {
     display: block;
