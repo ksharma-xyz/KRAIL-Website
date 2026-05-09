@@ -1845,8 +1845,8 @@
   .foot-mark .made-in .rotator {
     display: inline-block;
     min-width: 28ch;            /* fixed slot — "Built with ♥" doesn't shift when text changes */
-    text-align: left;
-    vertical-align: baseline;   /* match surrounding text baseline */
+    text-align: center;         /* visible text stays centred within the fixed slot */
+    vertical-align: baseline;
     transition: opacity .35s ease, transform .35s ease;
     color: rgba(252,246,241,0.85);
     font-style: italic;
@@ -2026,7 +2026,7 @@
     text-shadow: 0 0 24px rgba(255,47,143,0.4);
   }
   /* .handle row removed — moved gap to the shout-line bottom margin */
-  .foot-shout .shout-line { margin-bottom: 56px; }
+  .foot-shout .shout-line { margin-bottom: 32px; }
 
   .social-stamps {
     display: inline-flex;
