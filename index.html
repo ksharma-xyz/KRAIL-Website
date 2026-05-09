@@ -2377,13 +2377,55 @@
     details.faq-item summary::after { font-size: 22px; }
     details.faq-item .answer { font-size: 14.5px; padding-bottom: 18px; }
 
-    /* CTA */
-    section.cta-final { padding: 64px 0 80px; }
+    /* CTA · "Ride the rail without fail" — tighter top space on mobile */
+    section.cta-final { padding: 50px 0 76px; }
     .cta-final h2 { font-size: clamp(32px, 9vw, 48px); }
     .cta-final .question { font-size: 16px; }
     .cta-final .tag { font-size: 16px; margin-bottom: 24px; }
     .cta-final .lets-krail-big { font-size: clamp(40px, 16vw, 80px); margin: 22px 0 28px; }
     .cta-final .stores .store-btn { padding: 11px 18px; }
+    .cta-final .cta-rail-tag { margin: 0 0 36px; }
+
+    /* === FAQ +/- icon was overlapping question text on mobile.
+           Restore the right-side padding for the icon. === */
+    details.faq-item summary { padding: 14px 36px 14px 0; }
+
+    /* === Feature text · enforce right-padding respect === */
+    .feature-text {
+      max-width: 100%;
+      box-sizing: border-box;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+    .feature-text p.lead { max-width: 100%; }
+    .feature-text .feat-meta div { overflow-wrap: break-word; }
+
+    /* === Footer mode pills · always circles, wrap to next line if needed === */
+    .foot-pills {
+      flex-wrap: wrap;
+      gap: 18px 14px;
+      max-width: 100%;
+      padding: 0 8px;
+    }
+    .foot-pills .mp {
+      flex-shrink: 0;          /* never squish · always circle */
+      width: 44px;
+      height: 44px;
+    }
+
+    /* === "Tag us. Roast us. Praise us." · stack on separate lines === */
+    .foot-shout .shout-line {
+      font-size: clamp(28px, 9vw, 44px);
+      line-height: 1.15;
+    }
+    .foot-shout .shout-line .verb {
+      display: block;
+      margin: 0 0 8px;
+    }
+    /* Reset transform rotation on mobile so verbs stay readable on a stack */
+    .foot-shout .shout-line .v1,
+    .foot-shout .shout-line .v2,
+    .foot-shout .shout-line .v3 { transform: none; }
 
     /* Footer */
     footer.foot { padding: 48px 0 28px; }
