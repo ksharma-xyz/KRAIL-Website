@@ -1844,8 +1844,11 @@
   }
   .foot-mark .made-in .rotator {
     display: inline-block;
-    min-width: 28ch;            /* fixed slot — "Built with ♥" doesn't shift when text changes */
-    text-align: center;         /* visible text stays centred within the fixed slot */
+    /* No fixed slot — the whole "Built with ♥ <text>" line is its
+       natural width, and the parent's text-align: center keeps it
+       horizontally centred on screen as the text rotates. The prefix
+       shifts a few pixels with each tagline; the visible words always
+       read naturally with no awkward gap between ♥ and the text. */
     vertical-align: baseline;
     transition: opacity .35s ease, transform .35s ease;
     color: rgba(252,246,241,0.85);
@@ -1854,9 +1857,6 @@
   .foot-mark .made-in .rotator.swap {
     opacity: 0;
     transform: translateY(4px);
-  }
-  @media (max-width: 540px) {
-    .foot-mark .made-in .rotator { min-width: 22ch; }
   }
   .foot-mark .made-in .heart {
     display: inline-block;
