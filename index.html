@@ -2221,6 +2221,14 @@
       max-width: 100%;
       box-sizing: border-box;
     }
+    /* Grid items default to min-width: auto (= min-content), which lets
+       columns expand past their 1fr allocation when content has long words
+       or wide inline elements. Force min-width: 0 so grid stays in check. */
+    .feature-block, .feature-text, .feature-phone,
+    .feature-text h3, .feature-text p.lead,
+    .feature-text .feat-meta, .feature-text .feat-meta div {
+      min-width: 0;
+    }
     /* Stamp-shadow elements need 6-8px right margin to keep shadow inside viewport */
     .feature-text p.tip-line { max-width: calc(100% - 8px); }
 
@@ -2400,12 +2408,13 @@
     .feature-text p.lead { max-width: 100%; }
     .feature-text .feat-meta div { overflow-wrap: break-word; }
 
-    /* === Footer mode pills · always circles, wrap to next line if needed === */
+    /* === Footer mode pills · 2 rows of 3 (3+3 grouping looks balanced) === */
     .foot-pills {
-      flex-wrap: wrap;
-      gap: 18px 14px;
+      display: grid;
+      grid-template-columns: repeat(3, 44px);
+      justify-content: center;
+      gap: 16px 18px;
       max-width: 100%;
-      padding: 0 8px;
     }
     .foot-pills .mp {
       flex-shrink: 0;          /* never squish · always circle */

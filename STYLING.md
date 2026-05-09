@@ -457,3 +457,182 @@ as the design-system source of truth.
 7. **No competitor names. No tech jargon. No em-dashes.**
 8. **Animations must be circular** (no visible restart) and respect
    reduced-motion.
+
+---
+
+## Mobile · lessons learned (≤640px breakpoint)
+
+Things that bit us during the mobile redesign — keep these in mind
+before reaching for a fresh `@media` rule.
+
+### 1. CSS Grid · `min-width: 0` on every grid child
+
+By default, grid items get `min-width: auto`, which resolves to
+`min-content`. Long words, wide inline-blocks, or unbreakable bits in
+a child will **expand the column past its `1fr` allocation**, pushing
+content past the container's right padding.
+
+**Fix:**
+```css
+.feature-block, .feature-text, .feature-phone,
+.feature-text h3, .feature-text p.lead,
+.feature-text .feat-meta, .feature-text .feat-meta div {
+  min-width: 0;
+}
+```
+
+Symptom: text or images "ignore" the right padding on narrow widths
+even though `.container` has symmetrical padding. Always suspect grid
+`min-width: auto` first.
+
+### 2. Phone mockups · drop the iPhone bezel on phones
+
+The iPhone-shaped frame (rounded bezel + notch) is great on desktop
+where the phone is large. On a 393px viewport, it shrinks the readable
+screen area to a tiny strip. Replace with a **flat 4:5 rounded card**
+on mobile:
+
+```css
+@media (max-width: 640px) {
+  .phone, .feature-phone .phone, .hero-phone-wrap .phone {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 4/5;
+    border-radius: 24px;
+    border: none;
+    overflow: hidden;
+  }
+  .phone .notch { display: none; }
+  .phone .screen--shot img {
+    object-fit: cover;
+    object-position: top center;
+  }
+}
+```
+
+Crop to the top so the title row + first 2-3 list items dominate.
+Tablet and desktop keep the full iPhone frame for brand character.
+
+### 3. Hero ordering · text first on mobile
+
+The desktop hero is two-column (text + phone). On mobile it stacks.
+Default ordering puts the phone first, but **text-first reads better
+on a thumb-scroll** — greeting → headline → CTA → visual.
+
+```css
+@media (max-width: 640px) {
+  .hero-art { order: 2; height: auto; }
+  .hero-phone-wrap {
+    position: relative;
+    inset: auto;
+    aspect-ratio: 4/5;
+    max-width: 340px;
+    margin: 12px auto 0;
+  }
+}
+```
+
+### 4. Feature block divider · use the accent colour
+
+Stacked feature blocks on mobile need a clear visual separator so the
+text↔image pairing is unambiguous. A faint 1px grey line gets lost.
+
+```css
+.feature-block + .feature-block {
+  border-top: 2px solid var(--accent, rgba(28,27,26,0.12));
+}
+```
+
+The 2px in the section's accent colour brackets each feature like
+a chapter heading.
+
+### 5. Icons that must keep their shape · `flex-shrink: 0`
+
+Mode pills (T M B F L C circles), brand stamps, badges — anything
+with a fixed-aspect shape — should never be flex-shrunk. Default
+`flex-shrink: 1` will squish them on tight rows.
+
+```css
+.foot-pills .mp { flex-shrink: 0; width: 44px; height: 44px; }
+```
+
+### 6. Wrapping flex items aesthetically · use grid instead
+
+`flex-wrap: wrap` is unpredictable — if N-1 items fit on a row, you
+get one orphaned item on the next row. Looks ugly.
+
+For 6 items that should look like 2 rows of 3:
+
+```css
+.foot-pills {
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+  justify-content: center;
+  gap: 16px 18px;
+}
+```
+
+Grid with explicit column count guarantees the grouping.
+
+### 7. Watch out for older media query overrides
+
+The 1100px breakpoint had `aspect-ratio: 16/10` on `.founder-photo`,
+which cascaded down to mobile and cropped the portrait face.
+
+When fixing a mobile issue, search **all** breakpoints above your
+target — they may be silently cascading:
+
+```bash
+grep -nE "@media \(max-width" index.html
+```
+
+### 8. Stamp shadows need extra container padding
+
+Stamp-pattern elements (`box-shadow: 5px 5px 0 var(--accent)`) paint
+outside their box. With 20px container padding and a 5px shadow, the
+shadow lands within the buffer. With less, it pokes past the
+viewport edge.
+
+Container padding **24px on mobile** is the safe default.
+
+### 9. FAQ summary `padding-right` is non-negotiable
+
+The +/- icon sits at `right: 4px` absolute. The summary needs
+`padding-right: 36px+` to keep the question text from running under
+the icon. Easy to lose this when overriding `padding` on mobile.
+
+```css
+@media (max-width: 640px) {
+  details.faq-item summary { padding: 14px 36px 14px 0; }
+}
+```
+
+### 10. Typography ratios on mobile
+
+On phones the giant stat number (`62px+`) needs a heading below that
+holds its own without competing. Aim for **2.6×–2.9× ratio** between
+the number and its label heading. At smaller ratios the heading
+dominates and breaks the visual hierarchy.
+
+Working values today:
+- Stat number: `clamp(54px, 16vw, 76px)`
+- Stat heading: `22px`
+- Body text: `16px`
+
+### 11. Stack shouty headlines vertically on mobile
+
+`Tag us. Roast us. Praise us.` reads as one rotation-rich line on
+desktop. On mobile, slap each verb on its own line for breathing
+room — and reset the rotations so they don't compete with the stack.
+
+```css
+@media (max-width: 640px) {
+  .foot-shout .shout-line .verb {
+    display: block;
+    margin: 0 0 8px;
+  }
+  .foot-shout .shout-line .v1,
+  .foot-shout .shout-line .v2,
+  .foot-shout .shout-line .v3 { transform: none; }
+}
+```
