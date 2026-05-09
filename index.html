@@ -167,7 +167,10 @@
   }
   nav.top .row {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 0;
+    /* Explicit horizontal padding — nav.top .row is more specific than
+       .container so its padding shorthand was wiping out the container's
+       left/right gutter, leaving brand + CTA flush with the screen edges. */
+    padding: 16px 32px;
   }
   .nav-links {
     display: flex; gap: 28px; align-items: center;
@@ -2168,7 +2171,7 @@
   /* Tablet portrait & large phone (900px and down) */
   @media (max-width: 900px) {
     .container { padding: 0 24px; }
-    nav.top .row { padding: 14px 0; }
+    nav.top .row { padding: 14px 24px; }
     .nav-links { gap: 18px; font-size: 13px; }
 
     /* Hero stacks; imagery first */
@@ -2196,6 +2199,7 @@
   /* Phone (640px and down) */
   @media (max-width: 640px) {
     .container { padding: 0 20px; }
+    nav.top .row { padding: 14px 20px; }
 
     /* Hide nav links, keep CTA + brand */
     .nav-links { display: none; }
