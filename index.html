@@ -739,9 +739,25 @@
 
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
     counter-reset: stat-index;
+  }
+  .stats-grid .stat { padding: 24px 18px 20px; }
+  .stats-grid .stat .num { font-size: clamp(36px, 4.4vw, 60px); }
+  .stats-grid .stat .lbl { font-size: 12.5px; }
+  .stats-grid .stat .lbl b { font-size: 13.5px; }
+  /* Wrap to 3+2 on tablet, 2+2+1 on smaller, 1 col on phone */
+  @media (max-width: 1100px) {
+    .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .stats-grid .stat { padding: 26px 22px 22px; }
+    .stats-grid .stat .num { font-size: clamp(40px, 5vw, 68px); }
+  }
+  @media (max-width: 720px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
   }
   .stat {
     counter-increment: stat-index;
@@ -893,6 +909,73 @@
   .feature-text p.lead {
     font-size: 17px; color: var(--ink-2);
     line-height: 1.6; margin: 0 0 24px; max-width: 46ch;
+  }
+  /* Theme swatches — small parallelogram bullets in each theme colour */
+  .feature-text .theme-swatches {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 22px;
+  }
+  .feature-text .theme-swatches li {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .feature-text .theme-swatches .sw {
+    display: inline-block;
+    width: 24px;
+    height: 16px;
+    border: 2px solid var(--ink);
+    transform: skewX(-12deg);
+    box-shadow: 2px 2px 0 rgba(28,27,26,0.30);
+    flex-shrink: 0;
+  }
+
+  /* Raised stat tip card — number + text layout, stamp pattern */
+  .feature-text p.tip-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 22px;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    margin: 8px 0 32px;
+    max-width: 46ch;
+    box-shadow: 5px 5px 0 var(--accent, var(--brand-pink));
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease;
+  }
+  .feature-text p.tip-line:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--accent, var(--brand-pink));
+  }
+  .feature-text p.tip-line .tip-icon {
+    font-size: 24px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .feature-text p.tip-line .tip-num {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(26px, 2.8vw, 34px);
+    line-height: 1;
+    color: var(--accent, var(--brand-pink));
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .feature-text p.tip-line .tip-text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--ink-2);
   }
   .feature-text .feat-meta {
     display: grid;
@@ -1063,9 +1146,9 @@
 
   /* Carousel nav buttons — stamp pattern, centred under the cards */
   .testimonials-nav {
-    display: flex; gap: 14px;
+    display: flex; gap: 36px;
     justify-content: center;
-    margin-top: 28px;
+    margin-top: 32px;
   }
   .testi-arrow {
     width: 48px; height: 48px;
@@ -1196,12 +1279,38 @@
     margin-top: 2px;
   }
   .founder .meta-link {
-    display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 20px;
-    padding: 10px 18px;
-    border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: 24px;
+    padding: 12px 22px;
+    border: 2px solid var(--ink);
+    border-radius: 0;
     background: var(--ink); color: #fff;
-    font-weight: 700; font-size: 14px;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, background .2s ease;
+  }
+  .founder .meta-link:hover {
+    transform: translate(-3px, -3px);
+    background: #000;
+    box-shadow: 6px 6px 0 var(--accent, var(--brand-pink));
+  }
+  .founder .meta-link:active {
+    transform: translate(0, 0);
+    box-shadow: 3px 3px 0 var(--accent, var(--brand-pink));
+  }
+  .founder .founder-link {
+    color: var(--accent, var(--brand-pink));
+    font-weight: 800;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: border-color .2s ease;
+  }
+  .founder .founder-link:hover {
+    border-bottom-color: var(--accent, var(--brand-pink));
   }
 
   /* ===========================================================
@@ -1299,7 +1408,7 @@
   section.email-call { padding: 80px 0 100px; text-align: center; }
   .email-call .frame {
     max-width: 720px; margin: 0 auto;
-    padding: 56px 32px;
+    padding: 64px 40px;
     background: rgba(255,255,255,0.7);
     backdrop-filter: blur(8px);
     border: 2px dashed rgba(28,27,26,0.20);
@@ -1329,9 +1438,9 @@
     font-weight: 600;
     font-size: clamp(28px, 3.4vw, 44px);
     letter-spacing: -0.02em;
-    line-height: 1.1;
+    line-height: 1.15;
     color: #3A3A3A;
-    margin: 0 0 12px;
+    margin: 14px 0 36px;
     text-wrap: balance;
     max-width: 18ch;
     margin-inline: auto;
@@ -1381,7 +1490,7 @@
     line-height: 1;
   }
   .email-call .small {
-    margin-top: 20px;
+    margin-top: 28px;
     font-size: 13px;
     color: var(--muted);
     font-style: italic;
@@ -1614,9 +1723,12 @@
       var(--lr) 66.6%, var(--lr) 83.3%,
       var(--coach) 83.3%, var(--coach) 100%);
   }
+  /* Center the block as a whole, but left-align children so the
+     "Built with ♥..." line starts at the same x as the # of #LET'S KRAIL */
   .foot-mark {
-    text-align: center;
-    margin-bottom: 56px;
+    display: table;
+    margin: 0 auto 56px;
+    text-align: left;
   }
   .foot-mark .lets-krail {
     display: block;
@@ -2202,7 +2314,6 @@
       <div class="hero-copy anim">
         <span class="hero-greeting">Hello Sydney,</span>
         <h1 class="hero-title">Where are you going <span class="accent">today?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></span></h1>
-        <p class="hero-sub">Every mode. Every stop. <b>Sydney, end to end.</b> Live data straight from Transport for NSW · no carve-outs, no clutter.</p>
 
         <div class="store-row" id="download">
           <a href="https://apps.apple.com/us/app/krail-app/id6738934832" target="_blank" rel="noopener" class="store-btn" aria-label="Download on the App Store">
@@ -2266,25 +2377,29 @@
     <div class="stats-head anim" style="--accent: var(--bus);">
       <span class="eyebrow" style="justify-content:center;">Every mode. Every stop.</span>
       <h2 class="section-title">Sydney, <em>end to end.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
-      <p class="section-sub" style="margin: 14px auto 0;">Live data straight from Transport for NSW. Every train, every bus, every wharf. No carve-outs.</p>
+      <p class="section-sub" style="margin: 14px auto 0;"><b>Tallawong to Bondi · live, every minute.</b></p>
     </div>
 
     <div class="stats-grid anim anim-stagger">
       <div class="stat" style="--i:0">
-        <div class="num">5</div>
-        <div class="lbl"><b>Sydney transport modes</b>Trains, Metro, Buses, Ferries &amp; Light Rail. One tap each.</div>
+        <div class="num">4,000+</div>
+        <div class="lbl"><b>Sydney commuters and counting</b>Every one onboarded by another commuter.</div>
       </div>
       <div class="stat" style="--i:1">
-        <div class="num">6+</div>
-        <div class="lbl"><b>Park &amp; Ride stations live</b>Tallawong, Bella Vista, Kellyville, Hornsby, Cherrybrook, Penrith.</div>
+        <div class="num">50K+</div>
+        <div class="lbl"><b>Sydney stop searches</b>Finding the next train, bus or ferry.</div>
       </div>
       <div class="stat" style="--i:2">
-        <div class="num">53%</div>
-        <div class="lbl"><b>Come back week after week</b>Sydney commuters who keep KRAIL in their pocket.</div>
+        <div class="num">15K+</div>
+        <div class="lbl"><b>Sydney commutes saved</b>Saved once. Tapped on repeat.</div>
       </div>
       <div class="stat" style="--i:3">
-        <div class="num">$0<span style="font-size:0.5em;color:var(--brand-pink);">*</span></div>
-        <div class="lbl"><b>Free until Dec 2026</b>No subscription, no sign-up, no ads<span style="color:var(--brand-pink);font-weight:900;">*</span> during launch.</div>
+        <div class="num">6,000+</div>
+        <div class="lbl"><b>Parking spots checked</b>Knowing if there's a spot before leaving home.</div>
+      </div>
+      <div class="stat" style="--i:4">
+        <div class="num">Free<span style="font-size:0.5em;color:var(--brand-pink);">*</span></div>
+        <div class="lbl"><b>Until December 2026</b>No ads<span style="color:var(--brand-pink);font-weight:900;">*</span>. No sign-up. No subscription.</div>
       </div>
     </div>
   </div>
@@ -2295,21 +2410,25 @@
   <div class="container">
     <div class="feat-intro anim">
       <span class="eyebrow" style="justify-content:center;">Built for Sydney</span>
-      <h2 class="section-title" style="--accent: var(--metro);">Less tapping. <em>More moving.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
-      <p class="section-sub" style="margin: 14px auto 0;">Every screen is one decision. Every number is live. Every trip is yours.</p>
+      <h2 class="section-title" style="--accent: var(--metro);">Less tapping. More <em>moving.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+      <p class="section-sub" style="margin: 14px auto 0;"><b>Open it half-asleep. Get where you're going.</b></p>
     </div>
 
     <!-- Block 1 · Saved Trips (phone right) — barbie pink -->
     <div class="feature-block anim" style="--accent: #E0218A;">
       <div class="feature-text">
-        <span class="eyebrow" style="color: #E0218A;">Saved trips</span>
-        <h3>One tap. <em>You're already on your way.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <span class="eyebrow" style="color: #E0218A;">Save your trips</span>
+        <h3>One tap. You're <em>going.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Save the journeys you take every day. Give them a colour, an emoji, a name only you'll understand. Pink for the hospital. Teal for the beach. Blue for Friday drinks at the CBD. Then every morning, your trips are waiting. Tap once. Live times, right there.</p>
-        <p class="lead"><b>4 in 10 KRAIL users tap their saved trips every single time they open the app.</b></p>
+        <p class="lead tip-line">
+          <span class="tip-icon" aria-hidden="true">💡</span>
+          <span class="tip-num">4 in 10</span>
+          <span class="tip-text">KRAIL users tap a saved trip every time they open the app.</span>
+        </p>
         <div class="feat-meta">
-          <div><b>One tap</b>Your commute is already there</div>
-          <div><b>Make it yours</b>Colour, emoji, your own name</div>
-          <div><b>Reverse in a tap</b>No re-typing the return trip</div>
+          <div><b>Tap and go</b>Your morning route, already loaded.</div>
+          <div><b>Pick your vibe</b>Hospital pink. Beach teal. You decide.</div>
+          <div><b>Going home?</b>One tap reverses your saved trip.</div>
         </div>
       </div>
       <div class="feature-phone">
@@ -2337,13 +2456,13 @@
     <div class="feature-block reverse anim" style="--accent: var(--train);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--train);">Park &amp; Ride</span>
-        <h3>Know if there's a spot <em>before you leave the driveway.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>Live parking, before the <em>driveway.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Tallawong at 7:05 is a parking lottery. Kellyville fills up by 7:15. Bella Vista has a few spots left, but you have to know that before you drive.</p>
-        <p class="lead">KRAIL shows live parking availability at 6 Sydney stations, updated every minute. Green means go. Amber means hustle. Red means catch the bus instead.</p>
+        <p class="lead">KRAIL shows live parking availability at <b>20+ Sydney stations</b>, updated every minute. See exactly how full each station is before you leave home.</p>
         <div class="feat-meta">
-          <div><b>6 stations</b>Tallawong, Bella Vista, Kellyville, Hornsby, Cherrybrook, Penrith</div>
+          <div><b>20+ stations</b>Across Sydney's busiest commuter hubs</div>
           <div><b>Live counts</b>Updates every minute, straight from the barrier</div>
-          <div><b>Colour-coded</b>Green · Amber · Red at a glance</div>
+          <div><b>% full at a glance</b>Know exactly how packed each station is</div>
         </div>
       </div>
       <div class="feature-phone">
@@ -2386,9 +2505,13 @@
     <div class="feature-block anim" style="--accent: var(--metro);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--metro);">Map view</span>
-        <h3>Stop guessing which exit. <em>Start knowing.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>Walk out the right <em>exit.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Every journey in KRAIL has a map. Tap any leg to see your stop on a real Sydney street. Which side of the road your bus pulls in on. Which platform to walk toward. Where to change trains without crossing back over.</p>
-        <p class="lead"><b>1 in 5 KRAIL users switch to map view on their commute.</b> They don't switch back to list view much.</p>
+        <p class="lead tip-line">
+          <span class="tip-icon" aria-hidden="true">💡</span>
+          <span class="tip-num">1 in 5</span>
+          <span class="tip-text">KRAIL users switch to map view, and stay.</span>
+        </p>
         <div class="feat-meta">
           <div><b>Street-level</b>The right side of the road, not just the stop name</div>
           <div><b>Full journey</b>Every leg, every interchange, on one map</div>
@@ -2433,13 +2556,17 @@
     <div class="feature-block reverse anim" style="--accent: var(--bus);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--bus);">Real-time</span>
-        <h3>The minute on your screen <em>is the minute on the platform.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
-        <p class="lead">Same data as the departure board above the platform. Not an estimate. Not a "usually around" time. The actual, live feed from Transport for NSW · trains, metro, buses, ferries, light rail, coaches · refreshed while you watch.</p>
-        <p class="lead">We only show colour when something's actually wrong. No fake urgency. Green is fine. Red means something real.</p>
+        <h3>Same minute as the <em>platform.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <p class="lead">No estimates. No "usually around 8". Just the actual minute, live for trains, metro, buses, ferries and light rail.</p>
+        <p class="lead tip-line">
+          <span class="tip-icon" aria-hidden="true">⚡</span>
+          <span class="tip-num">Live</span>
+          <span class="tip-text">Refreshed while you watch · same feed as the station screen.</span>
+        </p>
         <div class="feat-meta">
-          <div><b>All 5 modes</b>Train · Metro · Bus · Ferry · Light Rail</div>
-          <div><b>Honest colour</b>Live · On Time · Delayed · only when true</div>
-          <div><b>Straight from TfNSW</b>The same source as the station screen</div>
+          <div><b>All 5 modes</b>Train, Metro, Bus, Ferry, Light Rail</div>
+          <div><b>No fake urgency</b>Red only when something's actually delayed</div>
+          <div><b>Same as the platform</b>Side-by-side with the departure board</div>
         </div>
       </div>
       <div class="feature-phone">
@@ -2464,7 +2591,7 @@
     <div class="feature-block anim" style="--accent: var(--lr);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--lr);">Stop labels · new</span>
-        <h3>Name the stops <em>that matter to you.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>Wynyard becomes <em>Work.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">You know the stops. KRAIL lets you name them. Label Wynyard as "Work". Label your street corner as "Home". Label that stop near the gym · you know the one. Your labels show up everywhere in the app, replacing the raw stop name with the word that actually means something to you.</p>
         <p class="lead"><b>The smallest feature. The biggest difference when you're half-asleep at 7am.</b></p>
         <div class="feat-meta">
@@ -2499,9 +2626,22 @@
     <div class="feature-block reverse anim" style="--accent: var(--coach);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--coach);">Dark mode &amp; Themes</span>
-        <h3>KRAIL at 6am <em>shouldn't hurt your eyes.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
-        <p class="lead">Every colour, every gradient, every departure board · built for dark. <b>Over half of KRAIL users ride in dark mode.</b> The app was designed for both from day one, not retrofitted.</p>
-        <p class="lead">And if you want more than dark · choose a theme. Train orange. Metro teal. Bus blue. Ferry green. Barbie pink. The app is still KRAIL · your data, your trips, your stops · just dressed the way you like it.</p>
+        <h3>Built for <em>6 AM.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <p class="lead">Every colour, every gradient, every departure board · built for dark. Designed for both from day one, not retrofitted.</p>
+        <p class="lead tip-line">
+          <span class="tip-icon" aria-hidden="true">💡</span>
+          <span class="tip-num">6 in 10</span>
+          <span class="tip-text">KRAIL users ride in dark mode.</span>
+        </p>
+        <p class="lead">Want more than dark? Pick a theme.</p>
+        <ul class="theme-swatches">
+          <li><span class="sw" style="background: var(--train);"></span>Train orange</li>
+          <li><span class="sw" style="background: var(--metro);"></span>Metro teal</li>
+          <li><span class="sw" style="background: var(--bus);"></span>Bus blue</li>
+          <li><span class="sw" style="background: var(--ferry);"></span>Ferry green</li>
+          <li><span class="sw" style="background: var(--coach);"></span>Coach purple</li>
+          <li><span class="sw" style="background: #E0218A;"></span>Barbie pink</li>
+        </ul>
         <div class="feat-meta">
           <div><b>True dark</b>Not just a tinted background. Built dark.</div>
           <div><b>Themes</b>Multiple palettes, change anytime in Settings</div>
@@ -2538,8 +2678,7 @@
   <div class="container">
     <div class="testimonials-head anim">
       <span class="eyebrow" style="justify-content:center;">From Sydney commuters</span>
-      <h2 class="section-title">435 Sydney commuters. <em>One city.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em> No sign-up.</h2>
-      <p class="section-sub" style="margin: 14px auto 0;">Real emails to <a href="mailto:hey@krail.app" style="color:var(--brand-pink);font-weight:700;">hey@krail.app</a>. We don't write our own reviews.</p>
+      <h2 class="section-title">500+ Sydney commuters ride KRAIL <em>every month.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
     </div>
   </div>
 
@@ -2591,7 +2730,7 @@
 </section>
 
 <!-- ================== FOUNDER ================== -->
-<section class="founder has-blobs founder-blobs" id="contact" style="--accent: var(--coach);">
+<section class="founder has-blobs founder-blobs" id="contact" style="--accent: #E0218A;">
   <div class="container">
     <div class="founder-grid">
       <div class="founder-photo anim">
@@ -2624,10 +2763,19 @@
       </div>
 
       <div class="founder-text anim">
-        <span class="eyebrow">From the founder</span>
-        <h2 class="section-title">"Tired of opening three apps <em>just to catch one train.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em>"</h2>
-        <p class="note">I built KRAIL because I was tired of opening three apps just to catch one train. Sydney commuters deserve a beautiful, modern way to ride.<br><br>KRAIL is a solo-engineered project, built in public. No VCs. No data-selling. Just a better way to get around Sydney.</p>
-        <p class="note"><b>435 commuters and counting.</b><br><br>Free<span style="color:var(--brand-pink);font-weight:900;">*</span> until December 2026 · ads-free, sign-up-free, fuss-free.</p>
+        <span class="eyebrow">An open letter to Sydney</span>
+        <h2 class="section-title">Why I built <em>KRAIL.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+
+        <p class="note">For years, getting from A to B in Sydney meant juggling three apps. One for trains. One for parking. One for the bus that never came. None of them felt like they were actually built for you.</p>
+
+        <p class="note">KRAIL is built ground-up for <b>Sydney, only Sydney</b> · from Tallawong's parking lottery to Town Hall's three exits, from the 6am dark to the Friday-night ferry. Every feature comes from a moment a Sydney commuter has actually lived.</p>
+
+        <p class="note">There are things in KRAIL you won't find anywhere else. Live parking before the driveway. Stops renamed in words you actually use. Saved trips that remember themselves. <b>Apps don't have to choose between beautiful and useful.</b></p>
+
+        <p class="note">I know you've got an app you're used to. Fair. <b>Give KRAIL a week.</b> If it doesn't quietly become your morning app, tell me why · I read every email.</p>
+
+        <p class="note signoff">· <a href="https://ksharma.xyz" target="_blank" rel="noopener" class="founder-link">Karan</a>, a Sydney commuter</p>
+
         <a class="meta-link" href="mailto:hey@krail.app">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16v16H4zM4 4l8 8 8-8"/></svg>
           hey@krail.app
@@ -2648,32 +2796,32 @@
     <div class="faq-list anim anim-stagger">
       <details class="faq-item" open style="--i:0">
         <summary>Is KRAIL really free?</summary>
-        <div class="answer">Yes · KRAIL is free for every Sydney commuter <b>until December 2026</b>. After that we may introduce <b>optional paid extras</b> (Pro Insights, smart push notifications, family share). The core experience · saved trips, real-time data, Park &amp; Ride, themes, dark mode, the map · stays the way it is today.</div>
+        <div class="answer">Yes. Free for every Sydney commuter <b>until December 2026</b>. No subscription. No sign-up. No catch.</div>
       </details>
 
       <details class="faq-item" style="--i:1">
         <summary>Are there ads in the app?</summary>
-        <div class="answer">No ads today. <b>For our launch period</b> (now until at least Dec 2026) the app is completely ad-free. After launch we may add a few <b>small, non-disruptive ads</b> to help keep KRAIL going · never ads that block your trip, never anything noisy or pop-up. If you hate it, we'll hear it.</div>
+        <div class="answer">None right now. KRAIL is ad-free <b>through December 2026</b>. After that, ads and paid options may be introduced to support the growing demand.</div>
       </details>
 
       <details class="faq-item" style="--i:2">
         <summary>Where does the live data come from?</summary>
-        <div class="answer">We use the official <b>Transport for NSW Open Data API</b>. If it's on the platform screen, it's in the app. When TfNSW is wrong, we're wrong. When they fix it, we fix it within minutes.</div>
+        <div class="answer">Straight from <b>Transport for NSW</b> · the same feed the platform departure boards run on. <b>If it's on the platform screen, it's in KRAIL.</b> When they're wrong, we're wrong. When they fix it, we fix it within minutes.</div>
       </details>
 
       <details class="faq-item" style="--i:3">
         <summary>How is KRAIL different from other Sydney transit apps?</summary>
-        <div class="answer">KRAIL is what a <b>2026 Sydney commute looks like</b>. Live Park &amp; Ride, beautiful themes, dark mode for the 6 AM crowd, and made for one city only. Most alternatives are either officially-built or built for the whole country. <b>KRAIL is built specifically for Sydney by someone who rides Sydney's network every day.</b></div>
+        <div class="answer">Other apps are built for every city, or built by a department. <b>KRAIL is built ground-up for Sydney</b>, by someone who rides this network every day.<br><br>The 7am parking lottery at Tallawong? Solved. Walking out the wrong exit at Town Hall? Solved. Guessing if the bus is 3 minutes or 15? Solved.<br><br>There are things in KRAIL you won't find anywhere else · live parking before the driveway, stops renamed in your own words, themes for the 6am crowd, saved trips that remember themselves. <b>Beautiful AND useful · apps don't have to choose.</b></div>
       </details>
 
       <details class="faq-item" style="--i:4">
-        <summary>Does it support my suburb?</summary>
-        <div class="answer"><b>If TfNSW services it, KRAIL covers it.</b> All five modes — Trains, Sydney Metro, Buses, Ferries and Light Rail — plus regional coaches and the entire Sydney metropolitan network. Park &amp; Ride is currently live at Tallawong, Bella Vista, Kellyville, Hornsby, Cherrybrook and Penrith.</div>
+        <summary>Does my station have live parking?</summary>
+        <div class="answer">Live parking is available at <b>20+ Sydney stations</b> · the busiest park-and-ride hubs across the network. We add more as TfNSW exposes live data for them.<br><br>For everything else · Trains, Metro, Buses, Ferries, Light Rail and regional coaches · <b>if TfNSW services it, KRAIL covers it.</b></div>
       </details>
 
       <details class="faq-item" style="--i:5">
-        <summary>Who built this?</summary>
-        <div class="answer">One Sydney commuter named <b>Karan</b>. No VC, no team, no agency · just one person who rides Sydney's network every day and wanted a better way. <b>Available on both iPhone and Android.</b> Got an idea or feedback? Email <a href="mailto:hey@krail.app" style="color:var(--brand-pink);font-weight:700;">hey@krail.app</a> · we read every one.</div>
+        <summary>Who built KRAIL?</summary>
+        <div class="answer">One Sydney commuter named <a href="https://ksharma.xyz" target="_blank" rel="noopener" style="color:var(--brand-pink);font-weight:800;">Karan</a>, on a mission to create a delightful digital commute across Sydney. Available on iPhone and Android.</div>
       </details>
     </div>
   </div>
@@ -2685,7 +2833,6 @@
     <div class="frame anim">
       <span class="eyebrow-c">We read every one</span>
       <h3>Got an idea, a bug, or just a <em>hello?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
-      <p class="lede">No bots. No tickets.<br>Just one Sydney commuter on the other end.</p>
       <a href="mailto:hey@krail.app" class="email-pill">
         <span class="ico">✉</span>
         hey@krail.app
@@ -2747,9 +2894,9 @@
 
     <div class="foot-shout">
       <span class="shout-line">
-        <span class="verb v1">Join 400+</span>
-        <span class="verb v2">Sydney</span>
-        <span class="verb v3">Commuters.</span>
+        <span class="verb v1">Tag us.</span>
+        <span class="verb v2">Roast us.</span>
+        <span class="verb v3">Praise us.</span>
       </span>
       <div class="social-stamps">
         <a class="linkedin" href="https://www.linkedin.com/company/krail/" target="_blank" rel="noopener">

@@ -36,6 +36,9 @@ some are zero-tolerance, others are strong defaults.
 | Internal/private analytics: `12.6× reopens`, `67% Android dark mode`, `2,204 saved trips`, `175 daily savers`, BigQuery numbers | Don't share private data | Use coverage numbers: `5 modes`, `6+ Park & Ride stations`, `24/7 TfNSW data` |
 | `Stays free forever`, `Anything free today stays free forever` | Avoid promising forever-free | Just say `Free* until December 2026` with the asterisk |
 | Bashing language: `looks like 1995`, `looks like Windows 95` | Reframe positive | "Sydney commuters deserve a modern way to ride" |
+| Feature H3 with multi-word italic highlights (e.g. `<em>shouldn't hurt your eyes.</em>`) | Hard to scan; squiggle gets too wide | **1-2 words MAX inside `<em>`**. Headlines stay short, only the punch word is highlighted. Examples: `One tap. You're <em>going.</em>` · `Live parking, before the <em>driveway.</em>` · `Walk out the right <em>exit.</em>` |
+| Anything that doesn't pass the **commuter test** (would a non-tech Sydney commuter on the train instantly relate?) | Site fails its audience | Every headline, sub-line, stat, tip and feat-meta must describe a **scenario the commuter has lived** (Tallawong parking, the wrong exit at Town Hall, half-asleep at 6am, etc.) or a **benefit they want** (one tap, never re-typing, knowing before you leave). No abstractions. No app-internals. No "feature counts". |
+| **Marketing fluff** instead of real pain | Reads as generic SaaS | Every section must name a **real problem** the user has actually felt: the parking lottery at Tallawong, walking out the wrong exit at Town Hall, not knowing if the bus is 3 minutes or 15, opening 3 apps to plan one trip, getting on the wrong platform. Reframe every claim around the pain it removes — not the feature it ships. |
 
 ### Asterisks (always use these exact lines)
 
