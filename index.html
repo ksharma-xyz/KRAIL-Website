@@ -52,7 +52,10 @@
     --coach: #742282;
     --lr:    #E4022D;
 
-    --sans:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* "Roboto" removed from --sans because we only load weight 900
+       from Google Fonts. On mobile, that caused every body element
+       to fall back to Roboto Black 900 → all text rendered bold. */
+    --sans:    -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
     --display: var(--sans);
     --antonio: "Antonio", -apple-system, sans-serif;
     --roboto-black: "Roboto", -apple-system, sans-serif;
@@ -261,14 +264,11 @@
   /* Keep hero text/imagery above floaters */
   section.hero .container { z-index: 2; }
 
+  /* On stacked mobile layouts, the floating mode bubbles end up
+     overlapping the H1 / store buttons since the columns no longer
+     coexist side-by-side. Hide them entirely below 900px. */
   @media (max-width: 900px) {
-    .hero-decor .d.coach { display: none; }
-    .hero-decor .d { transform: scale(0.85); }
-  }
-  @media (max-width: 540px) {
-    .hero-decor .d.metro,
-    .hero-decor .d.ferry { display: none; }
-    .hero-decor .d { transform: scale(0.7); }
+    .hero-decor { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-decor .d { animation: none; }
@@ -2209,11 +2209,26 @@
     .hero-question { font-size: 18px; }
     h1.hero-title { font-size: clamp(36px, 11vw, 52px); margin-bottom: 18px; }
     .hero-tagline { font-size: 18px; margin-bottom: 22px; }
-    /* Store buttons stack on phone */
-    .store-row { flex-direction: column; align-items: stretch; gap: 10px; }
-    .store-btn { padding: 12px 18px; justify-content: center; }
-    .store-btn .big { font-size: 15px; }
-    .cta-final .stores { flex-direction: column; align-items: stretch; }
+    /* Store buttons stack full-width on phone */
+    .store-row {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      width: 100%;
+    }
+    .store-btn {
+      width: 100%;
+      padding: 16px 22px;
+      justify-content: center;
+    }
+    .store-btn .big { font-size: 16px; }
+    .cta-final .stores {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
     .hero-pledge { gap: 12px; font-size: 12px; }
 
     /* Phone shrinks; remove all 3D tilt · looks bad on narrow */
