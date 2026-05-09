@@ -1547,8 +1547,10 @@
     75%  { transform: translate(10px, -12px) rotate(8deg); }
     100% { transform: translate(0, 0) rotate(0deg); }
   }
-  @media (max-width: 640px) {
-    .cta-decor .d { transform: scale(0.7); }
+  /* Hide floating bubbles on mobile — same reason as the hero icons:
+     stacked layout doesn't have room without overlapping the H2 / buttons */
+  @media (max-width: 900px) {
+    .cta-decor { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .cta-decor .d { animation: none !important; }
@@ -1730,7 +1732,7 @@
      "Built with ♥..." line starts at the same x as the # of #LET'S KRAIL */
   .foot-mark {
     display: table;
-    margin: 0 auto 56px;
+    margin: 0 auto 72px;
     text-align: left;
   }
   .foot-mark .lets-krail {
@@ -1832,7 +1834,7 @@
   }
   .foot-mark .made-in {
     display: block;
-    margin-top: 14px;
+    margin-top: 24px;
     font-family: var(--display);
     font-style: italic;
     font-size: 15px;
@@ -1888,12 +1890,12 @@
   .foot-pills {
     display: flex;
     justify-content: center;
-    gap: 28px;            /* generous spacing — was 16px */
-    margin: 36px 0 14px;
+    gap: 28px;
+    margin: 56px 0 22px;
   }
   .foot-pills-caption {
     text-align: center;
-    margin: 0 0 56px;
+    margin: 0 0 88px;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -1992,7 +1994,7 @@
   /* Marketing-boom social shoutout — bold message + big stamp pills */
   .foot-shout {
     text-align: center;
-    margin: 24px 0 96px;     /* generous breathing room before the rest */
+    margin: 40px 0 96px;
   }
   /* Stamp-poster headline — each verb its own KRAIL mode colour with
      slight rotation, like rubber-stamped over a poster */
