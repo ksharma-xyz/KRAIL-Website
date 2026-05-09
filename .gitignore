@@ -3,3 +3,6 @@
 node_modules/
 .vscode/
 .idea/
+
+# Sensitive · domain / DNS setup notes (not for public repo)
+DOMAIN_SETUP.md

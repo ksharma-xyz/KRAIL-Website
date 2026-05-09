@@ -585,6 +585,20 @@
     position: relative;
     font-size: 13px;
   }
+  .phone .screen--shot {
+    background: #0a0908;
+    padding: 0;
+  }
+  .phone .screen--shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    border: 0;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
 
   .mini-status {
     height: 40px;
@@ -1265,6 +1279,15 @@
     transform: rotate(-2.5deg);
   }
   .founder-photo image-slot { width: 100%; height: 100%; display: block; }
+  .founder-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
   .founder p.note {
     font-size: 19px;
     line-height: 1.6;
@@ -2343,15 +2366,8 @@
         <div class="hero-phone-wrap">
           <div class="phone" id="heroPhone">
             <div class="notch"></div>
-            <div class="screen">
-              <div class="mini-status"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
-              <div class="mini-top"><span class="wm">KRAIL</span><span class="city">SYDNEY</span></div>
-              <div class="mini-h">Town Hall</div>
-              <div class="mini-row"><span class="modesq" style="background:var(--train)">T2</span><div><div class="stop">Bondi Junction</div><div class="meta">Platform 5 · 1 change</div></div><span class="time live">3 min</span></div>
-              <div class="mini-row"><span class="modesq" style="background:var(--metro)">M1</span><div><div class="stop">Chatswood</div><div class="meta">Platform 1 · direct</div></div><span class="time live">6 min</span></div>
-              <div class="mini-row"><span class="modesq" style="background:var(--bus)">389</span><div><div class="stop">Bondi Beach</div><div class="meta">Stand C · via Oxford St</div></div><span class="time">11 min</span></div>
-              <div class="mini-row"><span class="modesq" style="background:var(--ferry)">F1</span><div><div class="stop">Manly Wharf</div><div class="meta">Circular Quay 3</div></div><span class="time">14 min</span></div>
-              <div class="mini-row"><span class="modesq" style="background:var(--lr)">L2</span><div><div class="stop">Randwick</div><div class="meta">via Moore Park</div></div><span class="time">17 min</span></div>
+            <div class="screen screen--shot">
+              <img src="images/Hero.png" alt="KRAIL · live Sydney departures from Town Hall" loading="eager" />
             </div>
           </div>
         </div>
@@ -2444,19 +2460,8 @@
       <div class="feature-phone">
         <div class="phone">
           <div class="notch"></div>
-          <div class="screen">
-            <div class="mini-status"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
-            <div class="mini-top"><span class="wm">KRAIL</span><span class="city">SYDNEY</span></div>
-            <div class="mini-h">Saved trips</div>
-            <div style="padding: 0 22px 6px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); font-weight: 700;">From 🏠 Home · 6 trips</div>
-            <div class="mini-tiles">
-              <div class="mini-tile" style="background:#E0218A"><span class="badge">Home to</span><span class="em-bg">🏥</span><span class="name">Hospital</span></div>
-              <div class="mini-tile" style="background:#1C70F2"><span class="badge">Home to</span><span class="em-bg">💼</span><span class="name">Work</span></div>
-              <div class="mini-tile" style="background:#A0522D"><span class="badge">Home to</span><span class="em-bg">☕</span><span class="name">Café</span></div>
-              <div class="mini-tile" style="background:#00B5EF"><span class="badge">Home from</span><span class="em-bg">🏖️</span><span class="name">Beach</span></div>
-              <div class="mini-tile" style="background:#AC00C9"><span class="badge">Home to</span><span class="em-bg">🏋️</span><span class="name">Gym</span></div>
-              <div class="mini-tile" style="background:#009B77"><span class="badge">Home to</span><span class="em-bg">🎓</span><span class="name">Uni</span></div>
-            </div>
+          <div class="screen screen--shot">
+            <img src="images/SavedTrips.png" alt="KRAIL · saved trips home screen with colour-coded tiles" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2478,34 +2483,8 @@
       <div class="feature-phone">
         <div class="phone">
           <div class="notch"></div>
-          <div class="screen" style="background: var(--warm-dark); color:#fcf6f1;">
-            <div class="mini-status" style="color:#fcf6f1"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
-            <div class="mini-top"><span class="wm">KRAIL</span><span class="city" style="color:rgba(252,246,241,0.55)">SYDNEY</span></div>
-            <div class="mini-h" style="color:#fcf6f1">Park &amp; Ride</div>
-            <div class="park-row green" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
-              <div style="flex:1;"><div class="station">Tallawong</div><div class="free" style="color:#6dde6f">472 free · 28% full</div></div>
-              <span class="gauge">28</span>
-            </div>
-            <div class="park-row amber" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
-              <div style="flex:1;"><div class="station">Bella Vista</div><div class="free" style="color:#FFC56A">112 free · 65% full</div></div>
-              <span class="gauge">65</span>
-            </div>
-            <div class="park-row red" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
-              <div style="flex:1;"><div class="station">Penrith</div><div class="free" style="color:#FF7268">12 free · 95% full</div></div>
-              <span class="gauge">95</span>
-            </div>
-            <div class="park-row green" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
-              <div style="flex:1;"><div class="station">Kellyville</div><div class="free" style="color:#6dde6f">280 free · 35% full</div></div>
-              <span class="gauge">35</span>
-            </div>
-            <div class="park-row amber" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
-              <div style="flex:1;"><div class="station">Hornsby</div><div class="free" style="color:#FFC56A">86 free · 70% full</div></div>
-              <span class="gauge">70</span>
-            </div>
-            <div class="park-row green" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
-              <div style="flex:1;"><div class="station">Cherrybrook</div><div class="free" style="color:#6dde6f">320 free · 40% full</div></div>
-              <span class="gauge">40</span>
-            </div>
+          <div class="screen screen--shot">
+            <img src="images/park_ride.png" alt="KRAIL · live Park &amp; Ride availability across Sydney stations" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2531,32 +2510,8 @@
       <div class="feature-phone">
         <div class="phone">
           <div class="notch"></div>
-          <div class="screen" style="background: linear-gradient(160deg,#E5F4FB,#F5E2F0,#FBE5EF); position: relative;">
-            <svg viewBox="0 0 280 580" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="none">
-              <path d="M-20,180 Q80,120 140,200 T320,160" stroke="rgba(0,0,0,0.10)" stroke-width="14" fill="none" stroke-linecap="round"/>
-              <path d="M-20,360 Q120,300 200,380 T320,340" stroke="rgba(0,0,0,0.10)" stroke-width="14" fill="none" stroke-linecap="round"/>
-              <path d="M40,-20 Q80,140 140,260 T200,600" stroke="rgba(0,0,0,0.07)" stroke-width="11" fill="none"/>
-              <path d="M-20,180 Q80,120 140,200 T320,160" stroke="var(--brand-pink)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-              <path d="M40,-20 Q80,140 140,260 T200,600" stroke="var(--brand-blue)" stroke-width="3.5" fill="none"/>
-              <circle cx="140" cy="200" r="6" fill="#fff" stroke="#E0218A" stroke-width="3"/>
-              <circle cx="80"  cy="180" r="5" fill="#fff" stroke="#E0218A" stroke-width="2"/>
-              <circle cx="200" cy="186" r="5" fill="#fff" stroke="#E0218A" stroke-width="2"/>
-              <circle cx="100" cy="160" r="5" fill="#fff" stroke="#00B5EF" stroke-width="2"/>
-              <circle cx="170" cy="320" r="5" fill="#fff" stroke="#00B5EF" stroke-width="2"/>
-            </svg>
-            <div style="position:absolute;left:120px;top:184px;width:14px;height:14px;border-radius:50%;background:var(--train);box-shadow:0 0 0 3px rgba(246,137,31,0.25);"></div>
-            <div style="position:absolute;left:84px;top:300px;width:14px;height:14px;border-radius:50%;background:var(--bus);box-shadow:0 0 0 3px rgba(0,181,239,0.25);"></div>
-            <div style="position:absolute;left:14px;right:14px;bottom:14px;background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,0.10);">
-              <div style="display:flex;align-items:center;gap:10px;">
-                <span style="background:var(--train);width:30px;height:30px;border-radius:8px;font-family:var(--antonio);font-weight:600;color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center;">T2</span>
-                <div><div style="font-weight:800;font-size:13px;">To Town Hall</div><div style="font-size:10px;color:var(--muted);">Platform 5 · 1 change</div></div>
-                <span style="margin-left:auto;font-family:var(--antonio);font-weight:600;color:#008913;font-size:18px;">3 min</span>
-              </div>
-            </div>
-            <div style="position:absolute;left:14px;right:14px;top:54px;background:#fff;border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.08);">
-              <span style="font-size:14px;">🔍</span>
-              <span style="font-size:12px;color:var(--muted);font-weight:600;">Search any stop in Sydney</span>
-            </div>
+          <div class="screen screen--shot">
+            <img src="images/map.png" alt="KRAIL · Sydney street map view with route and stops" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2582,16 +2537,8 @@
       <div class="feature-phone">
         <div class="phone">
           <div class="notch"></div>
-          <div class="screen">
-            <div class="mini-status"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
-            <div class="mini-top"><span class="wm">KRAIL</span><span class="city">SYDNEY</span></div>
-            <div class="mini-h">Central</div>
-            <div class="mini-row"><span class="modesq" style="background:var(--train)">T2</span><div><div class="stop">Town Hall</div><div class="meta">Platform 18 · direct</div></div><span class="time live">3 min</span></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--train)">T1</span><div><div class="stop">Wynyard</div><div class="meta">Platform 16 · direct</div></div><span class="time live">5 min</span></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--train)">T8</span><div><div class="stop">Macarthur</div><div class="meta">Platform 22 · 1 change</div></div><span class="time live">7 min</span></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--metro)">M1</span><div><div class="stop">Chatswood</div><div class="meta">Platform 1 · direct</div></div><span class="time late">+2 min</span></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--bus)">M20</span><div><div class="stop">Botany</div><div class="meta">Stand E · Surry Hills</div></div><span class="time">12 min</span></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--lr)">L2</span><div><div class="stop">Randwick</div><div class="meta">via Moore Park</div></div><span class="time">15 min</span></div>
+          <div class="screen screen--shot">
+            <img src="images/Hero.png" alt="KRAIL · live departure board straight from the platform feed" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2613,20 +2560,8 @@
       <div class="feature-phone">
         <div class="phone">
           <div class="notch"></div>
-          <div class="screen">
-            <div class="mini-status"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
-            <div class="mini-top"><span class="wm">KRAIL</span><span class="city">SYDNEY</span></div>
-            <div class="mini-h">Search</div>
-            <div style="margin: 0 14px 12px; padding: 10px 14px; background: #F4F2EE; border-radius: 999px; display:flex; align-items:center; gap:8px; font-size: 13px; color: var(--muted);">
-              <span style="font-size:14px;">🔍</span>
-              <span>Find a stop or label…</span>
-            </div>
-            <div style="padding: 0 22px 6px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); font-weight: 700;">Your labels</div>
-            <div class="mini-row"><span class="modesq" style="background:var(--lr); font-size:18px;">🏠</span><div><div class="stop">Home</div><div class="meta">Redfern Station</div></div></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--bus); font-size:18px;">💼</span><div><div class="stop">Work</div><div class="meta">Wynyard Station</div></div></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--ferry); font-size:18px;">🏋️</span><div><div class="stop">Gym</div><div class="meta">Bondi Junction</div></div></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--train); font-size:18px;">☕</span><div><div class="stop">Coffee</div><div class="meta">Newtown</div></div></div>
-            <div class="mini-row"><span class="modesq" style="background:var(--metro); font-size:18px;">🎓</span><div><div class="stop">Uni</div><div class="meta">Macquarie Park</div></div></div>
+          <div class="screen screen--shot">
+            <img src="images/map_elect.png" alt="KRAIL · map view with custom-labelled stops across Sydney" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2661,21 +2596,8 @@
       <div class="feature-phone">
         <div class="phone">
           <div class="notch"></div>
-          <div class="screen" style="background: var(--warm-dark); color:#fcf6f1;">
-            <div class="mini-status" style="color:#fcf6f1"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
-            <div class="mini-top"><span class="wm" style="color:#fcf6f1;">KRAIL</span><span class="city" style="color:rgba(252,246,241,0.55)">SYDNEY</span></div>
-            <div class="mini-h" style="color:#fcf6f1">Pick your vibe</div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 14px; margin-top: 8px;">
-              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--train),#FFB36B); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Train</div>
-              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--metro),#3FCAA9); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Metro</div>
-              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--bus),#5BC9FF); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Bus</div>
-              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--ferry),#88D258); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Ferry</div>
-              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,#E0218A,#FF6FA8); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Barbie</div>
-              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--coach),#A656B7); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Drip</div>
-            </div>
-            <div style="padding: 16px 22px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:rgba(252,246,241,0.6); font-weight:700;">
-              <span>● Dark mode</span><span style="color:var(--ferry);">ON</span>
-            </div>
+          <div class="screen screen--shot">
+            <img src="images/dark.png" alt="KRAIL · dark mode for the 6am commute" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2744,32 +2666,7 @@
   <div class="container">
     <div class="founder-grid">
       <div class="founder-photo anim">
-        <image-slot id="founder-portrait" placeholder="A photo of Karan at a Sydney station (e.g. Schofields)" shape="rect">
-          <svg viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="fg" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#00B5EF"/>
-                <stop offset="0.55" stop-color="#AC00C9"/>
-                <stop offset="1" stop-color="#E0218A"/>
-              </linearGradient>
-            </defs>
-            <rect width="320" height="400" fill="url(#fg)"/>
-            <!-- Platform line -->
-            <rect x="0" y="320" width="320" height="6" fill="rgba(255,255,255,0.5)"/>
-            <line x1="0" y1="332" x2="320" y2="332" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-dasharray="6 8"/>
-            <!-- Person silhouette -->
-            <ellipse cx="160" cy="190" rx="42" ry="46" fill="rgba(28,27,26,0.85)"/>
-            <path d="M104 320 Q104 240 160 232 Q216 240 216 320 Z" fill="rgba(28,27,26,0.85)"/>
-            <!-- Phone in hand -->
-            <rect x="148" y="226" width="26" height="42" rx="4" fill="#fff"/>
-            <rect x="152" y="232" width="18" height="3" fill="rgba(28,27,26,0.6)"/>
-            <rect x="152" y="240" width="14" height="3" fill="rgba(28,27,26,0.4)"/>
-            <rect x="152" y="248" width="16" height="3" fill="rgba(28,27,26,0.4)"/>
-            <!-- Sydney station sign -->
-            <rect x="232" y="80" width="68" height="30" rx="6" fill="#fff"/>
-            <text x="266" y="100" font-family="Antonio,sans-serif" font-weight="600" font-size="14" fill="#E0218A" text-anchor="middle">SYDNEY</text>
-          </svg>
-        </image-slot>
+        <img src="images/founder.jpeg" alt="Karan · founder of KRAIL · a Sydney commuter" loading="lazy" />
       </div>
 
       <div class="founder-text anim">
