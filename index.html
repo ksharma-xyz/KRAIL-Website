@@ -2033,40 +2033,34 @@
     justify-content: center;
     gap: 22px;       /* generous spacing — was 12px */
   }
+  /* Social stamps — always white shadow, white icons, white border.
+     Consistent across all four platforms. */
   .social-stamps a {
-    --c: var(--brand-pink);
     display: inline-flex; align-items: center; gap: 10px;
     padding: 12px 20px;
     background: rgba(255,255,255,0.04);
-    border: 2px solid rgba(255,255,255,0.16);
-    border-radius: 0;            /* sharp stamp corners */
+    border: 2px solid rgba(255,255,255,0.30);
+    border-radius: 0;
     color: #fff;
     font-family: var(--display);
     font-weight: 700;
     font-size: 15px;
     letter-spacing: -0.005em;
     text-decoration: none;
-    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, background .2s ease, border-color .2s ease;
-  }
-  .social-stamps a {
-    box-shadow: 5px 5px 0 var(--c);
+    box-shadow: 5px 5px 0 rgba(255,255,255,0.85);
+    transition: transform .14s ease, box-shadow .14s ease, background .2s ease, border-color .2s ease;
   }
   .social-stamps a:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: var(--c);
+    background: rgba(255,255,255,0.10);
+    border-color: #fff;
     transform: translate(-2px, -2px);
-    box-shadow: 7px 7px 0 var(--c);
+    box-shadow: 7px 7px 0 #fff;
   }
   .social-stamps a:active {
     transform: translate(5px, 5px);
-    box-shadow: 0 0 0 var(--c);
+    box-shadow: 0 0 0 rgba(255,255,255,0);
   }
-  .social-stamps a svg { width: 18px; height: 18px; color: var(--c); }
-  /* Per-platform colour from KRAIL palette */
-  .social-stamps a.linkedin  { --c: var(--bus); }
-  .social-stamps a.instagram { --c: var(--brand-pink); }
-  .social-stamps a.facebook  { --c: var(--metro); }
-  .social-stamps a.reddit    { --c: var(--train); }
+  .social-stamps a svg { width: 18px; height: 18px; color: #fff; }
 
   .foot-coda {
     display: flex; justify-content: space-between; align-items: center;
