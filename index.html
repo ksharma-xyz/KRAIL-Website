@@ -356,11 +356,19 @@
     font-size: clamp(42px, 5.8vw, 78px);
     line-height: 1.08;
     letter-spacing: -0.02em;
-    margin: 4px 0 36px;
+    margin: 4px 0 18px;
     text-wrap: balance;
     /* Softer than jet-black — feels approachable, not aggressive */
     color: #3A3A3A;
   }
+  .hero-sub {
+    font-size: clamp(15px, 1.3vw, 17px);
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0 0 32px;
+    max-width: 48ch;
+  }
+  .hero-sub b { color: var(--ink); font-weight: 700; }
   /* Accent words use --accent (set per-section), default to brand-pink */
   h1.hero-title .accent,
   h2.section-title em,
@@ -2194,6 +2202,7 @@
       <div class="hero-copy anim">
         <span class="hero-greeting">Hello Sydney,</span>
         <h1 class="hero-title">Where are you going <span class="accent">today?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></span></h1>
+        <p class="hero-sub">Every mode. Every stop. <b>Sydney, end to end.</b> Live data straight from Transport for NSW · no carve-outs, no clutter.</p>
 
         <div class="store-row" id="download">
           <a href="https://apps.apple.com/us/app/krail-app/id6738934832" target="_blank" rel="noopener" class="store-btn" aria-label="Download on the App Store">
@@ -2616,9 +2625,9 @@
 
       <div class="founder-text anim">
         <span class="eyebrow">From the founder</span>
-        <h2 class="section-title" style="--accent: var(--coach);">"I just kept getting on the <em>wrong platform.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em>"</h2>
-        <p class="note">I built KRAIL because I was tired of opening three apps before catching one train. Tallawong at 7:05 is a parking lottery, Redfern at 8 is chaos, and Sydney commuters deserve a beautiful, modern way to ride.<br><br>So I started shipping. Solo. In public. From a 1-bedroom flat in Sydney.</p>
-        <p class="note">No VC. No team. <b>435 commuters and counting.</b><br><br>Free<span style="color:var(--brand-pink);font-weight:900;">*</span> until December 2026 · ads-free, sign-up-free, fuss-free.</p>
+        <h2 class="section-title">"Tired of opening three apps <em>just to catch one train.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em>"</h2>
+        <p class="note">I built KRAIL because I was tired of opening three apps just to catch one train. Sydney commuters deserve a beautiful, modern way to ride.<br><br>KRAIL is a solo-engineered project, built in public. No VCs. No data-selling. Just a better way to get around Sydney.</p>
+        <p class="note"><b>435 commuters and counting.</b><br><br>Free<span style="color:var(--brand-pink);font-weight:900;">*</span> until December 2026 · ads-free, sign-up-free, fuss-free.</p>
         <a class="meta-link" href="mailto:hey@krail.app">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16v16H4zM4 4l8 8 8-8"/></svg>
           hey@krail.app
@@ -2649,7 +2658,7 @@
 
       <details class="faq-item" style="--i:2">
         <summary>Where does the live data come from?</summary>
-        <div class="answer">We pull live data straight from <b>Transport for NSW</b>. When TfNSW is wrong, we're wrong. When they fix it, we fix it within minutes. KRAIL is unaffiliated with TfNSW · we just plug into their public open-data feed like every other app does.</div>
+        <div class="answer">We use the official <b>Transport for NSW Open Data API</b>. If it's on the platform screen, it's in the app. When TfNSW is wrong, we're wrong. When they fix it, we fix it within minutes.</div>
       </details>
 
       <details class="faq-item" style="--i:3">
@@ -2658,8 +2667,8 @@
       </details>
 
       <details class="faq-item" style="--i:4">
-        <summary>Which Sydney modes are covered?</summary>
-        <div class="answer">All of them: <b>Trains, Sydney Metro, Buses, Ferries, Light Rail and Coaches.</b> If TfNSW publishes it, KRAIL shows it. Park &amp; Ride is currently live at Tallawong, Bella Vista, Kellyville, Hornsby, Cherrybrook and Penrith · we'll add more as TfNSW exposes them.</div>
+        <summary>Does it support my suburb?</summary>
+        <div class="answer"><b>If TfNSW services it, KRAIL covers it.</b> All five modes — Trains, Sydney Metro, Buses, Ferries and Light Rail — plus regional coaches and the entire Sydney metropolitan network. Park &amp; Ride is currently live at Tallawong, Bella Vista, Kellyville, Hornsby, Cherrybrook and Penrith.</div>
       </details>
 
       <details class="faq-item" style="--i:5">
@@ -2738,9 +2747,9 @@
 
     <div class="foot-shout">
       <span class="shout-line">
-        <span class="verb v1">Tag us.</span>
-        <span class="verb v2">Roast us.</span>
-        <span class="verb v3">Praise us.</span>
+        <span class="verb v1">Join 400+</span>
+        <span class="verb v2">Sydney</span>
+        <span class="verb v3">Commuters.</span>
       </span>
       <div class="social-stamps">
         <a class="linkedin" href="https://www.linkedin.com/company/krail/" target="_blank" rel="noopener">
