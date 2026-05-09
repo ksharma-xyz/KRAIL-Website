@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KRAIL · Privacy Policy</title>
+<meta name="description" content="KRAIL privacy policy — what we collect, what we don't, and where your data lives." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&family=Antonio:wght@500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --paper: #FFFFFF;
+    --ink: #1C1B1A;
+    --ink-2: #2E2E2E;
+    --muted: #6B6157;
+    --line: rgba(28,27,26,0.10);
+    --warm-dark: #2A211A;
+    --brand-pink: #FF2F8F;
+    --train: #F6891F;
+    --metro: #009B77;
+    --bus:   #00B5EF;
+    --ferry: #5AB031;
+    --lr:    #E4022D;
+    --coach: #742282;
+    --sans:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --display: var(--sans);
+    --roboto-black: "Roboto", -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--brand-pink); text-decoration: none; font-weight: 600; }
+  a:hover { text-decoration: underline; }
+
+  nav.top {
+    position: sticky;
+    top: 0; z-index: 80;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: saturate(180%) blur(18px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px;
+    max-width: 1280px; margin: 0 auto;
+  }
+  .brand {
+    font-family: var(--roboto-black);
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .brand .reg {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.45em;
+    vertical-align: super;
+    color: var(--muted);
+    margin-left: 2px;
+  }
+  .pill-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink); color: #fff;
+    padding: 11px 20px;
+    border: 2px solid var(--ink);
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    transition: transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s ease;
+  }
+  .pill-cta:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--brand-pink);
+    text-decoration: none;
+  }
+
+  .mode-bar {
+    height: 4px;
+    background: linear-gradient(90deg,
+      var(--bus) 0%, var(--bus) 16.6%,
+      var(--train) 16.6%, var(--train) 33.3%,
+      var(--metro) 33.3%, var(--metro) 50%,
+      var(--ferry) 50%, var(--ferry) 66.6%,
+      var(--lr) 66.6%, var(--lr) 83.3%,
+      var(--coach) 83.3%, var(--coach) 100%);
+  }
+
+  main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 64px 32px 96px;
+  }
+  .doc-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: var(--brand-pink);
+    margin-bottom: 16px;
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(40px, 5.4vw, 64px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 12px;
+    color: #3A3A3A;
+  }
+  .updated {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+  .lede {
+    font-size: 19px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(22px, 2.4vw, 28px);
+    margin: 48px 0 14px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  h2 .num {
+    color: var(--brand-pink);
+    font-weight: 800;
+    margin-right: 10px;
+  }
+  p, li { font-size: 16px; color: var(--ink-2); }
+  ul { padding-left: 22px; margin: 12px 0; }
+  ul li { margin: 6px 0; }
+  .cb {
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  footer.foot {
+    background: var(--warm-dark);
+    color: rgba(252,246,241,0.75);
+    padding: 48px 32px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  footer.foot a { color: rgba(252,246,241,0.92); }
+  footer.foot .copy {
+    display: block;
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  footer.foot .reg {
+    font-size: 0.7em;
+    vertical-align: super;
+    color: rgba(252,246,241,0.6);
+  }
+  footer.foot .disclaimer {
+    margin: 14px auto 0;
+    max-width: 78ch;
+    font-size: 12px;
+    color: rgba(252,246,241,0.55);
+    line-height: 1.6;
+  }
+  footer.foot .home {
+    display: inline-block;
+    margin-top: 18px;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="row">
+    <a href="/" class="brand">KRAIL<span class="reg">®</span></a>
+    <a href="/#download" class="pill-cta">Get the app</a>
+  </div>
+</nav>
+<div class="mode-bar"></div>
+
+<main>
+  <span class="doc-eyebrow">KRAIL · Privacy</span>
+  <h1>KRAIL · Privacy Policy</h1>
+  <p class="updated">Last updated: February 22, 2026</p>
+
+  <p class="lede">
+    At KRAIL, we believe in <span class="cb">"Privacy by Design."</span> We build tools to
+    help you navigate public transport without needing to know who you are.
+  </p>
+
+  <h2><span class="num">01</span>Information We Do Not Collect</h2>
+  <p>We do not require an account to use KRAIL. We do not collect or store:</p>
+  <ul>
+    <li>Your name, email address, or phone number</li>
+    <li>Any data that links your identity to your app usage</li>
+    <li>Payment or financial information</li>
+  </ul>
+
+  <h2><span class="num">02</span>Location Data</h2>
+  <p>
+    Some features in KRAIL may request access to your device location. Location is used
+    <span class="cb">only to provide functionality within the app</span> and is never
+    stored on our servers, never transmitted off your device, and never used in the
+    background without your knowledge.
+  </p>
+  <p>
+    You can grant or revoke location access at any time in your device Settings without
+    affecting core app functionality.
+  </p>
+
+  <h2><span class="num">03</span>Analytics &amp; Crash Reporting (Anonymous)</h2>
+  <p>
+    To make the app faster and more reliable, we collect limited, non-identifiable
+    technical data via <span class="cb">Firebase</span> (Google):
+  </p>
+  <ul>
+    <li><span class="cb">Usage analytics</span> — which features are used and how, to help us prioritise improvements. This data is aggregated and never linked to you personally.</li>
+    <li><span class="cb">Crash reports</span> — technical information when the app crashes (such as device model and OS version) so we can fix bugs.</li>
+    <li><span class="cb">Performance data</span> — app speed and reliability metrics.</li>
+  </ul>
+  <p>
+    No personally identifiable information is included in any of these reports.
+    Analytics data is processed by Google and subject to
+    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.
+  </p>
+
+  <h2><span class="num">04</span>Data Stored on Your Device</h2>
+  <p>
+    KRAIL stores certain preferences and usage history <span class="cb">locally on your device</span>
+    to improve your experience. This data never leaves your device and you can clear it at any
+    time from within the app.
+  </p>
+
+  <h2><span class="num">05</span>Third-Party Services</h2>
+  <p>
+    We use <span class="cb">MapLibre</span> for map rendering. Third-party transit data
+    providers may receive your approximate request (like "show me trains in Sydney") to
+    provide results, but they do not receive information that identifies your device.
+    We do not sell data to third parties, use advertising networks, or share your data
+    with data brokers.
+  </p>
+
+  <h2><span class="num">06</span>Advertising</h2>
+  <p>
+    KRAIL contains no advertising and we do not use your Advertising ID for targeting.
+    The Advertising ID may be accessed by the Firebase SDK as part of standard analytics.
+  </p>
+
+  <h2><span class="num">07</span>Your Rights</h2>
+  <ul>
+    <li><span class="cb">Delete your data</span> — usage history and preferences stored on-device can be cleared from within the app at any time</li>
+    <li><span class="cb">Location</span> — revoke location permission at any time in device Settings</li>
+    <li><span class="cb">Analytics opt-out</span> — on iOS via Settings → Privacy → Tracking; on Android via Google Settings → Ads</li>
+  </ul>
+  <p>
+    Since we do not collect personal identifiers, there is no personal profile to access
+    or export.
+  </p>
+
+  <h2><span class="num">08</span>Changes to this Privacy Policy</h2>
+  <p>
+    We may update Our Privacy Policy from time to time. We will notify You of any changes
+    by posting the new Privacy Policy on this page. You are advised to review this Privacy
+    Policy periodically for any changes. Changes to this Privacy Policy are effective when
+    they are posted on this page.
+  </p>
+
+  <h2><span class="num">09</span>Contact Us</h2>
+  <p>If you have questions about privacy, feel free to reach out:</p>
+  <p><span class="cb">Email:</span> <a href="mailto:hey@krail.app">hey@krail.app</a></p>
+</main>
+
+<footer class="foot">
+  <span class="copy">© 2024 KRAIL<span class="reg">®</span> · All rights reserved.</span>
+  <p class="disclaimer">
+    <span class="cb" style="color:rgba(252,246,241,0.85);">Disclaimer:</span>
+    This app is not affiliated with or endorsed by Transport for New South Wales (TfNSW).
+    The data presented in this app is sourced from public APIs and services provided by TfNSW,
+    and while we strive to ensure the accuracy and timeliness of the information, we cannot
+    guarantee it. Users should verify all information independently.
+  </p>
+  <a class="home" href="/">← Back to krail.app</a>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,3056 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KRAIL · Sydney commute, respected.</title>
+<meta name="description" content="Sydney's prettiest public-transport app. Real-time trains, metro, buses, ferries, light rail. Saved trips, live Park &amp; Ride, dark mode. No ads*. Free*." />
+
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="krail.css" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Roboto:wght@900&family=Antonio:wght@500;600;700&display=swap" rel="stylesheet" />
+
+<script src="image-slot.js"></script>
+
+<style>
+  :root {
+    /* Marketing surface palette · pink + blue led, NEVER orange-led */
+    --paper:    #FFFFFF;
+    --ink:      #1C1B1A;
+    --ink-2:    #2E2E2E;
+    --muted:    #6B6157;
+    --line:     rgba(28,27,26,0.10);
+    --line-2:   rgba(28,27,26,0.06);
+    --warm-dark:#2A211A;
+
+    /* PRIMARY brand gradient · punchy electric cyan → magenta pink */
+    --brand-blue:   #1ADBFF;   /* electric cyan */
+    --brand-blue-2: #38B6FF;   /* sky-blue mid */
+    --brand-pink:   #FF2F8F;   /* hot magenta-pink */
+    --brand-pink-2: #FF66B5;   /* candy pink for soft accents */
+    --brand-purple: #D634FF;   /* vivid orchid · bridge */
+
+    /* Brand gradient · used everywhere a single colour would normally go */
+    --brand-grad:        linear-gradient(95deg, var(--brand-blue) 0%, var(--brand-purple) 55%, var(--brand-pink) 100%);
+    /* Sunset-on-water — softer, dreamier palette for the final CTA */
+    --brand-grad-vert:   linear-gradient(180deg,
+      #82DEF0 0%,
+      #8AAEEC 22%,
+      #B58CE5 48%,
+      #ED8FB5 74%,
+      #EFB07F 100%);
+    --brand-grad-soft:   linear-gradient(95deg, rgba(47,217,255,0.20), rgba(208,76,255,0.20) 55%, rgba(255,90,168,0.20));
+
+    /* Mode colours · these stay per-mode, never overridden by brand */
+    --train: #F6891F;
+    --bus:   #00B5EF;
+    --metro: #009B77;
+    --ferry: #5AB031;
+    --coach: #742282;
+    --lr:    #E4022D;
+
+    --sans:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --display: var(--sans);
+    --antonio: "Antonio", -apple-system, sans-serif;
+    --roboto-black: "Roboto", -apple-system, sans-serif;
+    --hand:    "Patrick Hand", "Bradley Hand", "Comic Sans MS", -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    line-height: 1.5;
+    overflow-x: clip;
+    position: relative;
+    /* ONE continuous blob layer across the whole page — no per-section
+       seams. Each gradient is positioned as a percentage of total body
+       height so blobs flow through every section. */
+    background:
+      radial-gradient(820px 680px at 8% 4%,   rgba(47,217,255,0.22), transparent 65%),
+      radial-gradient(820px 680px at 92% 8%,  rgba(255,90,168,0.20), transparent 65%),
+      radial-gradient(720px 620px at 96% 18%, rgba(91,194,255,0.16), transparent 65%),
+      radial-gradient(820px 680px at 4% 24%,  rgba(91,194,255,0.18), transparent 65%),
+      radial-gradient(720px 620px at 88% 34%, rgba(255,90,168,0.18), transparent 65%),
+      radial-gradient(820px 680px at 6% 44%,  rgba(47,217,255,0.20), transparent 65%),
+      radial-gradient(720px 620px at 94% 54%, rgba(255,90,168,0.16), transparent 65%),
+      radial-gradient(720px 620px at 8% 64%,  rgba(91,194,255,0.18), transparent 65%),
+      radial-gradient(820px 680px at 92% 72%, rgba(47,217,255,0.18), transparent 65%),
+      radial-gradient(720px 620px at 6% 82%,  rgba(255,90,168,0.18), transparent 65%),
+      radial-gradient(820px 680px at 92% 90%, rgba(91,194,255,0.18), transparent 65%),
+      var(--paper);
+    background-attachment: scroll;
+  }
+  html { overflow-x: clip; background: var(--paper); }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--brand-pink); color: #fff; }
+
+  .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  .container.narrow { max-width: 1040px; }
+
+  /* ===========================================================
+     LET'S KRAIL · the wordmark accent. Always bold italic.
+  =========================================================== */
+  .lets-krail {
+    font-family: var(--roboto-black);
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: -0.01em;
+  }
+  /* Gradient version on light backgrounds */
+  .lets-krail.grad {
+    background: var(--brand-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ===========================================================
+     KRAIL wordmark · text-only, Roboto Black
+  =========================================================== */
+  .brand {
+    display: inline-flex; align-items: baseline;
+    font-family: var(--roboto-black);
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .brand.invert { color: #fff; }
+  /* Registered trademark mark — readable but tasteful */
+  .brand .reg,
+  .foot-coda .reg,
+  .foot-row .brand .reg {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 0.58em;
+    vertical-align: 0.45em;        /* lifted superscript */
+    margin-left: 4px;
+    opacity: 0.85;
+  }
+
+  /* ===========================================================
+     NAV
+  =========================================================== */
+  nav.top {
+    position: sticky;
+    top: 0; z-index: 80;
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s ease, background .25s ease;
+  }
+  nav.top.scrolled {
+    background: rgba(255,255,255,0.94);
+    border-bottom-color: var(--line);
+  }
+  /* Smart sticky — hide on scroll-down past hero, reveal on scroll-up */
+  nav.top {
+    transform: translateY(0);
+    transition: transform .35s cubic-bezier(.2,.7,.3,1), background .25s ease, border-color .2s ease;
+    will-change: transform;
+  }
+  nav.top.nav-hidden {
+    transform: translateY(-100%);
+  }
+  nav.top .row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 0;
+  }
+  .nav-links {
+    display: flex; gap: 28px; align-items: center;
+    font-size: 14px; font-weight: 600; color: var(--ink-2);
+  }
+  .nav-links a { position: relative; }
+  .nav-links a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -6px;
+    height: 2px; background: var(--brand-grad);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .25s ease;
+  }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* Nav CTA — solid dark stamp, matches store buttons */
+  .pill-cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink);
+    color: #fff;
+    padding: 11px 20px;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s ease;
+  }
+  .pill-cta:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--brand-pink);
+  }
+  .pill-cta:active {
+    transform: translate(0, 0);
+    box-shadow: 2px 2px 0 var(--brand-pink);
+  }
+  .pill-cta svg { width: 14px; height: 14px; }
+
+  /* ===========================================================
+     BLOB SYSTEM · sections are transparent, blobs bleed across
+     section boundaries so the page reads as ONE continuous gradient.
+     No overflow clipping (would break position:sticky in features).
+  =========================================================== */
+  /* Sections are transparent — body's continuous blob layer paints
+     the gradient. NO per-section pseudo elements (those caused the
+     visible seam between sections). */
+  .has-blobs { position: relative; background: transparent; }
+  .has-blobs > * { position: relative; z-index: 1; }
+  .has-blobs .container { position: relative; z-index: 2; }
+
+  /* Floating Sydney transport mode icons in the hero — decorative,
+     dance gently with float animation. Same pattern as the CTA decor. */
+  .hero-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+  }
+  .hero-decor .d {
+    position: absolute;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-family: var(--display);
+    font-weight: 900;
+    letter-spacing: 0;
+    box-shadow: 0 6px 18px rgba(28,27,26,0.10);
+    will-change: transform;
+  }
+  /* Transport mode icons are always full alpha — never opaque */
+  .hero-decor .d { opacity: 1; }
+  /* All 6 icons live in the visible upper half (above the fold).
+     City-panel imagery removed — phone alone is the focal visual. */
+  .hero-decor .d.train { top: 4%;   left: 54%;  width: 56px; height: 56px; font-size: 24px; background: var(--train); animation: hero-float 9s  ease-in-out infinite; }
+  /* M and B kept clear of the H1 — sit at the far-left edge */
+  .hero-decor .d.metro { top: 22%;  left: 0%;   width: 44px; height: 44px; font-size: 19px; background: var(--metro); animation: hero-float 11s ease-in-out infinite -2s; }
+  .hero-decor .d.bus   { top: 60%;  left: 1%;   width: 64px; height: 64px; font-size: 26px; background: var(--bus);   animation: hero-float 8s  ease-in-out infinite -4s; }
+  .hero-decor .d.ferry { top: 14%;  right: 8%;  width: 48px; height: 48px; font-size: 20px; background: var(--ferry); animation: hero-float 10s ease-in-out infinite -1s; }
+  .hero-decor .d.lr    { top: 48%;  right: 4%;  width: 52px; height: 52px; font-size: 22px; background: var(--lr);    animation: hero-float 12s ease-in-out infinite -3s; }
+  .hero-decor .d.coach { top: 62%;  right: 36%; width: 36px; height: 36px; font-size: 16px; background: var(--coach); animation: hero-float 13s ease-in-out infinite -5s; }
+
+  @keyframes hero-float {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(6px, -14px) rotate(8deg); }
+    50%  { transform: translate(-4px, -22px) rotate(-6deg); }
+    75%  { transform: translate(8px, -10px) rotate(10deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  /* Keep hero text/imagery above floaters */
+  section.hero .container { z-index: 2; }
+
+  @media (max-width: 900px) {
+    .hero-decor .d.coach { display: none; }
+    .hero-decor .d { transform: scale(0.85); }
+  }
+  @media (max-width: 540px) {
+    .hero-decor .d.metro,
+    .hero-decor .d.ferry { display: none; }
+    .hero-decor .d { transform: scale(0.7); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-decor .d { animation: none; }
+  }
+
+  /* Per-feature theme "vibe" line, lifted from KrailThemeStyle.kt */
+  .vibe-line {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 6px 14px;
+    background: var(--accent, var(--brand-pink));
+    color: #fff;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: -0.005em;
+    transform: rotate(-1.5deg);
+  }
+
+  /* ===========================================================
+     HERO
+  =========================================================== */
+  section.hero { padding: 12px 0 80px; }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: 64px;
+    /* top-align so the copy sits at the visual top of the hero,
+       not vertically centred against the tall phone column */
+    align-items: start;
+  }
+  .hero-copy { padding-top: 24px; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 13px; text-transform: uppercase; letter-spacing: 2px;
+    font-weight: 900; color: var(--ink);
+    background: #fff;
+    border: 2px solid var(--ink);
+    padding: 10px 16px 10px 13px;
+    border-radius: 0;
+    margin-bottom: 14px;          /* tighter — pills sit below this */
+    box-shadow: 4px 4px 0 var(--brand-pink);
+  }
+  .hero-eyebrow .pulse {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--brand-pink);
+    box-shadow: 0 0 0 0 rgba(255,47,143,0.55);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,47,143,0.55); }
+    70% { box-shadow: 0 0 0 12px rgba(255,47,143,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,47,143,0); }
+  }
+
+  .hero-question {
+    font-family: var(--display);
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(16px, 1.4vw, 18px);
+    margin: 0 0 14px;
+    color: var(--muted);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* Refined italic kicker — editorial, professional, low-key */
+  .hero-greeting {
+    display: block;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(24px, 2.2vw, 32px);
+    letter-spacing: 0;
+    color: var(--muted);
+    margin: 0 0 14px;
+    line-height: 1.2;
+  }
+
+  h1.hero-title {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(42px, 5.8vw, 78px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 4px 0 36px;
+    text-wrap: balance;
+    /* Softer than jet-black — feels approachable, not aggressive */
+    color: #3A3A3A;
+  }
+  /* Accent words use --accent (set per-section), default to brand-pink */
+  h1.hero-title .accent,
+  h2.section-title em,
+  .feature-text h3 em {
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+    color: var(--accent, var(--brand-pink));
+    font-style: italic;
+    font-weight: 800;
+  }
+
+  /* Squiggly hand-drawn underline — marker-pen feel. Two overlaid
+     paths: thick base layer (bold start, lighter alpha) + thinner
+     highlight on top. Animates in on scroll. */
+  .sq-line {
+    position: absolute;
+    left: -3px; right: -3px;
+    bottom: -10px;
+    width: calc(100% + 6px);
+    height: 14px;
+    pointer-events: none;
+    overflow: visible;
+    color: var(--accent, var(--brand-pink));
+    transform: rotate(-0.6deg);
+  }
+  .sq-line .stroke-bold,
+  .sq-line .stroke-thin {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 240;
+    stroke-dashoffset: 240;
+    transition: stroke-dashoffset 1.5s cubic-bezier(.5, .05, .15, 1) .12s;
+  }
+  /* Bold under-layer: thicker, slightly transparent — gives marker softness */
+  .sq-line .stroke-bold {
+    stroke-width: 5.5;
+    opacity: 0.55;
+  }
+  /* Crisp top layer: thinner, full opacity */
+  .sq-line .stroke-thin {
+    stroke-width: 2.5;
+    opacity: 1;
+    transition-delay: .25s;        /* draws just after the bold layer */
+  }
+  .anim.in .sq-line .stroke-bold,
+  .anim.in .sq-line .stroke-thin,
+  .feature-block.in .sq-line .stroke-bold,
+  .feature-block.in .sq-line .stroke-thin {
+    stroke-dashoffset: 0;
+  }
+
+  .hero-tagline {
+    display: inline-block;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(20px, 1.8vw, 24px);
+    color: var(--ink);
+    margin: 0 0 28px;
+    padding: 6px 0;
+    border-bottom: 3px solid;
+    border-image: var(--brand-grad) 1;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 1.3vw, 19px);
+    color: var(--ink-2);
+    max-width: 50ch;
+    margin: 0 0 28px;
+    line-height: 1.55;
+  }
+  .hero-sub b { color: var(--ink); font-weight: 700; }
+
+  /* Store buttons · solid dark "stamp" with hard pink shadow on
+     hover — inspired by Sumi's stamp-on-paper interaction. */
+  .store-row {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    gap: 14px;
+    align-items: stretch;
+    margin-bottom: 24px;
+  }
+  .store-btn {
+    position: relative;
+    display: inline-flex; align-items: center;
+    gap: 12px;
+    padding: 16px 26px;
+    background: var(--ink);
+    color: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 0;                /* sharp stamp corners */
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+    transition:
+      transform .22s cubic-bezier(.2,.7,.3,1),
+      box-shadow .22s ease,
+      background .2s ease;
+  }
+  .store-btn:hover {
+    transform: translate(-3px, -3px);
+    background: #000;
+    box-shadow: 6px 6px 0 var(--brand-pink);
+  }
+  .store-btn:active {
+    transform: translate(0, 0);
+    box-shadow: 3px 3px 0 var(--brand-pink);
+  }
+  .store-btn .badge-icon {
+    width: 24px; height: 24px;
+    flex-shrink: 0;
+    color: #fff;
+  }
+  .store-btn .text {
+    display: inline-flex; align-items: baseline;
+    gap: 8px;
+  }
+  /* Italic display platform name */
+  .store-btn .big {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+
+  .hero-pledge {
+    display: flex; gap: 22px; flex-wrap: wrap;
+    font-size: 13px; color: var(--muted); font-weight: 600;
+  }
+  .hero-pledge b { color: var(--ink); font-weight: 800; }
+  .hero-pledge .star { color: var(--brand-pink); font-weight: 900; }
+
+  /* Hero right column · phone in front of city panel */
+  .hero-art {
+    position: relative;
+    height: 680px;
+    perspective: 1600px;
+  }
+  .city-panel {
+    position: absolute;
+    inset: 24px 6% 64px 6%;
+    border-radius: 32px;
+    overflow: hidden;
+    background: var(--brand-grad-vert);
+    box-shadow: 0 40px 90px rgba(28,27,26,0.25);
+    transform: rotate(-2.5deg);
+  }
+  .city-panel::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(255,255,255,0.30), transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.25), transparent 50%);
+    pointer-events: none;
+  }
+  .city-panel .skyline {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 58%;
+  }
+
+  .hero-phone-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    transform-style: preserve-3d;
+    pointer-events: none;
+  }
+  .hero-phone-wrap .phone {
+    pointer-events: auto;
+    transform: perspective(1400px) rotateY(-12deg) rotateX(5deg) rotateZ(-2deg) translateZ(40px);
+    transition: transform .8s cubic-bezier(.2,.7,.3,1);
+  }
+
+  /* ===========================================================
+     PHONE base
+  =========================================================== */
+  .phone {
+    width: 300px; height: 620px;
+    background: var(--warm-dark);
+    border: 7px solid var(--warm-dark);
+    border-radius: 46px;
+    box-shadow:
+      0 0 0 1.5px rgba(28,27,26,0.4),
+      inset 0 0 0 1px rgba(255,255,255,0.06),
+      0 50px 100px rgba(28,27,26,0.30),
+      0 18px 36px rgba(28,27,26,0.18);
+    overflow: hidden;
+    position: relative;
+  }
+  .phone .notch {
+    position: absolute; top: 8px; left: 50%;
+    transform: translateX(-50%);
+    width: 110px; height: 28px;
+    background: #0a0908;
+    border-radius: 18px;
+    z-index: 5;
+  }
+  .phone .screen {
+    width: 100%; height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+    position: relative;
+    font-size: 13px;
+  }
+
+  .mini-status {
+    height: 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px;
+    font-family: var(--antonio); font-weight: 500;
+    font-size: 13px;
+  }
+  .mini-status .right { display: inline-flex; gap: 5px; align-items: center; }
+  .mini-status .right .bar { width: 4px; height: 7px; background: currentColor; border-radius: 1px; }
+  .mini-top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 22px 8px;
+  }
+  .mini-top .wm {
+    font-family: var(--roboto-black);
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .mini-top .city { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 1px; }
+  .mini-h {
+    padding: 0 22px;
+    font-size: 26px; font-weight: 800;
+    letter-spacing: -0.5px;
+    margin: 8px 0 14px;
+    font-family: var(--display);
+  }
+  .mini-row {
+    margin: 0 14px 8px;
+    padding: 12px 14px;
+    background: #F4F2EE;
+    border-radius: 14px;
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid rgba(28,27,26,0.05);
+  }
+  .mini-row .modesq {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    color: #fff;
+    font-family: var(--antonio); font-weight: 600;
+    font-size: 14px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .mini-row .meta { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+  .mini-row .stop { font-weight: 700; font-size: 13.5px; }
+  .mini-row .time {
+    margin-left: auto;
+    font-family: var(--antonio);
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 18px;
+    letter-spacing: 0.5px;
+  }
+  .mini-row .time.early { color: #008913; }
+  .mini-row .time.late  { color: #c97a00; }
+  .mini-row .time.live::before {
+    content: ""; display: inline-block; width: 6px; height: 6px;
+    border-radius: 50%; background: #008913;
+    margin-right: 5px; vertical-align: middle;
+    animation: blink 1.4s ease-in-out infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.3; } }
+
+  /* Saved-trip cover-art tiles */
+  .mini-tiles {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    padding: 0 14px; margin-top: 4px;
+  }
+  .mini-tile {
+    aspect-ratio: 1/1;
+    border-radius: 14px;
+    padding: 12px;
+    color: #fff;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .mini-tile .em-bg {
+    position: absolute; right: -6px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 72px; opacity: 0.20; line-height: 1;
+  }
+  .mini-tile .badge {
+    align-self: flex-start;
+    background: rgba(255,255,255,0.22);
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 8.5px; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .mini-tile .name { font-weight: 800; font-size: 15px; letter-spacing: -0.3px; z-index: 1; }
+
+  /* ===========================================================
+     LIVE TICKER
+  =========================================================== */
+  section.ticker {
+    background: var(--warm-dark);
+    color: #fcf6f1;
+    padding: 14px 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .ticker-row {
+    display: flex; gap: 56px; align-items: center;
+    white-space: nowrap;
+    animation: tick 38s linear infinite;
+    will-change: transform;
+  }
+  @keyframes tick {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .ticker:hover .ticker-row { animation-play-state: paused; }
+  .tick-item {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 14px 8px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.10);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: rgba(252,246,241,0.92);
+  }
+  .tick-item .pill {
+    width: 28px; height: 22px;
+    border-radius: 6px;
+    color: #fff;
+    font-family: var(--antonio); font-weight: 600;
+    font-size: 12px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .tick-item .arrow {
+    color: rgba(252,246,241,0.45);
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .tick-item .live {
+    color: #5BE095;
+    background: rgba(91,224,149,0.14);
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.6px;
+    margin-left: 4px;
+  }
+
+  /* ===========================================================
+     BY-THE-NUMBERS — 4 stamp cards, alternating pink / blue
+  =========================================================== */
+  section.stats { padding: 96px 0 88px; }
+  .stats-head { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    counter-reset: stat-index;
+  }
+  .stat {
+    counter-increment: stat-index;
+    position: relative;
+    padding: 26px 22px 22px;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    text-align: left;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease;
+  }
+  /* Tiny corner index */
+  .stat::before {
+    content: "0" counter(stat-index);
+    position: absolute;
+    top: 14px; right: 16px;
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    opacity: 0.7;
+  }
+  /* Alternating pink / blue offset shadow */
+  .stat:nth-child(odd)  { box-shadow: 6px 6px 0 var(--brand-pink); }
+  .stat:nth-child(even) { box-shadow: 6px 6px 0 var(--brand-blue); }
+  .stat:hover {
+    transform: translate(-3px, -3px);
+  }
+  .stat:nth-child(odd):hover  { box-shadow: 9px 9px 0 var(--brand-pink); }
+  .stat:nth-child(even):hover { box-shadow: 9px 9px 0 var(--brand-blue); }
+
+  .stat .num {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(44px, 5.4vw, 76px);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin: 8px 0 16px;
+  }
+  .stat:nth-child(odd)  .num { color: var(--brand-pink); }
+  .stat:nth-child(even) .num { color: var(--brand-blue); }
+
+  .stat .lbl {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .stat .lbl b {
+    display: block;
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 14.5px;
+    margin-bottom: 4px;
+    letter-spacing: -0.005em;
+  }
+  /* Top accent bar in matching color */
+  .stat .lbl b::before {
+    content: "";
+    display: block;
+    width: 28px; height: 3px;
+    background: var(--brand-pink);
+    margin-bottom: 12px;
+  }
+  .stat:nth-child(even) .lbl b::before { background: var(--brand-blue); }
+
+  /* ===========================================================
+     SECTION HEADINGS
+  =========================================================== */
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12px; text-transform: uppercase; letter-spacing: 1.8px;
+    font-weight: 800;
+    /* Picks up the section/block --accent (train orange, metro teal,
+       bus blue, etc.) — falls back to brand pink */
+    color: var(--accent, var(--brand-pink));
+    margin-bottom: 18px;
+  }
+  .eyebrow::before {
+    content: ""; width: 22px; height: 2px;
+    background: var(--accent, var(--brand-pink));
+    display: inline-block;
+  }
+  h2.section-title {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(36px, 5vw, 76px);
+    line-height: 0.97;
+    letter-spacing: -0.035em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  /* h2 em styling consolidated with hero accent above */
+  .section-sub {
+    font-size: 18px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    max-width: 56ch;
+    margin: 0;
+  }
+
+  /* ===========================================================
+     FEATURES · clean vertical stack — 4 blocks, alternating sides
+  =========================================================== */
+  section.features { padding: 110px 0 90px; }
+  .feat-intro { text-align: center; max-width: 780px; margin: 0 auto 56px; }
+
+  .feature-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 64px;
+    padding: 64px 0;
+  }
+  .feature-block + .feature-block { border-top: 1px solid rgba(28,27,26,0.06); }
+  .feature-block.reverse .feature-text  { order: 2; }
+  .feature-block.reverse .feature-phone { order: 1; }
+
+  .feature-phone {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    perspective: 1500px;
+    min-height: 640px;
+  }
+  .feature-phone .phone {
+    --rot-y: -10deg;
+    --rot-x: 5deg;
+    --rot-z: -2deg;
+    transform: perspective(1300px) rotateY(var(--rot-y)) rotateX(var(--rot-x)) rotateZ(var(--rot-z));
+    transition: transform .55s cubic-bezier(.2,.7,.3,1);
+    will-change: transform;
+  }
+  .feature-block.reverse .feature-phone .phone {
+    --rot-y: 10deg;
+    --rot-z: 2deg;
+  }
+
+  .feature-text h3 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(30px, 3.8vw, 52px);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin: 0 0 16px;
+    color: var(--ink);
+  }
+  /* h3 em styling consolidated with hero accent above */
+  .feature-text p.lead {
+    font-size: 17px; color: var(--ink-2);
+    line-height: 1.6; margin: 0 0 24px; max-width: 46ch;
+  }
+  .feature-text .feat-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .feature-text .feat-meta div {
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .feature-text .feat-meta b {
+    display: block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    /* Match the block's accent (barbie pink, train orange, metro teal, bus blue) */
+    color: var(--accent, var(--brand-pink));
+  }
+
+  .park-row {
+    margin: 0 14px 8px;
+    padding: 11px 14px;
+    background: #F4F2EE;
+    border-radius: 14px;
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid rgba(28,27,26,0.05);
+  }
+  .park-row .station { font-weight: 800; font-size: 13.5px; }
+  .park-row .free { font-size: 11px; margin-top: 2px; font-weight: 700; }
+  .park-row.green .free { color: #008913; }
+  .park-row.amber .free { color: #c97a00; }
+  .park-row.red   .free { color: #BA1A1A; }
+  .park-row .gauge {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--antonio); font-weight: 700; font-size: 11px;
+    color: #fff;
+  }
+  .park-row.green .gauge { background: #008913; }
+  .park-row.amber .gauge { background: #c97a00; }
+  .park-row.red   .gauge { background: #BA1A1A; }
+
+  /* ===========================================================
+     TESTIMONIALS · auto-scrolling marquee, ~2 reviews visible
+  =========================================================== */
+  section.testimonials { padding: 120px 0 100px; }
+  .testimonials-head { text-align: center; max-width: 760px; margin: 0 auto 72px; }
+  /* Generous spacing between eyebrow → headline → sub */
+  .testimonials-head .eyebrow { margin-bottom: 28px; }
+  .testimonials-head h2.section-title { margin-bottom: 26px !important; }
+  .testimonials-head .section-sub { margin: 0 auto !important; }
+
+  .testimonials-scroller {
+    position: relative;
+    margin: 0 calc(50% - 50vw); /* break out of container padding */
+    overflow: hidden;
+    padding: 16px 0 28px;
+  }
+  /* Faded edges so cards feel framed */
+  .testimonials-scroller::before,
+  .testimonials-scroller::after {
+    content: "";
+    position: absolute; top: 0; bottom: 0;
+    width: 80px;
+    pointer-events: none;
+    z-index: 3;
+  }
+  .testimonials-scroller::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--paper), transparent);
+  }
+  .testimonials-scroller::after {
+    right: 0;
+    background: linear-gradient(-90deg, var(--paper), transparent);
+  }
+
+  /* Single-card carousel — one testimonial visible at a time, auto-
+     advances circularly. Buttons let you step manually. Generous
+     gap between cards so transitions breathe. */
+  .testimonials-row {
+    display: flex;
+    gap: 80px;
+    padding: 0 32px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .testimonials-row::-webkit-scrollbar { display: none; }
+
+  /* Testimonial card — stamp pattern, full container width = one card visible */
+  .testi {
+    flex: 0 0 calc(100% - 64px);   /* leave room for the surrounding gap to peek */
+    scroll-snap-align: center;
+    max-width: 560px;
+    margin: 0 auto;
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    padding: 26px 24px 22px;
+    position: relative;
+    display: flex; flex-direction: column;
+    min-height: 280px;
+    /* Pink/blue alternating shadow per card */
+    box-shadow: 6px 6px 0 var(--brand-pink);
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease;
+  }
+  .testi:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--brand-pink);
+  }
+  .testimonials-row .testi:nth-child(2n)   { box-shadow: 6px 6px 0 var(--brand-blue); }
+  .testimonials-row .testi:nth-child(2n):hover { box-shadow: 8px 8px 0 var(--brand-blue); }
+  .testimonials-row .testi:nth-child(3n)   { box-shadow: 6px 6px 0 var(--ferry); }
+  .testimonials-row .testi:nth-child(3n):hover { box-shadow: 8px 8px 0 var(--ferry); }
+  .testimonials-row .testi:nth-child(4n)   { box-shadow: 6px 6px 0 var(--train); }
+  .testimonials-row .testi:nth-child(4n):hover { box-shadow: 8px 8px 0 var(--train); }
+  .testimonials-row .testi:nth-child(5n)   { box-shadow: 6px 6px 0 var(--metro); }
+  .testimonials-row .testi:nth-child(5n):hover { box-shadow: 8px 8px 0 var(--metro); }
+  .testi .quote-mark {
+    font-family: var(--display); font-weight: 900;
+    font-size: 52px; line-height: 0.7;
+    color: var(--brand-pink);
+    margin-bottom: 10px;
+  }
+  .testi p {
+    font-size: 15.5px; line-height: 1.55; color: var(--ink);
+    margin: 0 0 18px;
+    flex: 1;
+  }
+  .testi p b { font-weight: 800; }
+  .testi .who {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px;
+  }
+  .testi .who .av {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--av-color, var(--bus));
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 900; font-family: var(--display);
+    font-size: 16px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(28,27,26,0.12);
+  }
+  .testi .who .name { font-weight: 800; color: var(--ink); }
+  .testi .who .src  { color: var(--muted); font-size: 12px; }
+
+  .scroll-hint {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 14px;
+    font-size: 12px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;
+  }
+  .scroll-hint .arrow { color: var(--brand-pink); font-size: 16px; }
+
+  /* Carousel nav buttons — stamp pattern, centred under the cards */
+  .testimonials-nav {
+    display: flex; gap: 14px;
+    justify-content: center;
+    margin-top: 28px;
+  }
+  .testi-arrow {
+    width: 48px; height: 48px;
+    border: 2px solid var(--ink);
+    background: #fff;
+    border-radius: 50%;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--ink);
+    cursor: pointer;
+    padding: 0;
+    transition: transform .2s cubic-bezier(.2,.7,.3,1), box-shadow .2s ease, background .2s ease;
+  }
+  .testi-arrow:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--accent, var(--ferry));
+  }
+  .testi-arrow:active {
+    transform: translate(0, 0);
+    box-shadow: 2px 2px 0 var(--accent, var(--ferry));
+  }
+
+  /* ===========================================================
+     COMPARE TABLE
+  =========================================================== */
+  section.compare { padding: 110px 0 100px; }
+  .compare-head { text-align: center; max-width: 780px; margin: 0 auto 48px; }
+  .compare-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    box-shadow: 0 14px 40px rgba(28,27,26,0.06);
+  }
+  .compare-table th, .compare-table td {
+    padding: 18px 16px;
+    text-align: center;
+    font-size: 14.5px;
+    border-bottom: 1px solid var(--line-2);
+  }
+  .compare-table thead th {
+    font-weight: 800; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 1.2px;
+    background: rgba(28,27,26,0.04);
+    color: var(--ink-2);
+  }
+  .compare-table thead th.krail-col {
+    background: var(--brand-grad);
+    color: #fff;
+    letter-spacing: -0.01em;
+    font-family: var(--roboto-black);
+    font-weight: 900;
+    font-style: italic;
+    font-size: 16px;
+    text-transform: none;
+  }
+  .compare-table tbody td:first-child {
+    text-align: left;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .compare-table tbody tr:last-child td { border-bottom: none; }
+  .compare-table tbody td.yes {
+    color: #008913; font-weight: 800;
+  }
+  .compare-table tbody td.no {
+    color: rgba(28,27,26,0.35); font-weight: 700;
+  }
+  .compare-table tbody td.paid {
+    color: #c97a00; font-weight: 800; font-size: 13px;
+  }
+  .compare-table tbody td.partial {
+    color: var(--ink-2); font-weight: 700; font-size: 13px;
+  }
+  .compare-table tbody td.krail-cell {
+    background: rgba(0,181,239,0.06);
+    color: #008913; font-weight: 900;
+    font-size: 16px;
+  }
+  .compare-foot {
+    margin-top: 14px;
+    font-size: 12px; color: var(--muted);
+    text-align: center;
+  }
+
+  /* ===========================================================
+     FOUNDER
+  =========================================================== */
+  section.founder { padding: 110px 0 100px; }
+  .founder-grid {
+    display: grid; grid-template-columns: 0.8fr 1.2fr;
+    gap: 56px; align-items: center;
+  }
+  .founder-photo {
+    border-radius: 24px;
+    overflow: hidden;
+    aspect-ratio: 4/5;
+    box-shadow: 0 30px 70px rgba(28,27,26,0.18);
+    border: 4px solid #fff;
+    transform: rotate(-2.5deg);
+  }
+  .founder-photo image-slot { width: 100%; height: 100%; display: block; }
+  .founder p.note {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 0 0 24px;
+    max-width: 56ch;
+  }
+  .founder p.note b { font-weight: 800; }
+  .founder .signoff {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .founder .signoff .role {
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 14px;
+    display: block;
+    margin-top: 2px;
+  }
+  .founder .meta-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 20px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--ink); color: #fff;
+    font-weight: 700; font-size: 14px;
+  }
+
+  /* ===========================================================
+     FAQ
+  =========================================================== */
+  section.faq { padding: 110px 0 100px; }
+  .faq-head { text-align: center; max-width: 720px; margin: 0 auto 48px; }
+  .faq-list {
+    max-width: 880px; margin: 0 auto;
+    display: grid;
+    gap: 28px;        /* generous breathing room between Q's */
+  }
+  @media (max-width: 720px) {
+    .faq-list { gap: 16px; }
+  }
+  details.faq-item {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 4px 24px;
+    overflow: hidden;
+  }
+  details.faq-item[open] {
+    border-color: var(--accent, var(--brand-pink));
+    box-shadow: 0 14px 40px rgba(28,27,26,0.08);
+  }
+  details.faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--ink);
+    padding: 18px 44px 18px 0;
+    position: relative;
+    transition: color .2s ease;
+  }
+  details.faq-item summary:hover {
+    color: var(--accent, var(--brand-pink));
+  }
+  details.faq-item summary::-webkit-details-marker { display: none; }
+
+  /* + / − icon · two bars, vertical rotates to horizontal when open.
+     Picks up the FAQ section's --accent (light rail red). */
+  details.faq-item summary::before,
+  details.faq-item summary::after {
+    content: "";
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    width: 18px; height: 2.5px;
+    border-radius: 2px;
+    background: var(--accent, var(--brand-pink));
+    transform-origin: center;
+    transition: transform .45s cubic-bezier(.6, .04, .15, 1);
+  }
+  details.faq-item summary::before {
+    transform: translateY(-50%);                 /* horizontal bar */
+  }
+  details.faq-item summary::after {
+    transform: translateY(-50%) rotate(90deg);   /* vertical bar */
+  }
+  details.faq-item[open] summary::after {
+    transform: translateY(-50%) rotate(0deg);    /* collapses → minus */
+  }
+
+  /* Answer fade + slide */
+  details.faq-item .answer {
+    font-size: 16px; color: var(--ink-2);
+    line-height: 1.6;
+    padding: 0 0 22px;
+    max-width: 64ch;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity .35s ease .05s, transform .35s ease .05s;
+  }
+  details.faq-item[open] .answer {
+    opacity: 1;
+    transform: none;
+  }
+  details.faq-item .answer b { color: var(--ink); font-weight: 800; }
+
+  /* Item open elevation */
+  details.faq-item {
+    transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+  }
+  details.faq-item:hover { border-color: var(--accent, var(--brand-pink)); }
+  details.faq-item[open] {
+    transform: translateY(-1px);
+  }
+
+  /* ===========================================================
+     EMAIL CALLOUT — "We read every email"
+  =========================================================== */
+  section.email-call { padding: 80px 0 100px; text-align: center; }
+  .email-call .frame {
+    max-width: 720px; margin: 0 auto;
+    padding: 56px 32px;
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(8px);
+    border: 2px dashed rgba(28,27,26,0.20);
+    border-radius: 4px;
+    position: relative;
+  }
+  .email-call .frame::before,
+  .email-call .frame::after {
+    content: ""; position: absolute;
+    width: 14px; height: 14px;
+    background: var(--brand-pink);
+    border-radius: 50%;
+  }
+  .email-call .frame::before { top: -7px;  left: -7px; }
+  .email-call .frame::after  { bottom: -7px; right: -7px; }
+  .email-call .eyebrow-c {
+    display: inline-block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: var(--brand-pink);
+    margin-bottom: 14px;
+  }
+  .email-call h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(28px, 3.4vw, 44px);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: #3A3A3A;
+    margin: 0 0 12px;
+    text-wrap: balance;
+    max-width: 18ch;
+    margin-inline: auto;
+  }
+  .email-call h3 em {
+    position: relative;
+    display: inline-block;
+    z-index: 0;
+    font-style: italic; font-weight: 700;
+    color: var(--brand-pink);
+  }
+  /* squiggle picks up brand-pink for this section */
+  .email-call h3 em .sq-line { color: var(--brand-pink); }
+  .email-call p.lede {
+    font-size: 17px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin: 0 0 32px;
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .email-pill {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 28px;
+    background: var(--ink);
+    color: #fff;
+    border: 2px solid var(--ink);
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, background .2s ease;
+  }
+  .email-pill:hover {
+    transform: translate(-3px, -3px);
+    background: #000;
+    box-shadow: 6px 6px 0 var(--brand-pink);
+  }
+  .email-pill:active {
+    transform: translate(0, 0);
+    box-shadow: 3px 3px 0 var(--brand-pink);
+  }
+  .email-pill .ico {
+    color: var(--brand-pink);
+    font-size: 18px;
+    line-height: 1;
+  }
+  .email-call .small {
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ===========================================================
+     FINAL CTA · vertical brand gradient
+  =========================================================== */
+  section.cta-final {
+    /* Fully transparent — relies entirely on the body's continuous
+       blob layer so there's no visible boundary with neighbouring
+       sections. The floating mode-bubble decoration provides the
+       local visual punch. */
+    background: transparent;
+    padding: 130px 0 150px;
+    color: var(--ink);
+    position: relative;
+    overflow: visible;
+    text-align: center;
+  }
+
+  /* Floating transport mode icons — ghostly, dance gently */
+  .cta-decor {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .cta-decor .d {
+    position: absolute;
+    width: 84px; height: 84px;
+    border-radius: 50%;
+    display: inline-block;
+    /* Empty mode-coloured bubbles with crisp white ring */
+    border: 3px solid #fff;
+    box-shadow: 0 6px 20px rgba(28,27,26,0.10);
+    will-change: transform;
+  }
+  .cta-decor .d { opacity: 1; }
+  .cta-decor .d.train { top: 12%; left: 6%;  background: var(--train); animation: cta-float 5.5s ease-in-out infinite; }
+  .cta-decor .d.metro { top: 28%; right: 8%; background: var(--metro); animation: cta-float 6.5s ease-in-out infinite -2s; width: 72px; height: 72px; }
+  .cta-decor .d.bus   { bottom: 18%; left: 12%; background: var(--bus); animation: cta-float 5s   ease-in-out infinite -4s; width: 96px; height: 96px; }
+  .cta-decor .d.ferry { bottom: 30%; right: 6%; background: var(--ferry); animation: cta-float 6s ease-in-out infinite -1s; }
+  .cta-decor .d.lr    { top: 56%; left: 4%; background: var(--lr); animation: cta-float 7s ease-in-out infinite -3s; width: 64px; height: 64px; }
+  .cta-decor .d.coach { top: 64%; right: 14%; background: var(--coach); animation: cta-float 6.5s ease-in-out infinite -5s; width: 70px; height: 70px; }
+
+  @keyframes cta-float {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    25%  { transform: translate(8px, -16px) rotate(6deg); }
+    50%  { transform: translate(-6px, -28px) rotate(-4deg); }
+    75%  { transform: translate(10px, -12px) rotate(8deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+  @media (max-width: 640px) {
+    .cta-decor .d { transform: scale(0.7); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-decor .d { animation: none !important; }
+  }
+  .cta-final .container { position: relative; z-index: 1; }
+  .cta-final .question {
+    font-family: var(--display); font-weight: 800; font-style: italic;
+    font-size: clamp(20px, 1.8vw, 24px);
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 18px;
+    letter-spacing: -0.01em;
+  }
+  .cta-final h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    color: #fff;
+    margin: 0 0 20px;
+  }
+  .cta-final .tag {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(20px, 1.8vw, 24px);
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 32px;
+  }
+  .cta-final .lets-krail-big {
+    font-size: clamp(56px, 9vw, 130px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 32px 0 18px;
+    /* Mode-color sweep — train → metro → bus → ferry → light rail
+       cycles continuously across the text, like a Sydney rail line */
+    background: linear-gradient(90deg,
+      var(--train) 0%,
+      var(--metro) 18%,
+      var(--bus)   36%,
+      var(--ferry) 54%,
+      var(--lr)    72%,
+      var(--coach) 88%,
+      var(--train) 100%);
+    background-size: 240% 100%;
+    background-position: 0% 0%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: krail-sweep 10s linear infinite;
+    filter: drop-shadow(0 4px 14px rgba(28,27,26,0.16));
+    will-change: background-position;
+  }
+  @keyframes krail-sweep {
+    from { background-position:   0% 0%; }
+    to   { background-position: -240% 0%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cta-final .lets-krail-big { animation: none; }
+  }
+  /* Two-line poster tagline — hand-printed lead-in + big italic punchline.
+     Mirrors the hero's "Hello Sydney" + H1 typography pairing. */
+  .cta-final .cta-rail-tag {
+    margin: 0 0 52px;
+    line-height: 1;
+  }
+  .cta-final .cta-rail-tag .l1,
+  .cta-final .cta-rail-tag .l2 {
+    display: block;
+  }
+  /* Two lines, balanced — same weight family, l2 just italic + pink */
+  .cta-final .cta-rail-tag .l1 {
+    font-family: var(--display);
+    font-style: normal;
+    font-weight: 500;
+    font-size: clamp(38px, 4.4vw, 62px);
+    letter-spacing: -0.02em;
+    color: #3A3A3A;
+    margin-bottom: 4px;
+  }
+  .cta-final .cta-rail-tag .l2 {
+    position: relative;
+    display: inline-block;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(40px, 4.8vw, 68px);
+    color: var(--brand-pink);
+    letter-spacing: -0.025em;
+  }
+  .cta-final .cta-rail-tag .l2 .sq-line { color: var(--brand-pink); }
+  @media (max-width: 540px) {
+    .cta-final .cta-rail-tag { margin-bottom: 40px; }
+  }
+  .cta-final .stores {
+    display: inline-flex; gap: 14px; flex-wrap: nowrap; justify-content: center;
+  }
+  /* Hashtag below the store buttons — same animated rainbow as footer */
+  .cta-final .cta-hashtag {
+    display: inline-block;
+    margin-top: 36px;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 800;
+    font-size: clamp(22px, 2.4vw, 32px);
+    letter-spacing: -0.02em;
+    word-spacing: -0.12em;
+    background: linear-gradient(108deg,
+      var(--brand-pink)         0%,
+      var(--coach)               9%,
+      var(--brand-blue)         18%,
+      var(--metro)              28%,
+      var(--ferry)              38%,
+      rgba(255,255,255,0.95)    46%,
+      rgba(255,255,255,1.00)    50%,
+      rgba(255,255,255,0.95)    54%,
+      var(--ferry)              62%,
+      var(--train)              72%,
+      var(--lr)                 82%,
+      var(--brand-purple)       91%,
+      var(--brand-pink)        100%);
+    background-size: 200% 100%;
+    background-repeat: repeat-x;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: krail-flow 12s linear infinite;
+    filter: drop-shadow(0 2px 8px rgba(28,27,26,0.20));
+  }
+
+  /* CTA-final store buttons: dark stamp on pale bg (matches hero) */
+  .cta-final .store-btn {
+    background: var(--ink);
+    color: #fff;
+    border: 2px solid var(--ink);
+  }
+  .cta-final .store-btn .badge-icon { color: #fff; }
+  .cta-final .store-btn .big { color: #fff; }
+  .cta-final .store-btn:hover {
+    background: #000;
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--brand-pink);
+  }
+  .cta-final .store-btn:active {
+    transform: translate(0, 0);
+    box-shadow: 3px 3px 0 var(--brand-pink);
+  }
+  .cta-final .pledge {
+    margin-top: 28px;
+    font-size: 13px; color: rgba(255,255,255,0.85);
+    font-weight: 600;
+  }
+  .cta-final .pledge .star { color: #fff; font-weight: 900; }
+
+  /* ===========================================================
+     FOOTER
+  =========================================================== */
+  footer.foot {
+    /* Near-black — premium, more cinematic than warm brown */
+    background: #0B0B0D;
+    color: rgba(252,246,241,0.8);
+    padding: 80px 0 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .foot::before {
+    /* Subtle decor — small mode dots scattered top-edge */
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+      var(--bus) 0%, var(--bus) 16.6%,
+      var(--train) 16.6%, var(--train) 33.3%,
+      var(--metro) 33.3%, var(--metro) 50%,
+      var(--ferry) 50%, var(--ferry) 66.6%,
+      var(--lr) 66.6%, var(--lr) 83.3%,
+      var(--coach) 83.3%, var(--coach) 100%);
+  }
+  .foot-mark {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .foot-mark .lets-krail {
+    display: block;
+    font-size: clamp(48px, 8vw, 112px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    word-spacing: -0.18em;       /* tighten the S-K gap subtly */
+    /* All brand + mode colours woven through, with a polished-chrome
+       white sheen peak in the middle. First stop == last stop so the
+       loop is perfectly circular. */
+    background: linear-gradient(108deg,
+      var(--brand-pink)         0%,
+      var(--coach)               9%,
+      var(--brand-blue)         18%,
+      var(--metro)              28%,
+      var(--ferry)              38%,
+      rgba(255,255,255,0.85)    46%,
+      rgba(255,255,255,1.00)    50%,
+      rgba(255,255,255,0.85)    54%,
+      var(--ferry)              62%,
+      var(--train)              72%,
+      var(--lr)                 82%,
+      var(--brand-purple)       91%,
+      var(--brand-pink)        100%);
+    /* gradient image 2× element width — slides one full tile per cycle */
+    background-size: 200% 100%;
+    background-repeat: repeat-x;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    /* Reversed: image shifts right → sheen moves LEFT-to-RIGHT */
+    animation: krail-flow 12s linear infinite;
+    filter:
+      drop-shadow(0 4px 16px rgba(0,0,0,0.32))
+      drop-shadow(0 0 28px rgba(255,255,255,0.10));
+    will-change: background-position;
+  }
+  @keyframes krail-flow {
+    from { background-position: 200% 50%; }
+    to   { background-position:   0% 50%; }
+  }
+  /* Editorial city signature beneath the giant wordmark */
+  .foot-mark .lets-krail .city-tag {
+    display: block;
+    margin-top: 14px;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(13px, 1.3vw, 18px);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(252,246,241,0.55);
+    -webkit-text-fill-color: rgba(252,246,241,0.55); /* override clip-path inheritance */
+    background: none;
+    word-spacing: normal;
+    filter: none;
+    line-height: 1;
+  }
+  .foot-mark .lets-krail .city-tag::before {
+    content: "·";
+    color: var(--brand-pink);
+    -webkit-text-fill-color: var(--brand-pink);
+    margin-right: 12px;
+    font-weight: 900;
+    font-size: 1.4em;
+    vertical-align: -0.05em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .foot-mark .lets-krail { animation: none; }
+  }
+
+  /* Asterisk pledge — small subtle chips, left-aligned */
+  .foot-pledge {
+    display: flex; flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 18px 0 32px;
+  }
+  .foot-pledge .pl {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 999px;
+    font-size: 13px;
+    line-height: 1.3;
+    color: rgba(252,246,241,0.82);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .foot-pledge .pl .star {
+    color: var(--brand-pink);
+    font-weight: 900; font-size: 16px;
+    line-height: 1;
+  }
+  .foot-pledge .pl b {
+    color: #fff;
+    font-weight: 800;
+  }
+  .foot-mark .made-in {
+    display: block;
+    margin-top: 14px;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 15px;
+    color: rgba(252,246,241,0.55);
+    font-weight: 600;
+  }
+  .foot-mark .made-in .dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--brand-pink);
+    margin: 0 8px;
+    vertical-align: middle;
+    box-shadow: 0 0 12px var(--brand-pink);
+  }
+  .foot-mark .made-in .rotator {
+    display: inline-block;
+    min-width: 28ch;            /* fixed slot — "Built with ♥" doesn't shift when text changes */
+    text-align: left;
+    vertical-align: bottom;
+    transition: opacity .35s ease, transform .35s ease;
+    color: rgba(252,246,241,0.85);
+    font-style: italic;
+  }
+  .foot-mark .made-in .rotator.swap {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  @media (max-width: 540px) {
+    .foot-mark .made-in .rotator { min-width: 22ch; }
+  }
+  .foot-mark .made-in .heart {
+    display: inline-block;
+    color: var(--brand-pink);
+    font-size: 1.15em;
+    margin: 0 4px;
+    text-shadow: 0 0 16px rgba(255,47,143,0.55);
+    animation: heart-beat 1.6s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes heart-beat {
+    0%, 100% { transform: scale(1); }
+    20%      { transform: scale(1.18); }
+    40%      { transform: scale(0.94); }
+    60%      { transform: scale(1.10); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .foot-mark .made-in .heart { animation: none; }
+  }
+
+  /* Decorative mode-pill row that separates the giant wordmark
+     from the link rows. Acts as a visual breath. */
+  .foot-pills {
+    display: flex;
+    justify-content: center;
+    gap: 28px;            /* generous spacing — was 16px */
+    margin: 36px 0 14px;
+  }
+  .foot-pills-caption {
+    text-align: center;
+    margin: 0 0 56px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(252,246,241,0.50);
+  }
+  .foot-pills .mp {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 17px;
+    border: 2.5px solid #fff;          /* clean white ring */
+    box-shadow: 0 6px 16px rgba(0,0,0,0.30);
+    transition: transform .3s cubic-bezier(.2,.7,.3,1);
+  }
+  .foot-pills .mp:hover {
+    animation: pill-dance 0.65s ease-in-out infinite;
+  }
+  @keyframes pill-dance {
+    0%, 100% { transform: rotate(-10deg) translateY(-2px) scale(1.05); }
+    50%      { transform: rotate(10deg)  translateY(-8px) scale(1.10); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .foot-pills .mp:hover { animation: none; transform: translateY(-4px); }
+  }
+
+  /* Brand block sits alone — nav links moved down to the coda */
+  .foot-row {
+    padding: 0 0 36px;
+  }
+  .foot-row .brand-block .brand {
+    display: inline-block;
+    font-size: 32px;
+    margin-bottom: 12px;
+    color: #fff;
+  }
+  .foot-row .brand-block p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(252,246,241,0.62);
+    margin: 0;
+    max-width: 38ch;
+  }
+
+  .foot-nav {
+    display: inline-flex; flex-wrap: wrap;
+    gap: 8px 22px;
+  }
+  .foot-nav a {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(252,246,241,0.65);
+    position: relative;
+    transition: color .2s ease;
+  }
+  .foot-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -5px;
+    height: 2px;
+    background: var(--brand-pink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .25s ease;
+  }
+  .foot-nav a:hover { color: #fff; }
+  .foot-nav a:hover::after { transform: scaleX(1); }
+
+  .foot-social-block {
+    align-self: center;
+  }
+
+  @media (max-width: 900px) {
+    .foot-row { grid-template-columns: 1fr; gap: 28px; }
+    .foot-social-block { justify-self: start; }
+  }
+
+  .foot .socials { display: inline-flex; gap: 10px; flex-wrap: wrap; }
+  .foot .socials a {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: background .18s ease, transform .15s ease;
+  }
+  .foot .socials a:hover {
+    background: var(--brand-pink);
+    transform: translateY(-2px);
+  }
+  .foot .socials svg { width: 16px; height: 16px; }
+
+  /* Marketing-boom social shoutout — bold message + big stamp pills */
+  .foot-shout {
+    text-align: center;
+    margin: 24px 0 96px;     /* generous breathing room before the rest */
+  }
+  /* Stamp-poster headline — each verb its own KRAIL mode colour with
+     slight rotation, like rubber-stamped over a poster */
+  .foot-shout .shout-line {
+    display: block;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(28px, 3.8vw, 52px);
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin-bottom: 14px;
+    text-wrap: balance;
+  }
+  .foot-shout .shout-line .verb {
+    display: inline-block;
+    margin: 0 4px;
+    transition: transform .25s cubic-bezier(.2,.7,.3,1), text-shadow .25s ease;
+  }
+  .foot-shout .shout-line .verb:hover {
+    transform: scale(1.06) rotate(0deg) !important;
+  }
+  /* Individual verb styling — colour + slight tilt for poster feel */
+  .foot-shout .shout-line .v1 {
+    color: var(--brand-blue);
+    transform: rotate(-2deg);
+    text-shadow: 0 0 22px rgba(47,217,255,0.35);
+  }
+  .foot-shout .shout-line .v2 {
+    color: var(--train);
+    transform: rotate(1.5deg);
+    text-shadow: 0 0 22px rgba(246,137,31,0.35);
+  }
+  .foot-shout .shout-line .v3 {
+    color: var(--brand-pink);
+    font-style: italic;
+    transform: rotate(-1deg);
+    text-shadow: 0 0 24px rgba(255,47,143,0.4);
+  }
+  /* .handle row removed — moved gap to the shout-line bottom margin */
+  .foot-shout .shout-line { margin-bottom: 30px; }
+
+  .social-stamps {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 22px;       /* generous spacing — was 12px */
+  }
+  .social-stamps a {
+    --c: var(--brand-pink);
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 20px;
+    background: rgba(255,255,255,0.04);
+    border: 2px solid rgba(255,255,255,0.16);
+    border-radius: 0;            /* sharp stamp corners */
+    color: #fff;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, background .2s ease, border-color .2s ease;
+  }
+  .social-stamps a:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--c);
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 0 var(--c);
+  }
+  .social-stamps a:active {
+    transform: translate(0, 0);
+    box-shadow: 3px 3px 0 var(--c);
+  }
+  .social-stamps a svg { width: 18px; height: 18px; color: var(--c); }
+  /* Per-platform colour from KRAIL palette */
+  .social-stamps a.linkedin  { --c: var(--bus); }
+  .social-stamps a.instagram { --c: var(--brand-pink); }
+  .social-stamps a.facebook  { --c: var(--metro); }
+  .social-stamps a.reddit    { --c: var(--train); }
+
+  .foot-coda {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+    padding-top: 12px;
+    font-size: 12px; color: rgba(252,246,241,0.5);
+  }
+  .foot-coda .copy { font-weight: 600; }
+  /* Email rendered as a tappable pill, like the store buttons */
+  .foot-coda a[href^="mailto:"] {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 18px;
+    background: rgba(255,255,255,0.06);
+    border: 1.5px solid rgba(255,255,255,0.18);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    transition: transform .2s cubic-bezier(.2,.7,.3,1), background .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+  .foot-coda a[href^="mailto:"]::before {
+    content: "✉";
+    font-size: 14px;
+    line-height: 1;
+    color: var(--brand-pink);
+  }
+  .foot-coda a[href^="mailto:"]:hover {
+    background: rgba(255,255,255,0.10);
+    border-color: var(--brand-pink);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,47,143,0.25);
+    text-decoration: none;
+  }
+
+  /* Disclaimer sits in the same dark footer — no separate band.
+     Just the pink "Disclaimer" label chip differentiates it. */
+  .foot-disclaimer {
+    margin: 36px 0 0;
+    font-size: 12px;
+    color: rgba(252,246,241,0.58);
+    line-height: 1.7;
+    max-width: none;
+    letter-spacing: 0.1px;
+    text-align: left;
+  }
+  .foot-disclaimer .label {
+    display: inline-block;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    color: var(--brand-pink);
+    margin-right: 10px;
+    vertical-align: 0.05em;
+  }
+  @media (max-width: 900px) {
+    .foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  @media (max-width: 540px) {
+    .foot-grid { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  /* ===========================================================
+     ANIM (reveal)
+  =========================================================== */
+  .anim { opacity: 0; transform: translateY(12px); transition: opacity .8s ease, transform .8s ease; }
+  .anim.in { opacity: 1; transform: none; }
+  .anim-stagger > * { transition-delay: calc(var(--i, 0) * 70ms); }
+
+  /* ===========================================================
+     RESPONSIVE · adaptive across phone / tablet / desktop / wide
+  =========================================================== */
+
+  /* Large desktop: a touch more breathing room */
+  @media (min-width: 1440px) {
+    .container { max-width: 1320px; }
+    section.hero { padding: 80px 0 110px; }
+    .hero-art { height: 740px; }
+  }
+
+  /* Tablet landscape & small desktop (1100px and down) */
+  @media (max-width: 1100px) {
+    .container { padding: 0 28px; }
+    section.hero { padding: 48px 0 80px; }
+    .hero-grid { gap: 40px; }
+    .hero-art { height: 600px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+    .stats-head, .testimonials-head, .compare-head, .feat-intro, .faq-head { margin-bottom: 44px; }
+    .testimonials-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+    .founder-grid { grid-template-columns: 1fr; gap: 36px; max-width: 720px; margin: 0 auto; }
+    .founder-photo { aspect-ratio: 16/10; max-height: 420px; }
+    .feature-block { gap: 40px; padding: 48px 0; }
+    .feature-phone { min-height: 560px; }
+    section.features, section.testimonials, section.compare, section.founder, section.faq { padding-top: 88px; padding-bottom: 80px; }
+    section.cta-final { padding: 100px 0 120px; }
+  }
+
+  /* Tablet portrait & large phone (900px and down) */
+  @media (max-width: 900px) {
+    .container { padding: 0 24px; }
+    nav.top .row { padding: 14px 0; }
+    .nav-links { gap: 18px; font-size: 13px; }
+
+    /* Hero stacks; imagery first */
+    .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+    .hero-art { height: 540px; order: -1; }
+    h1.hero-title { font-size: clamp(40px, 9vw, 64px); }
+
+    /* Feature blocks stack: phone above text */
+    .feature-block,
+    .feature-block.reverse {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 40px 0;
+    }
+    .feature-block .feature-text,
+    .feature-block.reverse .feature-text  { order: 2; }
+    .feature-block .feature-phone,
+    .feature-block.reverse .feature-phone { order: 1; min-height: 540px; }
+    .feature-text .feat-meta { grid-template-columns: 1fr 1fr; gap: 18px; }
+
+    section.cta-final { padding: 80px 0 100px; }
+    .cta-final .lets-krail-big { font-size: clamp(48px, 14vw, 96px); }
+  }
+
+  /* Phone (640px and down) */
+  @media (max-width: 640px) {
+    .container { padding: 0 20px; }
+
+    /* Hide nav links, keep CTA + brand */
+    .nav-links { display: none; }
+    .pill-cta { padding: 9px 16px; font-size: 13px; }
+    .brand { font-size: 18px; }
+    .brand .k { width: 30px; height: 30px; font-size: 18px; }
+
+    section.hero { padding: 32px 0 56px; }
+    .hero-art { height: 480px; }
+    .hero-eyebrow { font-size: 11px; padding: 7px 12px 7px 9px; }
+    .hero-question { font-size: 18px; }
+    h1.hero-title { font-size: clamp(36px, 11vw, 52px); margin-bottom: 18px; }
+    .hero-tagline { font-size: 18px; margin-bottom: 22px; }
+    /* Store buttons stack on phone */
+    .store-row { flex-direction: column; align-items: stretch; gap: 10px; }
+    .store-btn { padding: 12px 18px; justify-content: center; }
+    .store-btn .big { font-size: 15px; }
+    .cta-final .stores { flex-direction: column; align-items: stretch; }
+    .hero-pledge { gap: 12px; font-size: 12px; }
+
+    /* Phone shrinks; remove all 3D tilt · looks bad on narrow */
+    .phone { width: 240px; height: 500px; border-radius: 38px; border-width: 6px; }
+    .phone .notch { width: 90px; height: 24px; }
+    .phone, .feature-phone .phone, .hero-phone-wrap .phone { transform: none !important; }
+    .feature-text .feat-meta { grid-template-columns: 1fr; gap: 14px; }
+    .city-panel { inset: 16px 4% 48px 4%; border-radius: 24px; }
+
+    /* Stat grid → single column */
+    .stats-grid { grid-template-columns: 1fr; gap: 22px; }
+    .stat .num { font-size: clamp(40px, 12vw, 56px); }
+
+    /* Section paddings tightened */
+    section.stats, section.features, section.testimonials, section.compare, section.founder, section.faq {
+      padding-top: 64px; padding-bottom: 60px;
+    }
+
+    /* Headings */
+    h2.section-title { font-size: clamp(30px, 8vw, 44px); }
+    .section-sub { font-size: 16px; }
+
+    /* Testimonials */
+    .testi { padding: 24px; border-radius: 20px; }
+    .testi p { font-size: 15px; }
+
+    /* Founder */
+    .founder p.note { font-size: 16px; }
+
+    /* FAQ */
+    details.faq-item { padding: 2px 18px; }
+    details.faq-item summary { font-size: 16px; padding: 14px 0; }
+    details.faq-item summary::after { font-size: 22px; }
+    details.faq-item .answer { font-size: 14.5px; padding-bottom: 18px; }
+
+    /* CTA */
+    section.cta-final { padding: 64px 0 80px; }
+    .cta-final h2 { font-size: clamp(32px, 9vw, 48px); }
+    .cta-final .question { font-size: 16px; }
+    .cta-final .tag { font-size: 16px; margin-bottom: 24px; }
+    .cta-final .lets-krail-big { font-size: clamp(40px, 16vw, 80px); margin: 22px 0 28px; }
+    .cta-final .stores .store-btn { padding: 11px 18px; }
+
+    /* Footer */
+    footer.foot { padding: 48px 0 28px; }
+    .foot-top { padding-bottom: 28px; }
+    .foot-bottom { padding-top: 22px; font-size: 12px; }
+    .foot-disclaimer { font-size: 11px; }
+  }
+
+  /* Tiny phone (380px and down · older iPhone SE etc.) */
+  @media (max-width: 380px) {
+    .phone { width: 220px; height: 460px; }
+    .pill-cta span { display: none; }
+    h1.hero-title { font-size: clamp(32px, 12vw, 44px); }
+  }
+
+  /* Touch devices: no hover effects on phone (they stick) */
+  @media (hover: none) {
+    .pill-cta:hover { transform: none; box-shadow: 0 8px 22px rgba(255,90,168,0.30); }
+    .store-btn:hover { transform: none; box-shadow: none; }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-row, .pulse, .mini-row .time.live::before { animation: none !important; }
+    .anim { opacity: 1; transform: none; transition: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================== NAV ================== -->
+<nav class="top">
+  <div class="container row">
+    <a href="#top" class="brand">KRAIL</a>
+    <a href="#download" id="navGetApp" class="pill-cta">Get the app
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</nav>
+
+<!-- ================== HERO ================== -->
+<section class="hero has-blobs hero-blobs" id="top">
+  <!-- Floating Sydney transport mode icons (decorative only) -->
+  <div class="hero-decor" aria-hidden="true">
+    <span class="d train">T</span>
+    <span class="d metro">M</span>
+    <span class="d bus">B</span>
+    <span class="d ferry">F</span>
+    <span class="d lr">L</span>
+    <span class="d coach">C</span>
+  </div>
+  <div class="container">
+    <div class="hero-grid">
+      <!-- LEFT: copy -->
+      <div class="hero-copy anim">
+        <span class="hero-greeting">Hello Sydney,</span>
+        <h1 class="hero-title">Where are you going <span class="accent">today?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></span></h1>
+
+        <div class="store-row" id="download">
+          <a href="https://apps.apple.com/us/app/krail-app/id6738934832" target="_blank" rel="noopener" class="store-btn" aria-label="Download on the App Store">
+            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="text"><span class="big">App Store</span></span>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=xyz.ksharma.krail" target="_blank" rel="noopener" class="store-btn" aria-label="Get it on Google Play">
+            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35l13.69 9.85L3.84 21.85c-.5-.25-.84-.76-.84-1.35zm14.81-8.91L5.39 2.04l11.05 6.34 1.37 3.21zM6.05 21.34l11.78-6.78-1.45-3.16-10.33 9.94zm15.97-9.83c.45.36.71.91.71 1.49s-.27 1.13-.72 1.5l-2.55 1.47-2.78-2.97 2.78-2.97 2.56 1.48z"/></svg>
+            <span class="text"><span class="big">Google Play</span></span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: phone only (no background imagery) -->
+      <div class="hero-art anim">
+        <div class="hero-phone-wrap">
+          <div class="phone" id="heroPhone">
+            <div class="notch"></div>
+            <div class="screen">
+              <div class="mini-status"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
+              <div class="mini-top"><span class="wm">KRAIL</span><span class="city">SYDNEY</span></div>
+              <div class="mini-h">Town Hall</div>
+              <div class="mini-row"><span class="modesq" style="background:var(--train)">T2</span><div><div class="stop">Bondi Junction</div><div class="meta">Platform 5 · 1 change</div></div><span class="time live">3 min</span></div>
+              <div class="mini-row"><span class="modesq" style="background:var(--metro)">M1</span><div><div class="stop">Chatswood</div><div class="meta">Platform 1 · direct</div></div><span class="time live">6 min</span></div>
+              <div class="mini-row"><span class="modesq" style="background:var(--bus)">389</span><div><div class="stop">Bondi Beach</div><div class="meta">Stand C · via Oxford St</div></div><span class="time">11 min</span></div>
+              <div class="mini-row"><span class="modesq" style="background:var(--ferry)">F1</span><div><div class="stop">Manly Wharf</div><div class="meta">Circular Quay 3</div></div><span class="time">14 min</span></div>
+              <div class="mini-row"><span class="modesq" style="background:var(--lr)">L2</span><div><div class="stop">Randwick</div><div class="meta">via Moore Park</div></div><span class="time">17 min</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================== LIVE TICKER ================== -->
+<section class="ticker" aria-hidden="true">
+  <div class="ticker-row">
+    <span class="tick-item"><span class="pill" style="background:var(--train)">T2</span>Town Hall <span class="arrow">→</span> Bondi Junction <span class="live">LIVE 3 MIN</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--metro)">M1</span>Tallawong <span class="arrow">→</span> Chatswood <span class="live">ON TIME</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--ferry)">F1</span>Circular Quay <span class="arrow">→</span> Manly <span class="live">DEPARTING</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--bus)">428</span>Newtown <span class="arrow">→</span> Martin Place <span class="live">5 MIN</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--lr)">L2</span>Central <span class="arrow">→</span> Randwick <span class="live">8 MIN</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--train)">T8</span>Macarthur <span class="arrow">→</span> City <span class="live">12 MIN</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--metro)">M1</span>Kellyville <span class="arrow">→</span> Macquarie Park <span class="live">9 MIN</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="tick-item"><span class="pill" style="background:var(--train)">T2</span>Town Hall <span class="arrow">→</span> Bondi Junction <span class="live">LIVE 3 MIN</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--metro)">M1</span>Tallawong <span class="arrow">→</span> Chatswood <span class="live">ON TIME</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--ferry)">F1</span>Circular Quay <span class="arrow">→</span> Manly <span class="live">DEPARTING</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--bus)">428</span>Newtown <span class="arrow">→</span> Martin Place <span class="live">5 MIN</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--lr)">L2</span>Central <span class="arrow">→</span> Randwick <span class="live">8 MIN</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--train)">T8</span>Macarthur <span class="arrow">→</span> City <span class="live">12 MIN</span></span>
+    <span class="tick-item"><span class="pill" style="background:var(--metro)">M1</span>Kellyville <span class="arrow">→</span> Macquarie Park <span class="live">9 MIN</span></span>
+  </div>
+</section>
+
+<!-- ================== BY THE NUMBERS ================== -->
+<section class="stats has-blobs stats-blobs" id="stats">
+  <div class="container">
+    <div class="stats-head anim" style="--accent: var(--bus);">
+      <span class="eyebrow" style="justify-content:center;">Every mode. Every stop.</span>
+      <h2 class="section-title">Sydney, <em>end to end.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+      <p class="section-sub" style="margin: 14px auto 0;">Live data straight from Transport for NSW. Every train, every bus, every wharf. No carve-outs.</p>
+    </div>
+
+    <div class="stats-grid anim anim-stagger">
+      <div class="stat" style="--i:0">
+        <div class="num">5</div>
+        <div class="lbl"><b>Sydney transport modes</b>Trains, Metro, Buses, Ferries &amp; Light Rail. One tap each.</div>
+      </div>
+      <div class="stat" style="--i:1">
+        <div class="num">6+</div>
+        <div class="lbl"><b>Park &amp; Ride stations live</b>Tallawong, Bella Vista, Kellyville, Hornsby, Cherrybrook, Penrith.</div>
+      </div>
+      <div class="stat" style="--i:2">
+        <div class="num">53%</div>
+        <div class="lbl"><b>Come back week after week</b>Sydney commuters who keep KRAIL in their pocket.</div>
+      </div>
+      <div class="stat" style="--i:3">
+        <div class="num">$0<span style="font-size:0.5em;color:var(--brand-pink);">*</span></div>
+        <div class="lbl"><b>Free until Dec 2026</b>No subscription, no sign-up, no ads<span style="color:var(--brand-pink);font-weight:900;">*</span> during launch.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================== FEATURES · vertical stack ================== -->
+<section class="features has-blobs features-blobs" id="features">
+  <div class="container">
+    <div class="feat-intro anim">
+      <span class="eyebrow" style="justify-content:center;">Built for Sydney</span>
+      <h2 class="section-title" style="--accent: var(--metro);">Less tapping. <em>More moving.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+      <p class="section-sub" style="margin: 14px auto 0;">Every screen is one decision. Every number is live. Every trip is yours.</p>
+    </div>
+
+    <!-- Block 1 · Saved Trips (phone right) — barbie pink -->
+    <div class="feature-block anim" style="--accent: #E0218A;">
+      <div class="feature-text">
+        <span class="eyebrow" style="color: #E0218A;">Saved trips</span>
+        <h3>One tap. <em>You're already on your way.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <p class="lead">Save the journeys you take every day. Give them a colour, an emoji, a name only you'll understand. Pink for the hospital. Teal for the beach. Blue for Friday drinks at the CBD. Then every morning, your trips are waiting. Tap once. Live times, right there.</p>
+        <p class="lead"><b>4 in 10 KRAIL users tap their saved trips every single time they open the app.</b></p>
+        <div class="feat-meta">
+          <div><b>One tap</b>Your commute is already there</div>
+          <div><b>Make it yours</b>Colour, emoji, your own name</div>
+          <div><b>Reverse in a tap</b>No re-typing the return trip</div>
+        </div>
+      </div>
+      <div class="feature-phone">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="mini-status"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
+            <div class="mini-top"><span class="wm">KRAIL</span><span class="city">SYDNEY</span></div>
+            <div class="mini-h">Saved trips</div>
+            <div style="padding: 0 22px 6px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); font-weight: 700;">From 🏠 Home · 6 trips</div>
+            <div class="mini-tiles">
+              <div class="mini-tile" style="background:#E0218A"><span class="badge">Home to</span><span class="em-bg">🏥</span><span class="name">Hospital</span></div>
+              <div class="mini-tile" style="background:#1C70F2"><span class="badge">Home to</span><span class="em-bg">💼</span><span class="name">Work</span></div>
+              <div class="mini-tile" style="background:#A0522D"><span class="badge">Home to</span><span class="em-bg">☕</span><span class="name">Café</span></div>
+              <div class="mini-tile" style="background:#00B5EF"><span class="badge">Home from</span><span class="em-bg">🏖️</span><span class="name">Beach</span></div>
+              <div class="mini-tile" style="background:#AC00C9"><span class="badge">Home to</span><span class="em-bg">🏋️</span><span class="name">Gym</span></div>
+              <div class="mini-tile" style="background:#009B77"><span class="badge">Home to</span><span class="em-bg">🎓</span><span class="name">Uni</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 2 · Park & Ride (phone left) — train orange -->
+    <div class="feature-block reverse anim" style="--accent: var(--train);">
+      <div class="feature-text">
+        <span class="eyebrow" style="color: var(--train);">Park &amp; Ride</span>
+        <h3>Know if there's a spot <em>before you leave the driveway.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <p class="lead">Tallawong at 7:05 is a parking lottery. Kellyville fills up by 7:15. Bella Vista has a few spots left, but you have to know that before you drive.</p>
+        <p class="lead">KRAIL shows live parking availability at 6 Sydney stations, updated every minute. Green means go. Amber means hustle. Red means catch the bus instead.</p>
+        <div class="feat-meta">
+          <div><b>6 stations</b>Tallawong, Bella Vista, Kellyville, Hornsby, Cherrybrook, Penrith</div>
+          <div><b>Live counts</b>Updates every minute, straight from the barrier</div>
+          <div><b>Colour-coded</b>Green · Amber · Red at a glance</div>
+        </div>
+      </div>
+      <div class="feature-phone">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen" style="background: var(--warm-dark); color:#fcf6f1;">
+            <div class="mini-status" style="color:#fcf6f1"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
+            <div class="mini-top"><span class="wm">KRAIL</span><span class="city" style="color:rgba(252,246,241,0.55)">SYDNEY</span></div>
+            <div class="mini-h" style="color:#fcf6f1">Park &amp; Ride</div>
+            <div class="park-row green" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
+              <div style="flex:1;"><div class="station">Tallawong</div><div class="free" style="color:#6dde6f">472 free · 28% full</div></div>
+              <span class="gauge">28</span>
+            </div>
+            <div class="park-row amber" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
+              <div style="flex:1;"><div class="station">Bella Vista</div><div class="free" style="color:#FFC56A">112 free · 65% full</div></div>
+              <span class="gauge">65</span>
+            </div>
+            <div class="park-row red" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
+              <div style="flex:1;"><div class="station">Penrith</div><div class="free" style="color:#FF7268">12 free · 95% full</div></div>
+              <span class="gauge">95</span>
+            </div>
+            <div class="park-row green" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
+              <div style="flex:1;"><div class="station">Kellyville</div><div class="free" style="color:#6dde6f">280 free · 35% full</div></div>
+              <span class="gauge">35</span>
+            </div>
+            <div class="park-row amber" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
+              <div style="flex:1;"><div class="station">Hornsby</div><div class="free" style="color:#FFC56A">86 free · 70% full</div></div>
+              <span class="gauge">70</span>
+            </div>
+            <div class="park-row green" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.06); color:#fcf6f1;">
+              <div style="flex:1;"><div class="station">Cherrybrook</div><div class="free" style="color:#6dde6f">320 free · 40% full</div></div>
+              <span class="gauge">40</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 3 · Map view (phone right) — metro teal -->
+    <div class="feature-block anim" style="--accent: var(--metro);">
+      <div class="feature-text">
+        <span class="eyebrow" style="color: var(--metro);">Map view</span>
+        <h3>Stop guessing which exit. <em>Start knowing.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <p class="lead">Every journey in KRAIL has a map. Tap any leg to see your stop on a real Sydney street. Which side of the road your bus pulls in on. Which platform to walk toward. Where to change trains without crossing back over.</p>
+        <p class="lead"><b>1 in 5 KRAIL users switch to map view on their commute.</b> They don't switch back to list view much.</p>
+        <div class="feat-meta">
+          <div><b>Street-level</b>The right side of the road, not just the stop name</div>
+          <div><b>Full journey</b>Every leg, every interchange, on one map</div>
+          <div><b>Nearby</b>Your location, the stop, the gap between</div>
+        </div>
+      </div>
+      <div class="feature-phone">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen" style="background: linear-gradient(160deg,#E5F4FB,#F5E2F0,#FBE5EF); position: relative;">
+            <svg viewBox="0 0 280 580" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="none">
+              <path d="M-20,180 Q80,120 140,200 T320,160" stroke="rgba(0,0,0,0.10)" stroke-width="14" fill="none" stroke-linecap="round"/>
+              <path d="M-20,360 Q120,300 200,380 T320,340" stroke="rgba(0,0,0,0.10)" stroke-width="14" fill="none" stroke-linecap="round"/>
+              <path d="M40,-20 Q80,140 140,260 T200,600" stroke="rgba(0,0,0,0.07)" stroke-width="11" fill="none"/>
+              <path d="M-20,180 Q80,120 140,200 T320,160" stroke="var(--brand-pink)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <path d="M40,-20 Q80,140 140,260 T200,600" stroke="var(--brand-blue)" stroke-width="3.5" fill="none"/>
+              <circle cx="140" cy="200" r="6" fill="#fff" stroke="#E0218A" stroke-width="3"/>
+              <circle cx="80"  cy="180" r="5" fill="#fff" stroke="#E0218A" stroke-width="2"/>
+              <circle cx="200" cy="186" r="5" fill="#fff" stroke="#E0218A" stroke-width="2"/>
+              <circle cx="100" cy="160" r="5" fill="#fff" stroke="#00B5EF" stroke-width="2"/>
+              <circle cx="170" cy="320" r="5" fill="#fff" stroke="#00B5EF" stroke-width="2"/>
+            </svg>
+            <div style="position:absolute;left:120px;top:184px;width:14px;height:14px;border-radius:50%;background:var(--train);box-shadow:0 0 0 3px rgba(246,137,31,0.25);"></div>
+            <div style="position:absolute;left:84px;top:300px;width:14px;height:14px;border-radius:50%;background:var(--bus);box-shadow:0 0 0 3px rgba(0,181,239,0.25);"></div>
+            <div style="position:absolute;left:14px;right:14px;bottom:14px;background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,0.10);">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="background:var(--train);width:30px;height:30px;border-radius:8px;font-family:var(--antonio);font-weight:600;color:#fff;font-size:12px;display:inline-flex;align-items:center;justify-content:center;">T2</span>
+                <div><div style="font-weight:800;font-size:13px;">To Town Hall</div><div style="font-size:10px;color:var(--muted);">Platform 5 · 1 change</div></div>
+                <span style="margin-left:auto;font-family:var(--antonio);font-weight:600;color:#008913;font-size:18px;">3 min</span>
+              </div>
+            </div>
+            <div style="position:absolute;left:14px;right:14px;top:54px;background:#fff;border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.08);">
+              <span style="font-size:14px;">🔍</span>
+              <span style="font-size:12px;color:var(--muted);font-weight:600;">Search any stop in Sydney</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 4 · Real-time (phone left) — bus blue -->
+    <div class="feature-block reverse anim" style="--accent: var(--bus);">
+      <div class="feature-text">
+        <span class="eyebrow" style="color: var(--bus);">Real-time</span>
+        <h3>The minute on your screen <em>is the minute on the platform.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <p class="lead">Same data as the departure board above the platform. Not an estimate. Not a "usually around" time. The actual, live feed from Transport for NSW · trains, metro, buses, ferries, light rail, coaches · refreshed while you watch.</p>
+        <p class="lead">We only show colour when something's actually wrong. No fake urgency. Green is fine. Red means something real.</p>
+        <div class="feat-meta">
+          <div><b>All 5 modes</b>Train · Metro · Bus · Ferry · Light Rail</div>
+          <div><b>Honest colour</b>Live · On Time · Delayed · only when true</div>
+          <div><b>Straight from TfNSW</b>The same source as the station screen</div>
+        </div>
+      </div>
+      <div class="feature-phone">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="mini-status"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
+            <div class="mini-top"><span class="wm">KRAIL</span><span class="city">SYDNEY</span></div>
+            <div class="mini-h">Central</div>
+            <div class="mini-row"><span class="modesq" style="background:var(--train)">T2</span><div><div class="stop">Town Hall</div><div class="meta">Platform 18 · direct</div></div><span class="time live">3 min</span></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--train)">T1</span><div><div class="stop">Wynyard</div><div class="meta">Platform 16 · direct</div></div><span class="time live">5 min</span></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--train)">T8</span><div><div class="stop">Macarthur</div><div class="meta">Platform 22 · 1 change</div></div><span class="time live">7 min</span></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--metro)">M1</span><div><div class="stop">Chatswood</div><div class="meta">Platform 1 · direct</div></div><span class="time late">+2 min</span></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--bus)">M20</span><div><div class="stop">Botany</div><div class="meta">Stand E · Surry Hills</div></div><span class="time">12 min</span></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--lr)">L2</span><div><div class="stop">Randwick</div><div class="meta">via Moore Park</div></div><span class="time">15 min</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 5 · Stop labels (phone right) — light rail red, NEW v1.21 -->
+    <div class="feature-block anim" style="--accent: var(--lr);">
+      <div class="feature-text">
+        <span class="eyebrow" style="color: var(--lr);">Stop labels · new</span>
+        <h3>Name the stops <em>that matter to you.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <p class="lead">You know the stops. KRAIL lets you name them. Label Wynyard as "Work". Label your street corner as "Home". Label that stop near the gym · you know the one. Your labels show up everywhere in the app, replacing the raw stop name with the word that actually means something to you.</p>
+        <p class="lead"><b>The smallest feature. The biggest difference when you're half-asleep at 7am.</b></p>
+        <div class="feat-meta">
+          <div><b>Your words</b>Name any stop anything you want</div>
+          <div><b>Always visible</b>Labels show in search, timetables, saved trips</div>
+          <div><b>Quick to set</b>Long-press any stop, label in 5 seconds</div>
+        </div>
+      </div>
+      <div class="feature-phone">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="mini-status"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
+            <div class="mini-top"><span class="wm">KRAIL</span><span class="city">SYDNEY</span></div>
+            <div class="mini-h">Search</div>
+            <div style="margin: 0 14px 12px; padding: 10px 14px; background: #F4F2EE; border-radius: 999px; display:flex; align-items:center; gap:8px; font-size: 13px; color: var(--muted);">
+              <span style="font-size:14px;">🔍</span>
+              <span>Find a stop or label…</span>
+            </div>
+            <div style="padding: 0 22px 6px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); font-weight: 700;">Your labels</div>
+            <div class="mini-row"><span class="modesq" style="background:var(--lr); font-size:18px;">🏠</span><div><div class="stop">Home</div><div class="meta">Redfern Station</div></div></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--bus); font-size:18px;">💼</span><div><div class="stop">Work</div><div class="meta">Wynyard Station</div></div></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--ferry); font-size:18px;">🏋️</span><div><div class="stop">Gym</div><div class="meta">Bondi Junction</div></div></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--train); font-size:18px;">☕</span><div><div class="stop">Coffee</div><div class="meta">Newtown</div></div></div>
+            <div class="mini-row"><span class="modesq" style="background:var(--metro); font-size:18px;">🎓</span><div><div class="stop">Uni</div><div class="meta">Macquarie Park</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Block 6 · Dark mode + Themes (phone left) — coach purple -->
+    <div class="feature-block reverse anim" style="--accent: var(--coach);">
+      <div class="feature-text">
+        <span class="eyebrow" style="color: var(--coach);">Dark mode &amp; Themes</span>
+        <h3>KRAIL at 6am <em>shouldn't hurt your eyes.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <p class="lead">Every colour, every gradient, every departure board · built for dark. <b>Over half of KRAIL users ride in dark mode.</b> The app was designed for both from day one, not retrofitted.</p>
+        <p class="lead">And if you want more than dark · choose a theme. Train orange. Metro teal. Bus blue. Ferry green. Barbie pink. The app is still KRAIL · your data, your trips, your stops · just dressed the way you like it.</p>
+        <div class="feat-meta">
+          <div><b>True dark</b>Not just a tinted background. Built dark.</div>
+          <div><b>Themes</b>Multiple palettes, change anytime in Settings</div>
+          <div><b>No eye-strain</b>Soft contrast, readable at arm's length</div>
+        </div>
+      </div>
+      <div class="feature-phone">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen" style="background: var(--warm-dark); color:#fcf6f1;">
+            <div class="mini-status" style="color:#fcf6f1"><span>9:41</span><span class="right"><span class="bar"></span><span class="bar" style="height:9px"></span><span class="bar" style="height:11px"></span> 5G</span></div>
+            <div class="mini-top"><span class="wm" style="color:#fcf6f1;">KRAIL</span><span class="city" style="color:rgba(252,246,241,0.55)">SYDNEY</span></div>
+            <div class="mini-h" style="color:#fcf6f1">Pick your vibe</div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 14px; margin-top: 8px;">
+              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--train),#FFB36B); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Train</div>
+              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--metro),#3FCAA9); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Metro</div>
+              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--bus),#5BC9FF); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Bus</div>
+              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--ferry),#88D258); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Ferry</div>
+              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,#E0218A,#FF6FA8); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Barbie</div>
+              <div style="aspect-ratio:1/1; border-radius:14px; background:linear-gradient(135deg,var(--coach),#A656B7); display:flex; align-items:flex-end; padding:12px; color:#fff; font-weight:800; font-size:13px;">Drip</div>
+            </div>
+            <div style="padding: 16px 22px; display:flex; justify-content:space-between; align-items:center; font-size:12px; color:rgba(252,246,241,0.6); font-weight:700;">
+              <span>● Dark mode</span><span style="color:var(--ferry);">ON</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================== TESTIMONIALS ================== -->
+<section class="testimonials has-blobs testimonials-blobs" id="testimonials" style="--accent: var(--ferry);">
+  <div class="container">
+    <div class="testimonials-head anim">
+      <span class="eyebrow" style="justify-content:center;">From Sydney commuters</span>
+      <h2 class="section-title">435 Sydney commuters. <em>One city.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em> No sign-up.</h2>
+      <p class="section-sub" style="margin: 14px auto 0;">Real emails to <a href="mailto:hey@krail.app" style="color:var(--brand-pink);font-weight:700;">hey@krail.app</a>. We don't write our own reviews.</p>
+    </div>
+  </div>
+
+  <div class="testimonials-scroller anim">
+    <div class="testimonials-row">
+      <!-- Set A -->
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>I recently came across KRAIL, and it's now <b>my main app for longer train trips</b>. The UI is super simple and it does the job very well. Thanks for making KRAIL.</p>
+        <div class="who"><span class="av" style="--av-color:#00B5EF">A</span><div><div class="name">A. · Sydney commuter</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>I collected one of your <b>flyers from Schofields Station</b>, downloaded the app and tried it. The interface is clean and modern. Thank you for creating this transport platform.</p>
+        <div class="who"><span class="av" style="--av-color:#F6891F">D</span><div><div class="name">D. · Schofields rider</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Discovered your app through a Reddit post and I am <b>absolutely loving it!</b> Most of my friends agree the simple UI is way more appealing. Gen z do be a sucker for nice gradients. <b>4 of my friends use it daily now.</b></p>
+        <div class="who"><span class="av" style="--av-color:#E0218A">M</span><div><div class="name">M. · found via Reddit</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Thank you so much for creating this app. It's <b>so easy to follow</b> and having the train times and parking availability <b>in the same app is a bonus</b>. Great job, I've started using it already.</p>
+        <div class="who"><span class="av" style="--av-color:#009B77">S</span><div><div class="name">S. · daily commuter</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Looks great, well done! Installed. <b>Pretty certain it's getting 5 stars from me too</b>. Intuitive, clean UX so far. Very impressive for a personal project. <b>Will pass on the word.</b></p>
+        <div class="who"><span class="av" style="--av-color:#E4022D">J</span><div><div class="name">J. · early tester</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Just found this app. Please tell me you're <b>constantly improving</b> it? I love the way it's going so far and think it has <b>huggeeeeeee potential.</b></p>
+        <div class="who"><span class="av" style="--av-color:#5AB031">R</span><div><div class="name">R. · feature requester</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>The app looks great. <b>The interface is clean and modern.</b> Congratulations!</p>
+        <div class="who"><span class="av" style="--av-color:#742282">P</span><div><div class="name">P. · Sydney rider</div><div class="src">Email</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="testimonials-nav" aria-label="Testimonial navigation">
+    <button class="testi-arrow prev" type="button" aria-label="Previous review">‹</button>
+    <button class="testi-arrow next" type="button" aria-label="Next review">›</button>
+  </div>
+</section>
+
+<!-- ================== FOUNDER ================== -->
+<section class="founder has-blobs founder-blobs" id="contact" style="--accent: var(--coach);">
+  <div class="container">
+    <div class="founder-grid">
+      <div class="founder-photo anim">
+        <image-slot id="founder-portrait" placeholder="A photo of Karan at a Sydney station (e.g. Schofields)" shape="rect">
+          <svg viewBox="0 0 320 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="fg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#00B5EF"/>
+                <stop offset="0.55" stop-color="#AC00C9"/>
+                <stop offset="1" stop-color="#E0218A"/>
+              </linearGradient>
+            </defs>
+            <rect width="320" height="400" fill="url(#fg)"/>
+            <!-- Platform line -->
+            <rect x="0" y="320" width="320" height="6" fill="rgba(255,255,255,0.5)"/>
+            <line x1="0" y1="332" x2="320" y2="332" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-dasharray="6 8"/>
+            <!-- Person silhouette -->
+            <ellipse cx="160" cy="190" rx="42" ry="46" fill="rgba(28,27,26,0.85)"/>
+            <path d="M104 320 Q104 240 160 232 Q216 240 216 320 Z" fill="rgba(28,27,26,0.85)"/>
+            <!-- Phone in hand -->
+            <rect x="148" y="226" width="26" height="42" rx="4" fill="#fff"/>
+            <rect x="152" y="232" width="18" height="3" fill="rgba(28,27,26,0.6)"/>
+            <rect x="152" y="240" width="14" height="3" fill="rgba(28,27,26,0.4)"/>
+            <rect x="152" y="248" width="16" height="3" fill="rgba(28,27,26,0.4)"/>
+            <!-- Sydney station sign -->
+            <rect x="232" y="80" width="68" height="30" rx="6" fill="#fff"/>
+            <text x="266" y="100" font-family="Antonio,sans-serif" font-weight="600" font-size="14" fill="#E0218A" text-anchor="middle">SYDNEY</text>
+          </svg>
+        </image-slot>
+      </div>
+
+      <div class="founder-text anim">
+        <span class="eyebrow">From the founder</span>
+        <h2 class="section-title" style="--accent: var(--coach);">"I just kept getting on the <em>wrong platform.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em>"</h2>
+        <p class="note">I built KRAIL because I was tired of opening three apps before catching one train. Tallawong at 7:05 is a parking lottery, Redfern at 8 is chaos, and Sydney commuters deserve a beautiful, modern way to ride.<br><br>So I started shipping. Solo. In public. From a 1-bedroom flat in Sydney.</p>
+        <p class="note">No VC. No team. <b>435 commuters and counting.</b><br><br>Free<span style="color:var(--brand-pink);font-weight:900;">*</span> until December 2026 · ads-free, sign-up-free, fuss-free.</p>
+        <a class="meta-link" href="mailto:hey@krail.app">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16v16H4zM4 4l8 8 8-8"/></svg>
+          hey@krail.app
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================== FAQ ================== -->
+<section class="faq has-blobs faq-blobs" id="faq" style="--accent: var(--lr);">
+  <div class="container narrow">
+    <div class="faq-head anim">
+      <span class="eyebrow" style="justify-content:center;">FAQ</span>
+      <h2 class="section-title">The questions <em>everyone asks.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+    </div>
+
+    <div class="faq-list anim anim-stagger">
+      <details class="faq-item" open style="--i:0">
+        <summary>Is KRAIL really free?</summary>
+        <div class="answer">Yes · KRAIL is free for every Sydney commuter <b>until December 2026</b>. After that we may introduce <b>optional paid extras</b> (Pro Insights, smart push notifications, family share). The core experience · saved trips, real-time data, Park &amp; Ride, themes, dark mode, the map · stays the way it is today.</div>
+      </details>
+
+      <details class="faq-item" style="--i:1">
+        <summary>Are there ads in the app?</summary>
+        <div class="answer">No ads today. <b>For our launch period</b> (now until at least Dec 2026) the app is completely ad-free. After launch we may add a few <b>small, non-disruptive ads</b> to help keep KRAIL going · never ads that block your trip, never anything noisy or pop-up. If you hate it, we'll hear it.</div>
+      </details>
+
+      <details class="faq-item" style="--i:2">
+        <summary>Where does the live data come from?</summary>
+        <div class="answer">We pull live data straight from <b>Transport for NSW</b>. When TfNSW is wrong, we're wrong. When they fix it, we fix it within minutes. KRAIL is unaffiliated with TfNSW · we just plug into their public open-data feed like every other app does.</div>
+      </details>
+
+      <details class="faq-item" style="--i:3">
+        <summary>How is KRAIL different from other Sydney transit apps?</summary>
+        <div class="answer">KRAIL is what a <b>2026 Sydney commute looks like</b>. Live Park &amp; Ride, beautiful themes, dark mode for the 6 AM crowd, and made for one city only. Most alternatives are either officially-built or built for the whole country. <b>KRAIL is built specifically for Sydney by someone who rides Sydney's network every day.</b></div>
+      </details>
+
+      <details class="faq-item" style="--i:4">
+        <summary>Which Sydney modes are covered?</summary>
+        <div class="answer">All of them: <b>Trains, Sydney Metro, Buses, Ferries, Light Rail and Coaches.</b> If TfNSW publishes it, KRAIL shows it. Park &amp; Ride is currently live at Tallawong, Bella Vista, Kellyville, Hornsby, Cherrybrook and Penrith · we'll add more as TfNSW exposes them.</div>
+      </details>
+
+      <details class="faq-item" style="--i:5">
+        <summary>Who built this?</summary>
+        <div class="answer">One Sydney commuter named <b>Karan</b>. No VC, no team, no agency · just one person who rides Sydney's network every day and wanted a better way. <b>Available on both iPhone and Android.</b> Got an idea or feedback? Email <a href="mailto:hey@krail.app" style="color:var(--brand-pink);font-weight:700;">hey@krail.app</a> · we read every one.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================== EMAIL CALLOUT ================== -->
+<section class="email-call has-blobs">
+  <div class="container">
+    <div class="frame anim">
+      <span class="eyebrow-c">We read every one</span>
+      <h3>Got an idea, a bug, or just a <em>hello?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+      <p class="lede">No bots. No tickets.<br>Just one Sydney commuter on the other end.</p>
+      <a href="mailto:hey@krail.app" class="email-pill">
+        <span class="ico">✉</span>
+        hey@krail.app
+      </a>
+      <p class="small">Replies within a few days · usually faster.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================== FINAL CTA ================== -->
+<section class="cta-final">
+  <div class="cta-decor" aria-hidden="true">
+    <span class="d train"></span>
+    <span class="d metro"></span>
+    <span class="d bus"></span>
+    <span class="d ferry"></span>
+    <span class="d lr"></span>
+    <span class="d coach"></span>
+  </div>
+  <div class="container">
+    <h2 class="cta-rail-tag anim">
+      <span class="l1">Ride the rail</span>
+      <span class="l2">without fail.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></span>
+    </h2>
+    <div class="stores store-row">
+      <a href="https://apps.apple.com/us/app/krail-app/id6738934832" target="_blank" rel="noopener" class="store-btn" aria-label="Download on the App Store">
+        <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+        <span class="text"><span class="big">App Store</span></span>
+      </a>
+      <a href="https://play.google.com/store/apps/details?id=xyz.ksharma.krail" target="_blank" rel="noopener" class="store-btn" aria-label="Get it on Google Play">
+        <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35l13.69 9.85L3.84 21.85c-.5-.25-.84-.76-.84-1.35z"/></svg>
+        <span class="text"><span class="big">Google Play</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================== FOOTER ================== -->
+<footer class="foot">
+  <div class="container">
+
+    <div class="foot-mark">
+      <span class="lets-krail">#LET'S KRAIL</span>
+      <span class="made-in">
+        Built with <span class="heart">♥</span>
+        <span class="rotator" id="madeRot">in Sydney</span>
+      </span>
+    </div>
+
+    <div class="foot-pills" aria-hidden="true">
+      <span class="mp" style="background:var(--train)">T</span>
+      <span class="mp" style="background:var(--metro)">M</span>
+      <span class="mp" style="background:var(--bus)">B</span>
+      <span class="mp" style="background:var(--ferry)">F</span>
+      <span class="mp" style="background:var(--lr)">L</span>
+      <span class="mp" style="background:var(--coach)">C</span>
+    </div>
+    <p class="foot-pills-caption">All Sydney transport modes covered.</p>
+
+    <div class="foot-shout">
+      <span class="shout-line">
+        <span class="verb v1">Tag us.</span>
+        <span class="verb v2">Roast us.</span>
+        <span class="verb v3">Praise us.</span>
+      </span>
+      <div class="social-stamps">
+        <a class="linkedin" href="https://www.linkedin.com/company/krail/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0H5C2.2 0 0 2.2 0 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5V5c0-2.8-2.2-5-5-5zM8 19H5V8h3v11zM6.5 6.7c-1 0-1.7-.7-1.7-1.7S5.5 3.3 6.5 3.3s1.7.7 1.7 1.7-.7 1.7-1.7 1.7zM20 19h-3v-5.6c0-1.4-.5-2.4-1.7-2.4-1 0-1.6.7-1.9 1.4-.1.2-.1.5-.1.8V19h-3V8h3v1.3c.4-.6 1.1-1.5 2.6-1.5 1.9 0 3.4 1.2 3.4 4V19z"/></svg>
+          LinkedIn
+        </a>
+        <a class="instagram" href="https://www.instagram.com/krailapp/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9s.7.8.9 1.4c.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4s-.8.7-1.4.9c-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9s-.7-.8-.9-1.4c-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4s.8-.7 1.4-.9c.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8s-.6.8-.8 1.3c-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1A4.9 4.9 0 1 1 7.1 12 4.9 4.9 0 0 1 12 7.1zm0 8a3.1 3.1 0 1 0-3.1-3.1A3.1 3.1 0 0 0 12 15.1zm6.3-8.2a1.1 1.1 0 1 1-1.1-1.1 1.1 1.1 0 0 1 1.1 1.1z"/></svg>
+          Instagram
+        </a>
+        <a class="facebook" href="https://www.facebook.com/krailapp" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.7 0H1.3C.6 0 0 .6 0 1.3v21.4c0 .7.6 1.3 1.3 1.3h11.5v-9.3H9.7v-3.6h3.1V8.4c0-3.1 1.9-4.8 4.7-4.8 1.3 0 2.5.1 2.8.1v3.3h-1.9c-1.5 0-1.8.7-1.8 1.7v2.3h3.6l-.5 3.6h-3.1V24h6.1c.7 0 1.3-.6 1.3-1.3V1.3C24 .6 23.4 0 22.7 0z"/></svg>
+          Facebook
+        </a>
+        <a class="reddit" href="https://www.reddit.com/r/krailapp/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-1.1-.9-2-2-2-.5 0-1 .2-1.4.6-1.5-1-3.5-1.6-5.6-1.7l1-4.5 3.1.7c0 .8.6 1.4 1.4 1.4s1.5-.7 1.5-1.5S19.3 3.5 18.5 3.5c-.6 0-1.1.4-1.3.9l-3.4-.7c-.2 0-.4.1-.4.3l-1.1 5c-2.2.1-4.1.7-5.7 1.7-.4-.4-.9-.6-1.4-.6-1.1 0-2 .9-2 2 0 .8.5 1.5 1.2 1.8 0 .2-.1.5-.1.7 0 3.4 4 6.2 8.8 6.2s8.8-2.8 8.8-6.2c0-.2 0-.5-.1-.7.8-.3 1.2-1 1.2-1.8zM7 13.5c0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.5-1.5 1.5-1.5-.7-1.5-1.5zm8.4 4.4c-1 1-2.6 1.1-3.4 1.1s-2.4-.1-3.4-1.1c-.2-.2-.2-.4 0-.5.2-.2.4-.2.5 0 .6.6 2 .9 2.9.9s2.3-.2 2.9-.9c.2-.2.4-.2.5 0 .2.1.2.4 0 .5zm-.3-2.9c-.8 0-1.5-.7-1.5-1.5s.7-1.5 1.5-1.5 1.5.7 1.5 1.5-.7 1.5-1.5 1.5z"/></svg>
+          Reddit
+        </a>
+      </div>
+    </div>
+
+    <div class="foot-row">
+      <div class="brand-block">
+        <a href="#top" class="brand invert">KRAIL<span class="reg">®</span></a>
+        <p>Ride the rail without fail.</p>
+      </div>
+    </div>
+
+    <div class="foot-coda">
+      <span class="copy">© 2024 KRAIL<span class="reg">®</span> · All rights reserved.</span>
+      <nav class="foot-nav" aria-label="Footer navigation">
+        <a href="/privacy.html">Privacy policy</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+
+    <p class="foot-disclaimer">
+      <span class="label">Disclaimer</span>
+      This app is not affiliated with or endorsed by Transport for New South Wales (TfNSW).
+      The data presented in this app is sourced from public APIs and services provided by TfNSW,
+      and while we strive to ensure the accuracy and timeliness of the information, we cannot
+      guarantee it. Users should verify all information independently.
+    </p>
+
+  </div>
+</footer>
+
+<script>
+  // Scroll-reveal animations
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    }
+  }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+  document.querySelectorAll('.anim').forEach((el) => io.observe(el));
+
+  // Nav CTA: platform-detect — iOS users go to App Store, Android to Google
+  // Play, everyone else scrolls to the in-page download anchor.
+  (function () {
+    const cta = document.getElementById('navGetApp');
+    if (!cta) return;
+    const ua = (navigator.userAgent || '').toLowerCase();
+    const isiOS = /iphone|ipad|ipod/.test(ua) ||
+      (/macintosh/.test(ua) && navigator.maxTouchPoints > 1);   // iPad-on-desktop UA
+    const isAndroid = /android/.test(ua);
+    if (isiOS) {
+      cta.href = 'https://apps.apple.com/us/app/krail-app/id6738934832';
+      cta.target = '_blank';
+      cta.rel = 'noopener';
+    } else if (isAndroid) {
+      cta.href = 'https://play.google.com/store/apps/details?id=xyz.ksharma.krail';
+      cta.target = '_blank';
+      cta.rel = 'noopener';
+    }
+    // Desktop / unknown: keep the #download anchor scroll
+  })();
+
+  // Smart sticky nav — border on scroll, hide on scroll-down past 200px,
+  // reveal the moment user scrolls up
+  (function () {
+    const nav = document.querySelector('nav.top');
+    if (!nav) return;
+    let lastY = window.scrollY;
+    let ticking = false;
+    const SCROLL_THRESHOLD = 200;
+
+    function update() {
+      const y = window.scrollY;
+      const dy = y - lastY;
+      nav.classList.toggle('scrolled', y > 8);
+      // Only hide when past threshold AND scrolling down by a real amount
+      if (y > SCROLL_THRESHOLD && dy > 4) {
+        nav.classList.add('nav-hidden');
+      } else if (dy < -4 || y <= SCROLL_THRESHOLD) {
+        nav.classList.remove('nav-hidden');
+      }
+      lastY = y;
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+  })();
+
+  // Hero phone mouse parallax
+  (function () {
+    const hero = document.querySelector('section.hero');
+    const phone = document.getElementById('heroPhone');
+    if (!hero || !phone) return;
+    hero.addEventListener('mousemove', (e) => {
+      const r = hero.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+      const y = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+      phone.style.transform =
+        `perspective(1400px) rotateY(${-12 + x*4}deg) rotateX(${5 - y*4}deg) rotateZ(-2deg) translateZ(40px)`;
+    });
+    hero.addEventListener('mouseleave', () => { phone.style.transform = ''; });
+  })();
+
+  // Footer "Built with ♥" — context-aware Sydney-touchy rotator.
+  // • Time-of-day pool (morning/afternoon/evening/late)
+  // • Day-of-week sprinkles (Mon, Fri)
+  // • Always-shipping signals so the app never reads as "old"
+  // • Click the ♥ for a random surprise (easter egg)
+  (function () {
+    const rot   = document.getElementById('madeRot');
+    const heart = document.querySelector('.foot-mark .heart');
+    if (!rot) return;
+
+    const evergreen = [
+      'in Sydney',
+      'on the T2 line',
+      'on the M1 home',
+      'between Wynyard & Town Hall',
+      'parked at Tallawong',
+      'on the way to work',
+      'always shipping',
+      'updated this week',
+    ];
+    const morning = ['riding the 7:05 with you', 'on the T2, before the coffee'];
+    const evening = ['on the way home', 'last bus to Bondi'];
+    const late    = ['between trains', 'on the late T2'];
+    const monday  = ['Tallawong, again'];
+    const friday  = ['Bondi-bound for the weekend'];
+
+    function pool() {
+      const d = new Date();
+      const h = d.getHours();
+      const dow = d.getDay();          // 0 Sun … 6 Sat
+      const out = [...evergreen];
+      if (h >= 5  && h < 11)  out.push(...morning);
+      else if (h >= 17 && h < 22) out.push(...evening);
+      else if (h >= 22 || h < 5)  out.push(...late);
+      if (dow === 1) out.push(...monday);
+      if (dow === 5) out.push(...friday);
+      return out;
+    }
+
+    let lines = pool();
+    let i = 0;
+    let idle = true;
+
+    function show(idx) {
+      rot.classList.add('swap');
+      setTimeout(() => {
+        i = (idx + lines.length) % lines.length;
+        rot.textContent = lines[i];
+        rot.classList.remove('swap');
+      }, 380);
+    }
+
+    rot.addEventListener('mouseenter', () => idle = false);
+    rot.addEventListener('mouseleave', () => idle = true);
+
+    setInterval(() => {
+      if (!idle) return;
+      lines = pool();                  // refresh on each tick (handles hour/day rollover)
+      show(i + 1);
+    }, 4200);
+
+    // Easter egg — click the heart for a random pick
+    if (heart) {
+      heart.style.cursor = 'pointer';
+      heart.title = 'click me ♥';
+      heart.addEventListener('click', () => {
+        lines = pool();
+        let next;
+        do { next = Math.floor(Math.random() * lines.length); } while (next === i && lines.length > 1);
+        show(next);
+      });
+    }
+  })();
+
+  // Testimonials carousel — single card visible, auto-advances every
+  // 5s. Circular: a clone of the first card is appended to the end,
+  // so forward motion always feels continuous (no snap-back).
+  (function () {
+    const row = document.querySelector('.testimonials-row');
+    if (!row) return;
+    const realCards = Array.from(row.children);
+    const REAL = realCards.length;
+    if (!REAL) return;
+
+    // Clone the first card and append — gives us a "phantom" card that
+    // looks like card 0, so smooth-scrolling onto it blends seamlessly.
+    const ghost = realCards[0].cloneNode(true);
+    ghost.setAttribute('aria-hidden', 'true');
+    row.appendChild(ghost);
+    const all = Array.from(row.children);   // length = REAL + 1
+
+    const prev = document.querySelector('.testi-arrow.prev');
+    const next = document.querySelector('.testi-arrow.next');
+
+    let idx = 0;
+    let auto = true;
+    let pausedUntil = 0;
+    let resetting = false;
+
+    function go(toIdx) {
+      if (resetting) return;
+      idx = toIdx;
+      const c = all[idx];
+      if (!c) return;
+      row.scrollTo({ left: c.offsetLeft, behavior: 'smooth' });
+
+      // Just landed on the ghost (visually card 0) → silently snap
+      // scroll back to the real card 0 once the smooth animation ends.
+      if (idx === REAL) {
+        resetting = true;
+        setTimeout(() => {
+          idx = 0;
+          row.scrollTo({ left: all[0].offsetLeft, top: 0, behavior: 'auto' });
+          resetting = false;
+        }, 700);
+      }
+    }
+
+    function step(delta) {
+      pausedUntil = Date.now() + 6000;
+      let next = idx + delta;
+      if (next < 0) next = REAL - 1;       // backward wrap
+      else if (next > REAL) next = 0;
+      go(next);
+    }
+
+    prev?.addEventListener('click', () => step(-1));
+    next?.addEventListener('click', () => step(+1));
+
+    row.addEventListener('mouseenter', () => { auto = false; });
+    row.addEventListener('mouseleave', () => { auto = true; });
+    row.addEventListener('touchstart', () => { pausedUntil = Date.now() + 6000; });
+
+    // Manual scroll (wheel / trackpad / touch drag) — when the user
+    // settles on the ghost card, silently snap back to real card 0
+    // so the list feels infinite in both directions.
+    let scrollTimer;
+    row.addEventListener('scroll', () => {
+      pausedUntil = Date.now() + 6000;
+      if (resetting) return;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        if (resetting) return;
+        const ghostLeft = all[REAL].offsetLeft;
+        if (Math.abs(row.scrollLeft - ghostLeft) < 12) {
+          // Landed on the ghost → silent reset to real first
+          resetting = true;
+          row.scrollTo({ left: all[0].offsetLeft, behavior: 'auto' });
+          idx = 0;
+          setTimeout(() => { resetting = false; }, 50);
+        } else {
+          // Sync idx to whatever card the user manually scrolled to
+          const slot = all[1].offsetLeft - all[0].offsetLeft;
+          if (slot > 0) {
+            const computed = Math.round((row.scrollLeft - all[0].offsetLeft) / slot);
+            idx = Math.max(0, Math.min(REAL - 1, computed));
+          }
+        }
+      }, 250);
+    }, { passive: true });
+
+    setInterval(() => {
+      if (auto && !resetting && Date.now() > pausedUntil) go(idx + 1);
+    }, 5000);
+  })();
+
+  // Per-feature-phone mouse parallax (each block reacts independently)
+  document.querySelectorAll('.feature-phone').forEach((col) => {
+    const phone = col.querySelector('.phone');
+    if (!phone) return;
+    const reversed = col.closest('.feature-block')?.classList.contains('reverse');
+    const baseY = reversed ? 10 : -10;
+    col.addEventListener('mousemove', (e) => {
+      const r = col.getBoundingClientRect();
+      const x = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+      const y = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+      phone.style.setProperty('--rot-y', `${baseY + x * 5}deg`);
+      phone.style.setProperty('--rot-x', `${5 - y * 4}deg`);
+    });
+    col.addEventListener('mouseleave', () => {
+      phone.style.removeProperty('--rot-y');
+      phone.style.removeProperty('--rot-x');
+    });
+  });
+</script>
+
+</body>
+</html>
