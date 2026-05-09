@@ -389,6 +389,7 @@
      paths: thick base layer (bold start, lighter alpha) + thinner
      highlight on top. Animates in on scroll. */
   .sq-line {
+    display: block;
     position: absolute;
     left: -3px; right: -3px;
     bottom: -10px;
@@ -405,6 +406,10 @@
     stroke: currentColor;
     stroke-linecap: round;
     stroke-linejoin: round;
+    /* Non-scaling-stroke keeps line thickness consistent regardless of
+       preserveAspectRatio="none" stretching — without this, strokes
+       can shrink to invisibility on narrow mobile widths. */
+    vector-effect: non-scaling-stroke;
     stroke-dasharray: 240;
     stroke-dashoffset: 240;
     transition: stroke-dashoffset 1.5s cubic-bezier(.5, .05, .15, 1) .12s;
@@ -1510,7 +1515,7 @@
        sections. The floating mode-bubble decoration provides the
        local visual punch. */
     background: transparent;
-    padding: 130px 0 150px;
+    padding: 80px 0 130px;
     color: var(--ink);
     position: relative;
     overflow: visible;
@@ -1614,7 +1619,7 @@
   /* Two-line poster tagline — hand-printed lead-in + big italic punchline.
      Mirrors the hero's "Hello Sydney" + H1 typography pairing. */
   .cta-final .cta-rail-tag {
-    margin: 0 0 52px;
+    margin: 0 0 80px;
     line-height: 1;
   }
   .cta-final .cta-rail-tag .l1,
@@ -1629,7 +1634,7 @@
     font-size: clamp(38px, 4.4vw, 62px);
     letter-spacing: -0.02em;
     color: #3A3A3A;
-    margin-bottom: 4px;
+    margin-bottom: -6px;        /* tighten the gap between l1 and l2 */
   }
   .cta-final .cta-rail-tag .l2 {
     position: relative;
@@ -2956,6 +2961,9 @@
 
 <script>
   // Scroll-reveal animations
+  // Lowered threshold + zero rootMargin so squiggles + reveal animations
+  // trigger reliably on mobile (where viewports are tall and slow scrolls
+  // can miss a 15% threshold).
   const io = new IntersectionObserver((entries) => {
     for (const e of entries) {
       if (e.isIntersecting) {
@@ -2963,8 +2971,19 @@
         io.unobserve(e.target);
       }
     }
-  }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
   document.querySelectorAll('.anim').forEach((el) => io.observe(el));
+
+  // Safety net: if for any reason an .anim element hasn't received .in
+  // within a few seconds (e.g. iOS Safari edge cases), force it on so
+  // squiggles + content always render rather than staying invisible.
+  setTimeout(() => {
+    document.querySelectorAll('.anim:not(.in)').forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight + 200) {
+        el.classList.add('in');
+      }
+    });
+  }, 1500);
 
   // Nav CTA: platform-detect — iOS users go to App Store, Android to Google
   // Play, everyone else scrolls to the in-page download anchor.
