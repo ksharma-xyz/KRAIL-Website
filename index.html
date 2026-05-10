@@ -1090,51 +1090,24 @@
 
   .testimonials-scroller {
     position: relative;
-    margin: 0 calc(50% - 50vw); /* break out of container padding */
-    overflow: hidden;
+    overflow: visible;             /* deck transforms (translateY up) need to escape */
     padding: 16px 0 28px;
   }
-  /* Faded edges so cards feel framed */
-  .testimonials-scroller::before,
-  .testimonials-scroller::after {
-    content: "";
-    position: absolute; top: 0; bottom: 0;
-    width: 80px;
-    pointer-events: none;
-    z-index: 3;
-  }
-  .testimonials-scroller::before {
-    left: 0;
-    background: linear-gradient(90deg, var(--paper), transparent);
-  }
-  .testimonials-scroller::after {
-    right: 0;
-    background: linear-gradient(-90deg, var(--paper), transparent);
-  }
 
-  /* Single-card carousel — one testimonial visible at a time, auto-
-     advances circularly. Buttons let you step manually. Generous
-     gap between cards so transitions breathe. */
-  .testimonials-row {
-    display: flex;
-    gap: 80px;
-    padding: 0 32px;
-    overflow-x: auto;
-    overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .testimonials-row::-webkit-scrollbar { display: none; }
-
-  /* Testimonial card — stamp pattern, full container width = one card visible */
-  .testi {
-    flex: 0 0 calc(100% - 64px);   /* leave room for the surrounding gap to peek */
-    scroll-snap-align: center;
-    max-width: 560px;
+  /* Stacked-deck testimonials · only the active card is fully visible,
+     2 cards behind peek out for depth. Manual prev/next only. */
+  /* === Pager · one testimonial at a time, prev/next to advance.
+         Simple cross-fade transition between cards. === */
+  .testi-deck {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
     margin: 0 auto;
+    min-height: 320px;
+  }
+
+  /* Testimonial card — stamp pattern */
+  .testi {
     background: #fff;
     border: 2px solid var(--ink);
     border-radius: 0;
@@ -1142,22 +1115,71 @@
     position: relative;
     display: flex; flex-direction: column;
     min-height: 280px;
-    /* Pink/blue alternating shadow per card */
     box-shadow: 6px 6px 0 var(--brand-pink);
-    transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease;
   }
-  .testi:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0 var(--brand-pink);
+
+  /* Stack of envelopes · top card fully readable, cards behind only
+     hint at the stack (very low opacity · no fighting text). Motion
+     is gentle: small scale and Y deltas, soft cubic curve. */
+  .testi-deck .testi {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    max-width: 100%;
+    /* Default · sits one nudge below the back-most peek, invisible */
+    transform: translateY(36px) scale(0.94);
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform, opacity;
+    transition:
+      transform .55s cubic-bezier(.32,.72,.32,1),
+      opacity   .45s ease-out,
+      z-index   0s   linear .5s;
   }
-  .testimonials-row .testi:nth-child(2n)   { box-shadow: 6px 6px 0 var(--brand-blue); }
-  .testimonials-row .testi:nth-child(2n):hover { box-shadow: 8px 8px 0 var(--brand-blue); }
-  .testimonials-row .testi:nth-child(3n)   { box-shadow: 6px 6px 0 var(--ferry); }
-  .testimonials-row .testi:nth-child(3n):hover { box-shadow: 8px 8px 0 var(--ferry); }
-  .testimonials-row .testi:nth-child(4n)   { box-shadow: 6px 6px 0 var(--train); }
-  .testimonials-row .testi:nth-child(4n):hover { box-shadow: 8px 8px 0 var(--train); }
-  .testimonials-row .testi:nth-child(5n)   { box-shadow: 6px 6px 0 var(--metro); }
-  .testimonials-row .testi:nth-child(5n):hover { box-shadow: 8px 8px 0 var(--metro); }
+  .testi-deck .testi.is-active {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    z-index: 5;
+    pointer-events: auto;
+    transition-delay: 0s;
+    cursor: grab;
+    touch-action: pan-y;
+    user-select: none;
+  }
+  .testi-deck .testi.is-active:active { cursor: grabbing; }
+  /* Cards behind · barely visible, just a hint of stack depth */
+  .testi-deck .testi.is-second {
+    transform: translateY(12px) scale(0.98);
+    opacity: 0.18;
+    z-index: 4;
+    transition-delay: 0s;
+  }
+  .testi-deck .testi.is-third {
+    transform: translateY(22px) scale(0.96);
+    opacity: 0.08;
+    z-index: 3;
+    transition-delay: 0s;
+  }
+  /* Leaving · slides down softly behind the stack and fades out */
+  .testi-deck .testi.is-leaving {
+    transform: translateY(40px) scale(0.92);
+    opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  /* While dragging, the active card follows the finger 1:1 — kill its
+     transition so JS can drive the transform inline. */
+  .testi-deck .testi.is-dragging {
+    transition: none;
+    cursor: grabbing;
+  }
+
+  /* Pink/blue/mode-colour alternating shadow per card */
+  .testi-deck .testi:nth-child(2n) { box-shadow: 6px 6px 0 var(--brand-blue); }
+  .testi-deck .testi:nth-child(3n) { box-shadow: 6px 6px 0 var(--ferry); }
+  .testi-deck .testi:nth-child(4n) { box-shadow: 6px 6px 0 var(--train); }
+  .testi-deck .testi:nth-child(5n) { box-shadow: 6px 6px 0 var(--metro); }
   .testi .quote-mark {
     font-family: var(--display); font-weight: 900;
     font-size: 52px; line-height: 0.7;
@@ -1198,7 +1220,7 @@
 
   /* Carousel nav buttons — stamp pattern, centred under the cards */
   .testimonials-nav {
-    display: flex; gap: 36px;
+    display: flex; gap: 80px;
     justify-content: center;
     margin-top: 32px;
   }
@@ -2795,12 +2817,33 @@
   </div>
 
   <div class="testimonials-scroller anim">
-    <div class="testimonials-row">
-      <!-- Set A -->
+    <div class="testi-deck">
+
+      <!-- Tier 1 · strongest, most distinct angles · these lead the deck -->
       <div class="testi">
         <div class="quote-mark">"</div>
-        <p>I recently came across KRAIL, and it's now <b>my main app for longer train trips</b>. The UI is super simple and it does the job very well. Thanks for making KRAIL.</p>
-        <div class="who"><span class="av" style="--av-color:#00B5EF">A</span><div><div class="name">A. · Sydney commuter</div><div class="src">Email</div></div></div>
+        <p>Real-time parking slot updates are an <b>absolute game changer</b>. Reliable, accurate, and super convenient. <b>Being a train driver myself</b>, I can really appreciate how well-designed and practical it is.</p>
+        <div class="who"><span class="av" style="--av-color:#F6891F">N</span><div><div class="name">N. · Sydney train driver</div><div class="src">App Store</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Amazing app. <b>Saved me today by guiding me to the right exit and line</b> when leaving Central Station. Easy 5-star app!</p>
+        <div class="who"><span class="av" style="--av-color:#5AB031">S</span><div><div class="name">S. · ★★★★★</div><div class="src">App Store</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Finally, I found an app that lets me <b>plan and save my most frequent trip</b>. One-click to reverse my home-to-work commute. Awesome, love the app.</p>
+        <div class="who"><span class="av" style="--av-color:#F6891F">J</span><div><div class="name">J. · ★★★★★</div><div class="src">Google Play</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Great app. It updates the timings and <b>shows me which platform to get on</b>, very clearly.</p>
+        <div class="who"><span class="av" style="--av-color:#009B77">A</span><div><div class="name">A. · ★★★★★</div><div class="src">Google Play</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>If you come to Sydney and are <b>confused about how public transport works</b>, just install KRAIL. Awesome and user friendly.</p>
+        <div class="who"><span class="av" style="--av-color:#E0218A">N</span><div><div class="name">N. · new to Sydney</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
@@ -2814,30 +2857,20 @@
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
-        <p>Thank you so much for creating this app. It's <b>so easy to follow</b> and having the train times and parking availability <b>in the same app is a bonus</b>. Great job, I've started using it already.</p>
-        <div class="who"><span class="av" style="--av-color:#009B77">S</span><div><div class="name">S. · daily commuter</div><div class="src">Email</div></div></div>
+        <p><b>AI recommended this app, really good.</b> Can save your usual trip for free.</p>
+        <div class="who"><span class="av" style="--av-color:#1C70F2">R</span><div><div class="name">R. · AI-recommended find</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
-        <p>Looks great, well done! Installed. <b>Pretty certain it's getting 5 stars from me too</b>. Intuitive, clean UX so far. Very impressive for a personal project. <b>Will pass on the word.</b></p>
-        <div class="who"><span class="av" style="--av-color:#E4022D">J</span><div><div class="name">J. · early tester</div><div class="src">Email</div></div></div>
-      </div>
-      <div class="testi">
-        <div class="quote-mark">"</div>
-        <p>Just found this app. Please tell me you're <b>constantly improving</b> it? I love the way it's going so far and think it has <b>huggeeeeeee potential.</b></p>
-        <div class="who"><span class="av" style="--av-color:#5AB031">R</span><div><div class="name">R. · feature requester</div><div class="src">Email</div></div></div>
-      </div>
-      <div class="testi">
-        <div class="quote-mark">"</div>
-        <p>The app looks great. <b>The interface is clean and modern.</b> Congratulations!</p>
-        <div class="who"><span class="av" style="--av-color:#742282">P</span><div><div class="name">P. · Sydney rider</div><div class="src">Email</div></div></div>
+        <p>This is the <b>best travel app I have used so far</b>. User friendly, easy to navigate, colorful, real-time updates. <b>A one stop shop for all Sydney explorers.</b></p>
+        <div class="who"><span class="av" style="--av-color:#009B77">Q</span><div><div class="name">Q. · Sydney explorer</div><div class="src">App Store</div></div></div>
       </div>
 
-      <!-- Set B · public reviews from the App Store -->
+      <!-- Tier 2 · strong with broad appeal -->
       <div class="testi">
         <div class="quote-mark">"</div>
-        <p>The interface is <b>clean, intuitive, and incredibly easy to navigate</b> · even for someone who isn't very tech savvy. Everything feels thoughtfully designed.</p>
-        <div class="who"><span class="av" style="--av-color:#F6891F">S</span><div><div class="name">S. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <p><b>Best trip planning app for Sydney by far.</b> The customisation options make the app feel fresh, and the super nice gradient when viewing trips is very nice to look at.</p>
+        <div class="who"><span class="av" style="--av-color:#E4022D">T</span><div><div class="name">T. · ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
@@ -2846,33 +2879,85 @@
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
-        <p>This is the <b>best travel app I have used so far</b>. User friendly, easy to navigate, colorful, real-time updates. <b>A one stop shop for all Sydney explorers.</b></p>
-        <div class="who"><span class="av" style="--av-color:#009B77">Q</span><div><div class="name">Q. · Sydney explorer</div><div class="src">App Store</div></div></div>
-      </div>
-      <div class="testi">
-        <div class="quote-mark">"</div>
-        <p><b>Best trip planning app for Sydney by far.</b> The customisation options make the app feel fresh, and the super nice gradient when viewing trips is very nice to look at.</p>
-        <div class="who"><span class="av" style="--av-color:#E4022D">T</span><div><div class="name">T. · with their crew</div><div class="src">App Store</div></div></div>
-      </div>
-      <div class="testi">
-        <div class="quote-mark">"</div>
         <p>Excellent job with the font and <b>parking is brilliant</b>. No payment hassle. <b>So perfect in every sense.</b></p>
         <div class="who"><span class="av" style="--av-color:#00B5EF">B</span><div><div class="name">B. · ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
-        <p>Soo helpful to <b>see the trains last second and jump straight on</b>, without any ads. The interface is soo cool and really easy to understand. Great app!</p>
-        <div class="who"><span class="av" style="--av-color:#742282">V</span><div><div class="name">V. · last-second jumper</div><div class="src">App Store</div></div></div>
+        <p>I used KRAIL today to <b>get home by bus</b>. Super useful and easy to navigate.</p>
+        <div class="who"><span class="av" style="--av-color:#00B5EF">L</span><div><div class="name">L. · bus rider</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
+        <p>Genuinely impressed with how <b>intuitive and user-friendly</b> it is. From the moment you open it, everything feels smooth, responsive, and well thought out. <b>Highly recommended.</b></p>
+        <div class="who"><span class="av" style="--av-color:#009B77">P</span><div><div class="name">P. · ★★★★★</div><div class="src">App Store</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p><b>Simple and efficient user interface.</b> Accurate information. No nonsense and straight to the point. I love the mode and plan trip feature.</p>
+        <div class="who"><span class="av" style="--av-color:#742282">G</span><div><div class="name">G. · ★★★★★</div><div class="src">App Store</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Soo helpful to <b>see the trains last second and jump straight on</b>, without any ads. The interface is soo cool and really easy to understand. Great app!</p>
+        <div class="who"><span class="av" style="--av-color:#742282">V</span><div><div class="name">V. · ★★★★★</div><div class="src">App Store</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p><b>Better than the paid alternatives.</b></p>
+        <div class="who"><span class="av" style="--av-color:#E4022D">P</span><div><div class="name">P. · ★★★★★</div><div class="src">Google Play</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p><b>Feature loaded yet easy to use.</b> Well done.</p>
+        <div class="who"><span class="av" style="--av-color:#5AB031">M</span><div><div class="name">M. · ★★★★★</div><div class="src">Google Play</div></div></div>
+      </div>
+
+      <!-- Tier 3 · solid filler · keep the carousel rolling -->
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>I recently came across KRAIL, and it's now <b>my main app for longer train trips</b>. The UI is super simple and it does the job very well. Thanks for making KRAIL.</p>
+        <div class="who"><span class="av" style="--av-color:#00B5EF">A</span><div><div class="name">A. · Sydney commuter</div><div class="src">Email</div></div></div>
+      </div>
+<div class="testi">
+        <div class="quote-mark">"</div>
         <p>Browsing through transport apps, the <b>minimalist design of KRAIL caught my eye</b>. I love it 😭 Save trips, see options at a glance. Looks pretty :)</p>
-        <div class="who"><span class="av" style="--av-color:#E0218A">L</span><div><div class="name">L. · gradient fan</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#E0218A">L</span><div><div class="name">L. · ★★★★★</div><div class="src">App Store</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Just found this app. Please tell me you're <b>constantly improving</b> it? I love the way it's going so far and think it has <b>huggeeeeeee potential.</b></p>
+        <div class="who"><span class="av" style="--av-color:#5AB031">R</span><div><div class="name">R. · ★★★★★</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>The interface is <b>clean, intuitive, and incredibly easy to navigate</b> · even for someone who isn't very tech savvy. Everything feels thoughtfully designed.</p>
+        <div class="who"><span class="av" style="--av-color:#F6891F">S</span><div><div class="name">S. · ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Route information across <b>multiple transport modes</b> · trains, buses, ferries · all in one place.</p>
-        <div class="who"><span class="av" style="--av-color:#1C70F2">P</span><div><div class="name">P. · multi-mode rider</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#1C70F2">P</span><div><div class="name">P. · ★★★★★</div><div class="src">App Store</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Very useful. It gives <b>clarity of the real travel time</b>.</p>
+        <div class="who"><span class="av" style="--av-color:#00B5EF">J</span><div><div class="name">J. · ★★★★★</div><div class="src">App Store</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>The app looks great. <b>The interface is clean and modern.</b> Congratulations!</p>
+        <div class="who"><span class="av" style="--av-color:#742282">P</span><div><div class="name">P. · ★★★★★</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>Looks great, well done! Installed. <b>Pretty certain it's getting 5 stars from me too</b>. Intuitive, clean UX so far. Very impressive for a personal project. <b>Will pass on the word.</b></p>
+        <div class="who"><span class="av" style="--av-color:#E4022D">J</span><div><div class="name">J. · ★★★★★</div><div class="src">Email</div></div></div>
+      </div>
+      <div class="testi">
+        <div class="quote-mark">"</div>
+        <p>My <b>new favourite app</b>.</p>
+        <div class="who"><span class="av" style="--av-color:#742282">N</span><div><div class="name">N. · ★★★★★</div><div class="src">Google Play</div></div></div>
       </div>
     </div>
   </div>
@@ -3240,96 +3325,100 @@
     }
   })();
 
-  // Testimonials carousel — single card visible, auto-advances every
-  // 5s. Circular: a clone of the first card is appended to the end,
-  // so forward motion always feels continuous (no snap-back).
+  // Testimonials · stack-of-envelopes pager with swipe support.
+  // Manual only · no auto-cycle.
   (function () {
-    const row = document.querySelector('.testimonials-row');
-    if (!row) return;
-    const realCards = Array.from(row.children);
-    const REAL = realCards.length;
-    if (!REAL) return;
+    const deck = document.querySelector('.testi-deck');
+    if (!deck) return;
+    const cards = Array.from(deck.querySelectorAll('.testi'));
+    const N = cards.length;
+    if (!N) return;
 
-    // Clone the first card and append — gives us a "phantom" card that
-    // looks like card 0, so smooth-scrolling onto it blends seamlessly.
-    const ghost = realCards[0].cloneNode(true);
-    ghost.setAttribute('aria-hidden', 'true');
-    row.appendChild(ghost);
-    const all = Array.from(row.children);   // length = REAL + 1
+    const prevBtn = document.querySelector('.testi-arrow.prev');
+    const nextBtn = document.querySelector('.testi-arrow.next');
 
-    const prev = document.querySelector('.testi-arrow.prev');
-    const next = document.querySelector('.testi-arrow.next');
+    let active = 0;
+    const STATES = ['is-active', 'is-second', 'is-third', 'is-leaving'];
 
-    let idx = 0;
-    let auto = true;
-    let pausedUntil = 0;
-    let resetting = false;
-
-    function go(toIdx) {
-      if (resetting) return;
-      idx = toIdx;
-      const c = all[idx];
-      if (!c) return;
-      row.scrollTo({ left: c.offsetLeft, behavior: 'smooth' });
-
-      // Just landed on the ghost (visually card 0) → silently snap
-      // scroll back to the real card 0 once the smooth animation ends.
-      if (idx === REAL) {
-        resetting = true;
-        setTimeout(() => {
-          idx = 0;
-          row.scrollTo({ left: all[0].offsetLeft, top: 0, behavior: 'auto' });
-          resetting = false;
-        }, 700);
-      }
+    function render() {
+      cards.forEach((card, i) => {
+        STATES.forEach(c => card.classList.remove(c));
+        const offset = (i - active + N) % N;
+        if (offset === 0) card.classList.add('is-active');
+        else if (offset === 1) card.classList.add('is-second');
+        else if (offset === 2) card.classList.add('is-third');
+        else if (offset === N - 1) card.classList.add('is-leaving');
+        // All other cards stay at default (hidden, behind the leaver).
+      });
     }
 
     function step(delta) {
-      pausedUntil = Date.now() + 6000;
-      let next = idx + delta;
-      if (next < 0) next = REAL - 1;       // backward wrap
-      else if (next > REAL) next = 0;
-      go(next);
+      active = (active + delta + N) % N;
+      render();
     }
 
-    prev?.addEventListener('click', () => step(-1));
-    next?.addEventListener('click', () => step(+1));
+    prevBtn?.addEventListener('click', () => step(-1));
+    nextBtn?.addEventListener('click', () => step(+1));
 
-    row.addEventListener('mouseenter', () => { auto = false; });
-    row.addEventListener('mouseleave', () => { auto = true; });
-    row.addEventListener('touchstart', () => { pausedUntil = Date.now() + 6000; });
+    deck.tabIndex = 0;
+    deck.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); step(-1); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); step(+1); }
+    });
 
-    // Manual scroll (wheel / trackpad / touch drag) — when the user
-    // settles on the ghost card, silently snap back to real card 0
-    // so the list feels infinite in both directions.
-    let scrollTimer;
-    row.addEventListener('scroll', () => {
-      pausedUntil = Date.now() + 6000;
-      if (resetting) return;
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => {
-        if (resetting) return;
-        const ghostLeft = all[REAL].offsetLeft;
-        if (Math.abs(row.scrollLeft - ghostLeft) < 12) {
-          // Landed on the ghost → silent reset to real first
-          resetting = true;
-          row.scrollTo({ left: all[0].offsetLeft, behavior: 'auto' });
-          idx = 0;
-          setTimeout(() => { resetting = false; }, 50);
-        } else {
-          // Sync idx to whatever card the user manually scrolled to
-          const slot = all[1].offsetLeft - all[0].offsetLeft;
-          if (slot > 0) {
-            const computed = Math.round((row.scrollLeft - all[0].offsetLeft) / slot);
-            idx = Math.max(0, Math.min(REAL - 1, computed));
-          }
+    // === Swipe support · drag active card horizontally to advance ===
+    const SWIPE_THRESHOLD = 70;
+    let drag = null;
+
+    function activeCard() { return cards[active]; }
+
+    function onPointerDown(e) {
+      if (e.button !== undefined && e.button !== 0) return;
+      const card = activeCard();
+      if (!card) return;
+      drag = { x: e.clientX, y: e.clientY, dx: 0, axis: null };
+      card.classList.add('is-dragging');
+      try { card.setPointerCapture(e.pointerId); } catch (_) {}
+    }
+
+    function onPointerMove(e) {
+      if (!drag) return;
+      const card = activeCard();
+      if (!card) return;
+      const dx = e.clientX - drag.x;
+      const dy = e.clientY - drag.y;
+      if (!drag.axis) {
+        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+          drag.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
         }
-      }, 250);
-    }, { passive: true });
+      }
+      if (drag.axis !== 'x') return;
+      drag.dx = dx;
+      const rotate = (dx / 30).toFixed(2);
+      card.style.transform = `translateX(${dx}px) rotate(${rotate}deg)`;
+    }
 
-    setInterval(() => {
-      if (auto && !resetting && Date.now() > pausedUntil) go(idx + 1);
-    }, 5000);
+    function onPointerUp() {
+      if (!drag) return;
+      const card = activeCard();
+      const dx = drag.dx;
+      const wasX = drag.axis === 'x';
+      drag = null;
+      if (card) {
+        card.classList.remove('is-dragging');
+        card.style.transform = '';
+      }
+      if (wasX && Math.abs(dx) > SWIPE_THRESHOLD) {
+        step(dx < 0 ? +1 : -1);     // swipe left = next, swipe right = prev
+      }
+    }
+
+    deck.addEventListener('pointerdown', onPointerDown);
+    deck.addEventListener('pointermove', onPointerMove);
+    deck.addEventListener('pointerup', onPointerUp);
+    deck.addEventListener('pointercancel', onPointerUp);
+
+    render();
   })();
 
   // Per-feature-phone mouse parallax (each block reacts independently)
