@@ -427,10 +427,15 @@
     stroke-linejoin: round;
     /* Non-scaling-stroke keeps line thickness consistent regardless of
        preserveAspectRatio="none" stretching — without this, strokes
-       can shrink to invisibility on narrow mobile widths. */
+       can shrink to invisibility on narrow mobile widths.
+       NOTE: with non-scaling-stroke, stroke-dasharray is computed in
+       SCREEN pixels rather than path units. A small dasharray (e.g. 240)
+       creates a dash → gap → dash pattern that splits long headings
+       like "everyone asks." Use a huge dasharray so the whole path
+       falls inside one dash. */
     vector-effect: non-scaling-stroke;
-    stroke-dasharray: 240;
-    stroke-dashoffset: 240;
+    stroke-dasharray: 9999;
+    stroke-dashoffset: 9999;
     transition: stroke-dashoffset 1.5s cubic-bezier(.5, .05, .15, 1) .12s;
   }
   /* Bold under-layer: thicker, slightly transparent — gives marker softness */
@@ -2351,7 +2356,7 @@
     .eyebrow { font-size: 12.5px; letter-spacing: 1.6px; margin-bottom: 14px; }
 
     /* === Feature blocks · bigger headlines + better visual grouping === */
-    .feature-block { gap: 36px; padding: 52px 0 60px; }
+    .feature-block { gap: 18px; padding: 52px 0 60px; }    /* tighter text↔image since feat-meta is hidden on mobile */
     /* Stronger accent-coloured divider — visually brackets each feature */
     .feature-block + .feature-block {
       border-top: 2px solid var(--accent, rgba(28,27,26,0.12));
@@ -2370,7 +2375,7 @@
     .feature-text p.tip-line {
       padding: 14px 18px;
       gap: 12px;
-      margin: 4px 0 24px;
+      margin: 4px 0 8px;          /* trim bottom margin · feat-meta below was hidden */
     }
     .feature-text p.tip-line .tip-num { font-size: 28px; }
     .feature-text p.tip-line .tip-text { font-size: 13.5px; line-height: 1.4; }
