@@ -636,3 +636,44 @@ room — and reset the rotations so they don't compete with the stack.
   .foot-shout .shout-line .v3 { transform: none; }
 }
 ```
+
+### 12. Squiggle animation · use clip-path, not stroke-dasharray
+
+The italic-em squiggle SVGs (every accent on the page) animate
+left-to-right when the section scrolls into view. The obvious approach
+is `stroke-dasharray` + animated `stroke-dashoffset`. **It doesn't
+work** because the SVG has `vector-effect: non-scaling-stroke`
+(needed to keep stroke width consistent on stretched paths). Per
+spec, with non-scaling-stroke the dasharray is computed in **screen
+pixels** rather than path units. So:
+
+- Small dasharray (240) → gap splits long headings · "everyone asks."
+  shows under "everyone" then disappears, reappears at the period
+- Big dasharray (9999) → animation barely visible · only the last 3%
+  of the offset transition shows the dash entering the visible path
+- `pathLength="100"` attribute on the path → ignored by browsers
+  when non-scaling-stroke is in effect
+
+**Working pattern · clip-path reveal:**
+
+```css
+.sq-line {
+  clip-path: inset(0 100% 0 0);                    /* fully clipped */
+  transition: clip-path 1.5s cubic-bezier(.5, .05, .15, 1) .3s;
+}
+.anim.in .sq-line,
+.feature-block.in .sq-line {
+  clip-path: inset(0 0 0 0);                       /* fully revealed */
+}
+```
+
+The squiggle paths render fully drawn at all times. The clip-path
+animates from "100% inset on right" → "0% inset", revealing the
+squiggle left-to-right. Works on every heading regardless of length,
+font size, or screen width. Both stroke-bold and stroke-thin layers
+reveal together (we lost the staggered transition delay — visually
+imperceptible).
+
+**The 0.3s start delay** is intentional · the animation starts
+shortly after the section enters the viewport so the user sees the
+squiggle drawing in rather than already done by the time they look.
