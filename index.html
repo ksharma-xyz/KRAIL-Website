@@ -428,14 +428,13 @@
     /* Non-scaling-stroke keeps line thickness consistent regardless of
        preserveAspectRatio="none" stretching — without this, strokes
        can shrink to invisibility on narrow mobile widths.
-       NOTE: with non-scaling-stroke, stroke-dasharray is computed in
-       SCREEN pixels rather than path units. A small dasharray (e.g. 240)
-       creates a dash → gap → dash pattern that splits long headings
-       like "everyone asks." Use a huge dasharray so the whole path
-       falls inside one dash. */
+       The path uses pathLength="100", so dasharray:100 = one full
+       path-length of dash followed by an equal gap. Animation slides
+       the gap off (offset 100 → 0) revealing the dash from left to
+       right. Works regardless of rendered path length on screen. */
     vector-effect: non-scaling-stroke;
-    stroke-dasharray: 9999;
-    stroke-dashoffset: 9999;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
     transition: stroke-dashoffset 1.5s cubic-bezier(.5, .05, .15, 1) .12s;
   }
   /* Bold under-layer: thicker, slightly transparent — gives marker softness */
@@ -2524,7 +2523,7 @@
       <!-- LEFT: copy -->
       <div class="hero-copy anim">
         <span class="hero-greeting">Hello Sydney,</span>
-        <h1 class="hero-title">Where are you going <span class="accent">today?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></span></h1>
+        <h1 class="hero-title">Where are you going <span class="accent">today?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></span></h1>
 
         <div class="store-row" id="download">
           <a href="https://apps.apple.com/us/app/krail-app/id6738934832" target="_blank" rel="noopener" class="store-btn" aria-label="Download on the App Store">
@@ -2580,7 +2579,7 @@
   <div class="container">
     <div class="stats-head anim" style="--accent: var(--bus);">
       <span class="eyebrow" style="justify-content:center;">Every mode. Every stop.</span>
-      <h2 class="section-title">Sydney, <em>end to end.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+      <h2 class="section-title">Sydney, <em>end to end.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
       <p class="section-sub" style="margin: 14px auto 0;"><b>Tallawong to Bondi · live, every minute.</b></p>
     </div>
 
@@ -2616,7 +2615,7 @@
     <div class="feature-block anim" style="--accent: #E0218A;">
       <div class="feature-text">
         <span class="eyebrow" style="color: #E0218A;">Save your trips</span>
-        <h3>One tap. You're <em>going.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>One tap. You're <em>going.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Save the journeys you take every day. Give them a colour, an emoji, a name only you'll understand. Pink for the hospital. Teal for the beach. Blue for Friday drinks at the CBD. Then every morning, your trips are waiting. Tap once. Live times, right there.</p>
         <p class="lead tip-line">
           <span class="tip-icon" aria-hidden="true">💡</span>
@@ -2643,7 +2642,7 @@
     <div class="feature-block reverse anim" style="--accent: var(--train);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--train);">Park &amp; Ride</span>
-        <h3>Live parking, before the <em>driveway.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>Live parking, before the <em>driveway.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Tallawong at 7:05 is a parking lottery. Kellyville fills up by 7:15. Bella Vista has a few spots left, but you have to know that before you drive.</p>
         <p class="lead">KRAIL shows live parking availability at <b>20+ Sydney stations</b>, updated every minute. See exactly how full each station is before you leave home.</p>
         <div class="feat-meta">
@@ -2669,7 +2668,7 @@
     <div class="feature-block anim" style="--accent: var(--metro);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--metro);">Map view</span>
-        <h3>Walk out the right <em>exit.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>Walk out the right <em>exit.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Every journey in KRAIL has a map. Tap any leg to see your stop on a real Sydney street. Which side of the road your bus pulls in on. Which platform to walk toward. Where to change trains without crossing back over.</p>
         <p class="lead tip-line">
           <span class="tip-icon" aria-hidden="true">💡</span>
@@ -2699,7 +2698,7 @@
     <div class="feature-block reverse anim" style="--accent: var(--bus);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--bus);">Real-time</span>
-        <h3>Same minute as the <em>platform.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>Same minute as the <em>platform.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">No estimates. No "usually around 8". Just the actual minute, live for trains, metro, buses, ferries and light rail.</p>
         <p class="lead tip-line">
           <span class="tip-icon" aria-hidden="true">⚡</span>
@@ -2729,7 +2728,7 @@
     <div class="feature-block anim" style="--accent: var(--lr);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--lr);">Stop labels · new</span>
-        <h3>Wynyard becomes <em>Work.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>Wynyard becomes <em>Work.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">You know the stops. KRAIL lets you name them. Label Wynyard as "Work". Label your street corner as "Home". Label that stop near the gym · you know the one. Your labels show up everywhere in the app, replacing the raw stop name with the word that actually means something to you.</p>
         <p class="lead"><b>The smallest feature. The biggest difference when you're half-asleep at 7am.</b></p>
         <div class="feat-meta">
@@ -2755,7 +2754,7 @@
     <div class="feature-block reverse anim" style="--accent: var(--coach);">
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--coach);">Dark mode &amp; Themes</span>
-        <h3>Built for <em>6 AM.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+        <h3>Built for <em>6 AM.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Every colour, every gradient, every departure board · built for dark. Designed for both from day one, not retrofitted.</p>
         <p class="lead tip-line">
           <span class="tip-icon" aria-hidden="true">💡</span>
@@ -2794,7 +2793,7 @@
   <div class="container">
     <div class="testimonials-head anim">
       <span class="eyebrow" style="justify-content:center;">From Sydney commuters</span>
-      <h2 class="section-title">500+ Sydney commuters ride KRAIL <em>every month.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+      <h2 class="section-title">500+ Sydney commuters ride KRAIL <em>every month.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
     </div>
   </div>
 
@@ -2897,7 +2896,7 @@
 
       <div class="founder-text anim">
         <span class="eyebrow">An open letter to Sydney</span>
-        <h2 class="section-title">Why I built <em>KRAIL.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+        <h2 class="section-title">Why I built <em>KRAIL.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
 
         <p class="note">For years, getting from A to B in Sydney meant juggling three apps. One for trains. One for parking. One for the bus that never came. None of them felt like they were actually built for you.</p>
 
@@ -2923,7 +2922,7 @@
   <div class="container narrow">
     <div class="faq-head anim">
       <span class="eyebrow" style="justify-content:center;">FAQ</span>
-      <h2 class="section-title">The questions <em>everyone asks.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
+      <h2 class="section-title">The questions <em>everyone asks.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
     </div>
 
     <div class="faq-list anim anim-stagger">
@@ -2965,7 +2964,7 @@
   <div class="container">
     <div class="frame anim">
       <span class="eyebrow-c">We read every one</span>
-      <h3>Got an idea, a bug, or just a <em>hello?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
+      <h3>Got an idea, a bug, or just a <em>hello?<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
       <a href="mailto:hey@krail.app" class="email-pill">
         <span class="ico">✉</span>
         hey@krail.app
@@ -2988,7 +2987,7 @@
   <div class="container">
     <h2 class="cta-rail-tag anim">
       <span class="l1">Ride the rail</span>
-      <span class="l2">without fail.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></span>
+      <span class="l2">without fail.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></span>
     </h2>
     <div class="stores store-row">
       <a href="https://apps.apple.com/us/app/krail-app/id6738934832" target="_blank" rel="noopener" class="store-btn" aria-label="Download on the App Store">
