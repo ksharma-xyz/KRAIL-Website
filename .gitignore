@@ -7,5 +7,7 @@ node_modules/
 # Lighthouse report files are regenerated on every CI run.
 # We commit AUDIT.md (the human-written findings) + the helper scripts,
 # but not the raw HTML/JSON reports — they bloat git history.
-audit/*.report.html
-audit/*.report.json
+# Ignore everything in audit/ except scripts and the summary helper.
+audit/*
+!audit/*.sh
+!audit/*.js

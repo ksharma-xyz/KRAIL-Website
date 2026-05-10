@@ -15,7 +15,16 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Roboto:wght@900&family=Antonio:wght@500;600;700&display=swap" rel="stylesheet" />
+<!-- Async-load Google Fonts via the print-onload swap so they don't block first paint.
+     Patrick Hand was dropped — defined as --hand but never actually used in any rule. -->
+<link rel="preload" as="style"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&family=Antonio:wght@500;600;700&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all'"
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&family=Antonio:wght@500;600;700&display=swap">
+<noscript>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&family=Antonio:wght@500;600;700&display=swap">
+</noscript>
 
 <script src="image-slot.js"></script>
 
@@ -63,7 +72,6 @@
     --display: var(--sans);
     --antonio: "Antonio", -apple-system, sans-serif;
     --roboto-black: "Roboto", -apple-system, sans-serif;
-    --hand:    "Patrick Hand", "Bradley Hand", "Comic Sans MS", -apple-system, sans-serif;
   }
 
   * { box-sizing: border-box; }
@@ -387,6 +395,10 @@
     color: var(--accent, var(--brand-pink));
     font-style: italic;
     font-weight: 800;
+    /* Keep the accent + its squiggle as one atomic unit · prevents the em
+       from wrapping internally onto two lines, which makes the squiggle
+       sit half-way through the text. */
+    white-space: nowrap;
   }
 
   /* Squiggly hand-drawn underline — marker-pen feel. Two overlaid
@@ -395,9 +407,12 @@
   .sq-line {
     display: block;
     position: absolute;
-    left: -3px; right: -3px;
+    /* Italic ems lean right · the visual end of letters and periods
+       overhangs the layout box. Wider right offset covers the overhang
+       so the squiggle reaches past the actual rightmost glyph. */
+    left: -3px; right: -12px;
     bottom: -10px;
-    width: calc(100% + 6px);
+    width: calc(100% + 15px);
     height: 14px;
     pointer-events: none;
     overflow: visible;
@@ -561,10 +576,10 @@
      PHONE base
   =========================================================== */
   .phone {
-    width: 300px; height: 620px;
+    width: 240px; height: 500px;          /* desktop · 80% of previous 300×620 */
     background: var(--warm-dark);
-    border: 7px solid var(--warm-dark);
-    border-radius: 46px;
+    border: 6px solid var(--warm-dark);
+    border-radius: 38px;
     box-shadow:
       0 0 0 1.5px rgba(28,27,26,0.4),
       inset 0 0 0 1px rgba(255,255,255,0.06),
@@ -574,11 +589,11 @@
     position: relative;
   }
   .phone .notch {
-    position: absolute; top: 8px; left: 50%;
+    position: absolute; top: 7px; left: 50%;
     transform: translateX(-50%);
-    width: 110px; height: 28px;
+    width: 88px; height: 22px;          /* 80% of 110×28 to match smaller phone */
     background: #0a0908;
-    border-radius: 18px;
+    border-radius: 14px;
     z-index: 5;
   }
   .phone .screen {
@@ -916,7 +931,7 @@
     position: relative;
     display: flex; align-items: center; justify-content: center;
     perspective: 1500px;
-    min-height: 640px;
+    min-height: 520px;          /* 80% of 640 to match smaller phone */
   }
   .feature-phone .phone {
     --rot-y: -10deg;
@@ -1682,6 +1697,7 @@
     font-size: clamp(40px, 4.8vw, 68px);
     color: var(--brand-pink);
     letter-spacing: -0.025em;
+    white-space: nowrap;        /* keep "without fail." on one line so squiggle covers it */
   }
   .cta-final .cta-rail-tag .l2 .sq-line { color: var(--brand-pink); }
   @media (max-width: 540px) {
@@ -2358,14 +2374,9 @@
     }
     .feature-text p.tip-line .tip-num { font-size: 28px; }
     .feature-text p.tip-line .tip-text { font-size: 13.5px; line-height: 1.4; }
-    .feature-text .feat-meta {
-      grid-template-columns: 1fr;
-      gap: 14px;
-      margin-top: 22px;
-      padding-top: 20px;
-    }
-    .feature-text .feat-meta div { font-size: 14.5px; line-height: 1.55; }
-    .feature-text .feat-meta b { font-size: 11.5px; letter-spacing: 1.5px; margin-bottom: 5px; }
+    /* Hide the 3-item feat-meta on mobile · phones scan, they don't graze.
+       Desktop keeps it for the depth-skimmer. */
+    .feature-text .feat-meta { display: none; }
 
     /* Feature phone column → constrained square-ish card on mobile */
     .feature-phone {
@@ -2596,12 +2607,6 @@
 <!-- ================== FEATURES · vertical stack ================== -->
 <section class="features has-blobs features-blobs" id="features">
   <div class="container">
-    <div class="feat-intro anim">
-      <span class="eyebrow" style="justify-content:center;">Built for Sydney</span>
-      <h2 class="section-title" style="--accent: var(--metro);">Less tapping. More <em>moving.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
-      <p class="section-sub" style="margin: 14px auto 0;"><b>Open it half-asleep. Get where you're going.</b></p>
-    </div>
-
     <!-- Block 1 · Saved Trips (phone right) — barbie pink -->
     <div class="feature-block anim" style="--accent: #E0218A;">
       <div class="feature-text">
