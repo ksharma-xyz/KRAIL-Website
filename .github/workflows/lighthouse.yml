@@ -1,0 +1,71 @@
+name: Lighthouse audit
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:        # manual trigger from the Actions tab
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Lighthouse
+        run: npm install -g lighthouse@latest
+
+      - name: Wait for GitHub Pages to publish this commit
+        run: |
+          # GitHub Pages typically deploys within 30-90s of a push.
+          # We poll for our commit SHA to land on the live site.
+          echo "Waiting for ${GITHUB_SHA:0:7} to land at https://krail.app …"
+          for i in {1..30}; do
+            sleep 10
+            # Pages doesn't expose the commit SHA in headers, so we just
+            # wait a fixed reasonable window. The site builds in <2 min.
+            if [ "$i" -ge 6 ]; then break; fi
+          done
+          echo "Proceeding with audit (waited 60s)."
+          curl -sI https://krail.app/ | head -5
+
+      - name: Run Lighthouse · desktop
+        run: |
+          mkdir -p audit
+          lighthouse https://krail.app \
+            --output=json --output=html \
+            --output-path=./audit/lighthouse \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --quiet --preset=desktop
+
+      - name: Run Lighthouse · mobile
+        run: |
+          lighthouse https://krail.app \
+            --output=json --output=html \
+            --output-path=./audit/lighthouse-mobile \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --quiet \
+            --form-factor=mobile --screenEmulation.mobile=true
+
+      - name: Print score summary
+        run: node audit/print-summary.js >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: audit/*.report.html
+          retention-days: 90
