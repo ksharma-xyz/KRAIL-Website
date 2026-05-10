@@ -3,3 +3,7 @@
 node_modules/
 .vscode/
 .idea/
+
+# Local-only audit notes + Lighthouse reports (not for public repo)
+AUDIT.md
+audit/

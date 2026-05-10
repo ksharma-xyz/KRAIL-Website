@@ -6,6 +6,10 @@
 <title>KRAIL · Sydney commute, respected.</title>
 <meta name="description" content="Sydney's prettiest public-transport app. Real-time trains, metro, buses, ferries, light rail. Saved trips, live Park &amp; Ride, dark mode. No ads*. Free*." />
 
+<!-- Favicon · hot pink K circle (mode-pill style) + theme colour for Android -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content="#FF2F8F">
+
 <link rel="stylesheet" href="tokens.css" />
 <link rel="stylesheet" href="krail.css" />
 
@@ -736,6 +740,16 @@
     font-size: 12px;
     display: inline-flex; align-items: center; justify-content: center;
     flex-shrink: 0;
+  }
+  /* WCAG AA contrast fix · light mode-colour pills (orange/teal/cyan/green)
+     don't pass 4.5:1 with white text. Use dark ink + heavier weight on those.
+     Red and purple are dark enough that white text already passes. */
+  .tick-item .pill[style*="--train"],
+  .tick-item .pill[style*="--metro"],
+  .tick-item .pill[style*="--bus"],
+  .tick-item .pill[style*="--ferry"] {
+    color: #1C1B1A;
+    font-weight: 800;
   }
   .tick-item .arrow {
     color: rgba(252,246,241,0.45);
@@ -2476,6 +2490,8 @@
   </div>
 </nav>
 
+<main id="main">
+
 <!-- ================== HERO ================== -->
 <section class="hero has-blobs hero-blobs" id="top">
   <!-- Floating Sydney transport mode icons (decorative only) -->
@@ -2964,6 +2980,8 @@
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- ================== FOOTER ================== -->
 <footer class="foot">

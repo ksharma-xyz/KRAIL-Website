@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- KRAIL favicon · hot pink circle (matches mode-pill style), white K -->
+  <circle cx="16" cy="16" r="16" fill="#FF2F8F"/>
+  <text x="16" y="23"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-weight="900"
+        font-size="22"
+        letter-spacing="-0.04em"
+        fill="#fff"
+        text-anchor="middle">K</text>
+</svg>
