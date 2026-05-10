@@ -418,6 +418,12 @@
     overflow: visible;
     color: var(--accent, var(--brand-pink));
     transform: rotate(-0.6deg);
+    /* Reveal the squiggle left-to-right via clip-path. Using clip-path
+       avoids the stroke-dasharray bugs with non-scaling-stroke (where
+       dasharray is computed in SCREEN pixels rather than path units,
+       causing splits or zero-length animation on long headings). */
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1.5s cubic-bezier(.5, .05, .15, 1) .12s;
   }
   .sq-line .stroke-bold,
   .sq-line .stroke-thin {
@@ -427,15 +433,8 @@
     stroke-linejoin: round;
     /* Non-scaling-stroke keeps line thickness consistent regardless of
        preserveAspectRatio="none" stretching — without this, strokes
-       can shrink to invisibility on narrow mobile widths.
-       The path uses pathLength="100", so dasharray:100 = one full
-       path-length of dash followed by an equal gap. Animation slides
-       the gap off (offset 100 → 0) revealing the dash from left to
-       right. Works regardless of rendered path length on screen. */
+       can shrink to invisibility on narrow mobile widths. */
     vector-effect: non-scaling-stroke;
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-    transition: stroke-dashoffset 1.5s cubic-bezier(.5, .05, .15, 1) .12s;
   }
   /* Bold under-layer: thicker, slightly transparent — gives marker softness */
   .sq-line .stroke-bold {
@@ -446,13 +445,12 @@
   .sq-line .stroke-thin {
     stroke-width: 2.5;
     opacity: 1;
-    transition-delay: .25s;        /* draws just after the bold layer */
   }
-  .anim.in .sq-line .stroke-bold,
-  .anim.in .sq-line .stroke-thin,
-  .feature-block.in .sq-line .stroke-bold,
-  .feature-block.in .sq-line .stroke-thin {
-    stroke-dashoffset: 0;
+  /* Reveal · clip-path animates from inset(0 100% 0 0) → inset(0 0 0 0)
+     drawing in the squiggle from left to right over 1.5s. */
+  .anim.in .sq-line,
+  .feature-block.in .sq-line {
+    clip-path: inset(0 0 0 0);
   }
 
   .hero-tagline {
