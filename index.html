@@ -2207,7 +2207,7 @@
     .hero-art { height: 540px; order: -1; }
     h1.hero-title { font-size: clamp(40px, 9vw, 64px); }
 
-    /* Feature blocks stack: phone above text */
+    /* Feature blocks stack · TEXT FIRST, then phone (consistent with hero) */
     .feature-block,
     .feature-block.reverse {
       grid-template-columns: 1fr;
@@ -2215,9 +2215,9 @@
       padding: 40px 0;
     }
     .feature-block .feature-text,
-    .feature-block.reverse .feature-text  { order: 2; }
+    .feature-block.reverse .feature-text  { order: 1; }
     .feature-block .feature-phone,
-    .feature-block.reverse .feature-phone { order: 1; min-height: 540px; }
+    .feature-block.reverse .feature-phone { order: 2; min-height: 540px; }
     .feature-text .feat-meta { grid-template-columns: 1fr 1fr; gap: 18px; }
 
     section.cta-final { padding: 80px 0 100px; }
