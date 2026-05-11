@@ -677,3 +677,46 @@ imperceptible).
 **The 0.3s start delay** is intentional · the animation starts
 shortly after the section enters the viewport so the user sees the
 squiggle drawing in rather than already done by the time they look.
+
+### 13. Feature phone screenshots · never use separate mobile crops
+
+Early builds used `<picture>/<source media="(max-width: 640px)">` to
+serve a pre-cropped 4:5 image on mobile. This caused two problems:
+
+1. The pre-cropped files go stale the moment you retake a screenshot.
+   You end up with new desktop content + old mobile content showing on
+   the same page.
+2. The cropped image locks in a fixed portion of the screen. If the
+   important content isn't in that crop it looks wrong, and there's no
+   CSS lever to fix it without retaking the shot.
+
+**Working pattern · use a plain `<img>` for all feature screenshots:**
+
+```html
+<img src="images/park_ride.webp" alt="…" loading="lazy" />
+```
+
+On mobile, the phone frame is `aspect-ratio: 4/5` with
+`object-fit: cover; object-position: top center`. This automatically
+crops the tall portrait screenshot (≈ 9:20) to show its top portion —
+the part that carries the most important UI content (title row + first
+2–3 list items). No second file needed.
+
+**Observed behaviour by image:**
+
+| Image | Resolution | Auto-crops well? | Why |
+|---|---|---|---|
+| `hero.webp` | 864 × 1928 | ✅ yes | Home screen content sits at the top |
+| `saved_trips.webp` | 1206 × 2622 | ✅ yes | Trip tiles start at top |
+| `dark.webp` | 1206 × 2622 | ✅ yes | Departure list fills top portion |
+| `park_ride.webp` | 864 × 1928 | ✅ yes (after removing mobile source) | Parking cards start at top |
+| `realtime.webp` | 1206 × 2622 | ✅ yes (after removing mobile source) | Departure board at top |
+| `stop_labels.webp` | 1206 × 2622 | ✅ yes (after removing mobile source) | Labels visible in first rows |
+
+**Rule:** if a screenshot has its meaningful content in the top ~50%
+of the frame, the CSS auto-crop is sufficient. Only add a `<picture>`
+source if you need to show content that's below the mid-point fold.
+
+**For new screenshots:** shoot at the same resolution as existing
+images (1206 × 2622 preferred, 864 × 1928 acceptable). No need to
+supply a separate cropped variant — the CSS handles it.
