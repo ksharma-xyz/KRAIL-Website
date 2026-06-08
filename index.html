@@ -888,11 +888,6 @@
     color: var(--accent, var(--brand-pink));
     margin-bottom: 18px;
   }
-  .eyebrow::before {
-    content: ""; width: 22px; height: 2px;
-    background: var(--accent, var(--brand-pink));
-    display: inline-block;
-  }
   h2.section-title {
     font-family: var(--display);
     font-weight: 800;
@@ -2603,7 +2598,6 @@
 <section class="stats has-blobs stats-blobs" id="stats">
   <div class="container">
     <div class="stats-head anim" style="--accent: var(--bus);">
-      <span class="eyebrow" style="justify-content:center;">Every mode. Every stop.</span>
       <h2 class="section-title">Sydney, <em>end to end.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
       <p class="section-sub" style="margin: 14px auto 0;"><b>Tallawong to Bondi · live, every minute.</b></p>
     </div>
@@ -2689,7 +2683,7 @@
     <!-- Block 3 · Map view (phone right) — metro teal -->
     <div class="feature-block anim" style="--accent: var(--metro);">
       <div class="feature-text">
-        <span class="eyebrow" style="color: var(--metro);">Map view</span>
+        <span class="eyebrow" style="color: var(--metro);">Maps &amp; exits</span>
         <h3>Walk out the right <em>exit.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Just tell KRAIL where you're going. It builds the full journey · which lines connect, where to change, which platform to head to. You don't need to know the network by heart before you leave.</p>
         <p class="lead">Every leg has a map. Tap any stop to see your exact street. Which side of the road the bus pulls in on. Which platform to walk toward. Where to change trains without crossing back over.</p>
@@ -2720,7 +2714,7 @@
     <!-- Block 4 · Real-time (phone left) — bus blue -->
     <div class="feature-block reverse anim" style="--accent: var(--bus);">
       <div class="feature-text">
-        <span class="eyebrow" style="color: var(--bus);">Real-time</span>
+        <span class="eyebrow" style="color: var(--bus);">Real time updates</span>
         <h3>Same minute as the <em>platform.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">No estimates. No "usually around 8". Just the actual minute, live for trains, metro, buses, ferries and light rail.</p>
         <p class="lead tip-line">
@@ -2770,7 +2764,7 @@
     <!-- Block 6 · Dark mode + Themes (phone left) — coach purple -->
     <div class="feature-block reverse anim" style="--accent: var(--coach);">
       <div class="feature-text">
-        <span class="eyebrow" style="color: var(--coach);">Dark mode · Themes · A11y</span>
+        <span class="eyebrow" style="color: var(--coach);">Dark mode · Accessibility</span>
         <h3>Built for <em>6 AM.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Accessibility isn't a checkbox in KRAIL · it's in the original design. Dark mode with carefully tuned contrast ratios. Large text that goes bigger than your phone's system default. Every screen, every departure board, readable at arm's length at 6am.</p>
         <p class="lead tip-line">
@@ -3133,7 +3127,7 @@
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0H5C2.2 0 0 2.2 0 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5V5c0-2.8-2.2-5-5-5zM8 19H5V8h3v11zM6.5 6.7c-1 0-1.7-.7-1.7-1.7S5.5 3.3 6.5 3.3s1.7.7 1.7 1.7-.7 1.7-1.7 1.7zM20 19h-3v-5.6c0-1.4-.5-2.4-1.7-2.4-1 0-1.6.7-1.9 1.4-.1.2-.1.5-.1.8V19h-3V8h3v1.3c.4-.6 1.1-1.5 2.6-1.5 1.9 0 3.4 1.2 3.4 4V19z"/></svg>
           LinkedIn
         </a>
-        <a class="instagram" href="https://www.instagram.com/krailapp/" target="_blank" rel="noopener">
+        <a class="instagram" href="https://www.instagram.com/krail.app/" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9s.7.8.9 1.4c.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4s-.8.7-1.4.9c-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9s-.7-.8-.9-1.4c-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4s.8-.7 1.4-.9c.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8s-.6.8-.8 1.3c-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1A4.9 4.9 0 1 1 7.1 12 4.9 4.9 0 0 1 12 7.1zm0 8a3.1 3.1 0 1 0-3.1-3.1A3.1 3.1 0 0 0 12 15.1zm6.3-8.2a1.1 1.1 0 1 1-1.1-1.1 1.1 1.1 0 0 1 1.1 1.1z"/></svg>
           Instagram
         </a>
