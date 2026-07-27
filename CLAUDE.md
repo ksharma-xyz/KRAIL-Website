@@ -141,7 +141,7 @@ Icons must stay **clear of the H1 reading zone**. Safe positions are
 |---|---|
 | Privacy policy | `https://www.krail.app/privacy-policy` (verbatim) |
 | Disclaimer text | The exact paragraph Karan provided — see `index.html` footer |
-| Social URLs | `KRAIL/social/state/.../KrailSocialType.kt` (LinkedIn, Instagram, X, Threads, Facebook, Reddit — no TikTok) |
+| Social URLs | `KRAIL/social/state/.../KrailSocialType.kt` (LinkedIn, Instagram, X, Threads, TikTok, Facebook, Reddit) |
 | Store URLs | `KRAIL/feature/.../ReferFriendManager.kt`: iOS `apps.apple.com/.../id6738934832`, Android `play.google.com/store/apps/details?id=xyz.ksharma.krail` |
 | Theme tag lines | `KRAIL/taj/.../KrailThemeStyle.kt` — the per-mode catchphrases used in feature blocks |
 | Mode colour values | `KRAIL/taj/.../theme/Color.kt` (`train_theme`, `bus_theme`, etc.) |

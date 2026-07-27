@@ -241,9 +241,9 @@ Real social URLs (from KRAIL app `KrailSocialType.kt`):
 - Instagram: `https://www.instagram.com/krail.app/`
 - X: `https://x.com/krailapp`
 - Threads: `https://www.threads.com/@krail.app`
+- TikTok: `https://www.tiktok.com/@krailapp`
 - Facebook: `https://www.facebook.com/krailapp`
 - Reddit: `https://www.reddit.com/r/krailapp/`
-(No TikTok — KRAIL is not on TikTok.)
 
 ---
 
