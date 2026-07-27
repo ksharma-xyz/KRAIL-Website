@@ -238,7 +238,9 @@ The `Get the app` and store buttons **auto-detect platform**:
 
 Real social URLs (from KRAIL app `KrailSocialType.kt`):
 - LinkedIn: `https://www.linkedin.com/company/krail/`
-- Instagram: `https://www.instagram.com/krailapp/`
+- Instagram: `https://www.instagram.com/krail.app/`
+- X: `https://x.com/krailapp`
+- Threads: `https://www.threads.com/@krail.app`
 - Facebook: `https://www.facebook.com/krailapp`
 - Reddit: `https://www.reddit.com/r/krailapp/`
 (No TikTok — KRAIL is not on TikTok.)
