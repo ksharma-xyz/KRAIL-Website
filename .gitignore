@@ -4,6 +4,14 @@ node_modules/
 .vscode/
 .idea/
 
+# This repo is PUBLIC and every file at the root is served from krail.app.
+# Local design explorations stay local. handover/ holds unreleased product
+# work including pricing, which must not be published before announcement.
+handover/
+# A local full-page bundle of the landing page. Committing it would serve a
+# duplicate of the homepage at /krail-bundle.html and split its search ranking.
+krail-bundle.html
+
 # Lighthouse report files are regenerated on every CI run.
 # We commit AUDIT.md (the human-written findings) + the helper scripts,
 # but not the raw HTML/JSON reports — they bloat git history.

@@ -29,7 +29,8 @@ some are zero-tolerance, others are strong defaults.
 
 | Forbidden | Why | Use instead |
 |---|---|---|
-| Em dash `—` anywhere user-visible | Karan's voice rule | `·` (middle dot) or rephrase to a period/comma |
+| Em dash `—` anywhere user-visible | Karan's voice rule | Rephrase to a period or comma. Never swap in a middle dot. |
+| Middle dot `·` (and `•`, `‧`, `∙`) anywhere user-visible | Karan's voice rule. Reads as filler punctuation and prints badly in feeds, titles and share cards. | Break the sentence, use a comma, or draw the separator as an element (`<span class="sep"></span>` renders a small square in `--accent`). Applies to meta rows, page titles, `<title>` tags and social card text too. |
 | Competitor names: `TripView`, `Opal Travel`, `Google Maps`, `Citymapper`, etc. | We never bash competitors | Refer generically: "other transit apps", "the official ones" |
 | Tech jargon: `Compose`, `Kotlin`, `Multiplatform`, `OLED`, `Vector`, `Sub-second`, `Open source on GitHub`, `IDFA`, `SDK` | Marketing site, not a dev page | Consumer-friendly: "Available on iPhone & Android", "Lightning fast", "Smooth" |
 | Founder personal details: `1-bedroom flat`, `paid for in long blacks`, `no investors`, sleeping habits, etc. | Not for the website | Stick to the public founder line: "Built by one Sydney commuter" |
@@ -172,6 +173,35 @@ have changed before.
   shape, gradients, white outlines). The current generic "T2" letter on
   a coloured circle is fine — importing the actual TfNSW shield SVG is not.
 - Any claim of partnership, endorsement, or affiliation with TfNSW.
+- **Phrasing that reads as the network itself**, not as someone writing
+  about it. `Stories from the Sydney rail`, `the Sydney rail network`,
+  `Sydney's rail network` all imply an operator voice. Write from the
+  commuter's side instead: `the Sydney commute`, `catching the train`,
+  `riding across Sydney`.
+
+#### Exact strings, and what to write instead
+
+Enforced by the legal gate. Applies to visible copy, `<title>`, meta
+descriptions, OG and share card text, image alt text, and **JSON-LD**,
+which is what answer engines quote back.
+
+| Never | Write instead |
+|---|---|
+| `T2 Leppington and Inner West Line`, `T1 Western Line`, and every other full line name | `the T2 line`, `the T1 line`. Bare line codes are fine, the branded name is not |
+| `Opal`, `Opal fare`, `Opal card` | `fare`, `off-peak fare`. The number is the fact, the brand is not |
+| `Sydney Trains`, `Sydney Metro`, `NSW TrainLink` | `the train`, `the metro`, generic mode names |
+| `Transport publishes`, `Transport says`, or any phrasing making TfNSW the subject of our sentence | `the public transport data feed`, `published open data` |
+| `Sydney rail`, `the rail network` | `the Sydney commute` |
+
+**Allowed, do not "fix" these:** station names, bare mode letters and line
+codes, generic mode names, `Park & Ride`, the TfNSW colour values, and the
+mandatory disclaimer, which has to name TfNSW to work.
+
+**Citation exception.** A source being cited and linked may be named by
+its real publisher, including `Transport for NSW`. Naming what you cite is
+referencing, not brand use, and hiding it makes the citation weaker for
+both readers and answer engines. This exception covers the sources block
+only, never body copy or headings.
 
 ### Always include
 
