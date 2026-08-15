@@ -6,11 +6,16 @@
   "type": "module",
   "scripts": {
     "build:blog": "node tools/build-blog.mjs",
-    "check:contrast": "node tools/a11y-contrast.mjs",
+    "check": "node tools/check-all.mjs",
+    "check:gates": "node tools/gates.mjs",
     "check:a11y": "node tools/a11y-static.mjs blog/index.html blog/*/index.html",
-    "tokens": "node tools/a11y-contrast.mjs --write"
+    "check:contrast": "node tools/a11y-contrast.mjs",
+    "check:editorial": "node tools/qa-review.mjs",
+    "tokens": "node tools/a11y-contrast.mjs --write",
+    "serve": "python3 -m http.server 8080 --bind 127.0.0.1"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.117.1",
     "marked": "12.0.2"
   }
 }

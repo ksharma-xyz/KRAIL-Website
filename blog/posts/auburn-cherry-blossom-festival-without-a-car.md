@@ -3,7 +3,7 @@ title: Auburn Cherry Blossom Festival without a car
 slug: auburn-cherry-blossom-festival-without-a-car
 series: things-to-do
 accent: without a car.
-summary: Every ticket is booked online, there is no buying one at the gate, and street parking near the gardens is limited. Here is the train and shuttle that gets you there instead.
+summary: Every ticket is booked online, there is no buying one at the gate. Here is the train and free shuttle that gets you there instead.
 updated: 2026-08-14
 author: Karan Sharma
 hero: /images/hero.webp

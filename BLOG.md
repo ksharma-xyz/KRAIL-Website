@@ -38,7 +38,13 @@ tells you exactly which line and why.
 | `blog.tokens.css` | **Generated.** The accent triplets. Never hand-edit. | built |
 | `tools/build-blog.mjs` | Markdown to HTML generator. | **built** |
 | `tools/a11y-contrast.mjs` | Contrast gate, and generator for `blog.tokens.css`. | built |
-| `tools/a11y-static.mjs` | 14 structural accessibility checks over built HTML. | built |
+| `tools/a11y-static.mjs` | 14 structural accessibility checks over built HTML. | **built** |
+| `tools/gates.mjs` | Copy, legal, SEO, answer-engine, link and mobile gates. | **built** |
+| `tools/check-all.mjs` | Runs every gate and prints one report. | **built** |
+| `tools/check-mobile.mjs` | Lighthouse mobile budget enforcement. | **built** |
+| `tools/qa-review.mjs` | Editorial review by Claude. Advisory. | **built** |
+| `.github/workflows/blog-qa.yml` | Every gate, on each pull request. | **built** |
+| `.github/workflows/build-blog.yml` | Build and publish, on merge to main. | **built** |
 | `images/blog/` | Post images. | planned |
 
 **Promotion is one field.** A post lives in `blog/posts/` from the start
@@ -220,12 +226,12 @@ accent highlights of one or two words maximum.
 Every gate runs on the pull request. A single comment reports pass or fail
 per gate with file and line. Blocking gates must be green before merge.
 
-### 6.1 Copy and brand gate (planned, blocking)
+### 6.1 Copy and brand gate (built, blocking)
 
 Regex checks driven by `CLAUDE.md` section 2. Runs against the markdown
 **and** the generated HTML, so `<title>` and OG text are covered too.
 
-### 6.2 Legal gate (planned, blocking)
+### 6.2 Legal gate (built, blocking)
 
 - TfNSW disclaimer present verbatim in the footer
 - Registered mark beside the wordmark
@@ -252,7 +258,7 @@ fixed: two full branded line names, two uses of `Opal`, and one sentence
 that made TfNSW the subject. Three of them were also sitting inside the
 FAQ JSON-LD.
 
-### 6.3 Accessibility gate (partly built, blocking)
+### 6.3 Accessibility gate (built, blocking)
 
 Four layers:
 
@@ -283,7 +289,7 @@ reveals all content, the squiggle draws only as decoration and is
 `aria-hidden`, mode colour is never the only signal because every tag
 carries text, and the reading progress bar is `aria-hidden`.
 
-### 6.4 SEO gate (planned, blocking)
+### 6.4 SEO gate (built, blocking)
 
 Title 30 to 60 characters, description 70 to 160, exactly one `h1`, no
 skipped heading levels, alt text everywhere, hero present and under the
@@ -291,7 +297,7 @@ weight budget, canonical set, OG and Twitter tags present, valid
 `BlogPosting` JSON-LD, at least one internal link, slug format, word count
 floor.
 
-### 6.5 AI and answer-engine gate (planned, blocking)
+### 6.5 AI and answer-engine gate (built, blocking)
 
 Generative engines cite structure, not prose. This gate requires:
 
@@ -305,22 +311,33 @@ Generative engines cite structure, not prose. This gate requires:
 It also regenerates `llms.txt`, `feed.xml` and `sitemap.xml` on every
 build.
 
-### 6.6 Link and performance gate (planned, blocking)
+### 6.6 Link and performance gate (built, blocking)
 
 No dead internal links, every referenced image exists on disk and is
 within the weight budget, HTML parses, and the existing Lighthouse budget
 in `.github/workflows/lighthouse.yml` extended to cover the blog index and
 one post.
 
-### 6.7 Model QA (planned, advisory first)
+### 6.7 Model QA (built, advisory)
 
-A Claude step reads the post against `CLAUDE.md` and the commuter test,
-then comments pass or fail with line notes. Starts non-blocking. Promoted
-to blocking once its judgement has been trusted for a while.
+`tools/qa-review.mjs` sends the post and `CLAUDE.md` to Claude and gets a
+structured verdict back: ship, revise or reject, plus a commuter-test
+result, per-finding severity, and a list of claims the cited sources do
+not obviously support.
+
+It catches what a regex cannot: whether the post describes a situation a
+commuter has lived, whether a fact is actually supported, whether the copy
+sounds like one person writing rather than a brand.
+
+Advisory on purpose. It leaves its own comment on the pull request and
+never blocks a merge. Promote it to blocking only once its judgement has
+earned that. Without `ANTHROPIC_API_KEY` it exits cleanly with a notice,
+so a contributor without the secret is never stuck on a check that cannot
+run.
 
 ---
 
-## 6.8 Mobile gate (planned, blocking)
+## 6.8 Mobile gate (built, blocking)
 
 Most readers arrive on a phone, so mobile gets its own gate rather than
 being a footnote on the desktop one.
@@ -381,17 +398,23 @@ and merge, which removes the page on the next build.
 ## 8. Running things locally
 
 ```bash
-# serve the site
-python3 -m http.server 8080 --bind 127.0.0.1
-# then open http://127.0.0.1:8080/blog/
+npm ci                  # once
 
-# contrast gate
-node tools/a11y-contrast.mjs
-node tools/a11y-contrast.mjs --derive     # print passing variants
+npm run check           # build, then every gate, one report
+npm run build:blog      # regenerate the Journal
+npm run serve           # http://127.0.0.1:8080/blog/
 
-# accessibility score against a live URL
-./audit/a11y.sh http://127.0.0.1:8080/blog/
+npm run check:gates     # copy, legal, SEO, answer engines, links, mobile budget
+npm run check:a11y      # 14 structural accessibility checks
+npm run check:contrast  # colour contrast
+npm run check:editorial # Claude reads the post against CLAUDE.md (needs a key)
+npm run tokens          # regenerate blog.tokens.css
+
+./audit/a11y.sh http://127.0.0.1:8080/blog/   # Lighthouse accessibility score
 ```
+
+`npm run check` is what CI runs. If it passes locally it passes on the pull
+request.
 
 ---
 

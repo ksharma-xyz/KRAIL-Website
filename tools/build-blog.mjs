@@ -20,7 +20,7 @@
      node tools/build-blog.mjs --check    build to memory, write nothing
    ============================================================ */
 
-import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, rmSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
@@ -636,6 +636,37 @@ function build() {
     mkdirSync(dirname(path), { recursive: true });
     writeFileSync(path, contents);
   };
+
+  /* Anything previously generated for a post that is no longer
+     published has to go, or unpublishing would leave the page live
+     and reachable. The build output is a mirror of what is ready,
+     not an accumulation of everything ever built. */
+  const live = new Set(posts.map((p) => p.data.slug));
+  for (const entry of readdirSync(OUT_DIR, { withFileTypes: true })) {
+    if (!entry.isDirectory() || entry.name === 'posts' || entry.name === 'drafts') continue;
+    if (live.has(entry.name)) continue;
+    if (!CHECK_ONLY) rmSync(join(OUT_DIR, entry.name), { recursive: true, force: true });
+    console.log(`  Removed /blog/${entry.name}/, no longer published.`);
+  }
+
+  /* With nothing ready, the Journal does not exist. Publishing an
+     empty index would put a live, linkable, contentless page on the
+     site, so the whole section is removed instead. This is what makes
+     "hold the Journal" the automatic outcome rather than a thing
+     someone has to remember. */
+  if (!posts.length) {
+    for (const f of ['index.html', 'feed.xml', 'sitemap.xml', 'llms.txt']) {
+      const p = join(OUT_DIR, f);
+      if (existsSync(p) && !CHECK_ONLY) rmSync(p);
+    }
+    console.log(`\n  No posts marked ready, so no Journal is published.`);
+    if (skipped.length) {
+      console.log(`\n  Holding:`);
+      for (const s of skipped) console.log(`    ${s}`);
+    }
+    console.log('');
+    return { files: 0, posts: 0 };
+  }
 
   posts.forEach((p, i) => {
     write(join(OUT_DIR, p.data.slug, 'index.html'),

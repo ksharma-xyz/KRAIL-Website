@@ -1,0 +1,201 @@
+name: Journal QA
+
+# Runs every gate against a pull request and leaves one comment with
+# the verdict. Nothing here writes to the site. The job is to make the
+# decision to publish a matter of reading one table.
+
+on:
+  pull_request:
+    paths:
+      - 'blog/posts/**'
+      - 'tools/**'
+      - 'blog.css'
+      - 'blog.js'
+      - 'blog.tokens.css'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/blog-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: journal-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gates:
+    name: Content, accessibility and legal gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      published: ${{ steps.check.outputs.published }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Run all gates
+        id: check
+        run: |
+          set +e
+          node tools/check-all.mjs --md > report.md
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          # Later steps need to know whether anything is actually publishing.
+          if [ -f blog/index.html ]; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+          cat report.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment the report on the pull request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('report.md', 'utf8');
+            const marker = '<!-- journal-qa -->';
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            if (!issue_number) return;
+
+            // One comment per pull request, updated in place, so the
+            // conversation does not fill up with stale reports.
+            const existing = await github.paginate(
+              github.rest.issues.listComments, { owner, repo, issue_number });
+            const mine = existing.find(c => c.body && c.body.includes(marker));
+            const payload = `${marker}\n${body}`;
+            if (mine) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body: payload });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body: payload });
+            }
+
+      - name: Fail if any gate is blocking
+        if: steps.check.outputs.status != '0'
+        run: |
+          echo "One or more gates are blocking. See the pull request comment."
+          exit 1
+
+  mobile:
+    name: Mobile budget
+    needs: gates
+    # Only worth running when a post is actually publishing. Most
+    # readers are on a phone, so this gate is not optional once one is.
+    if: needs.gates.outputs.published == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Build the Journal
+        run: node tools/build-blog.mjs
+
+      - name: Serve the site
+        run: |
+          python3 -m http.server 8080 --bind 127.0.0.1 &
+          for i in $(seq 1 20); do
+            curl -sf http://127.0.0.1:8080/blog/ >/dev/null && break
+            sleep 1
+          done
+
+      - name: Lighthouse, mobile preset
+        run: |
+          npm install -g lighthouse@latest
+          mkdir -p audit
+          FAIL=0
+          URLS=$(node -e "
+            const fs = require('fs');
+            const out = ['http://127.0.0.1:8080/blog/'];
+            for (const e of fs.readdirSync('blog')) {
+              if (e !== 'posts' && fs.existsSync('blog/' + e + '/index.html')) {
+                out.push('http://127.0.0.1:8080/blog/' + e + '/');
+              }
+            }
+            console.log(out.join(' '));
+          ")
+          for URL in $URLS; do
+            echo "::group::$URL"
+            lighthouse "$URL" \
+              --output=json --output=html \
+              --output-path=./audit/mobile \
+              --chrome-flags='--headless --no-sandbox --disable-dev-shm-usage' \
+              --quiet --form-factor=mobile --screenEmulation.mobile=true
+            node tools/check-mobile.mjs audit/mobile.report.json || FAIL=1
+            SAFE=$(echo "$URL" | tr -c 'a-zA-Z0-9' '-')
+            cp audit/mobile.report.html "audit/$SAFE.report.html" || true
+            echo "::endgroup::"
+          done
+          exit $FAIL
+
+      - name: Upload the reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: journal-mobile-reports
+          path: audit/*.report.html
+          retention-days: 30
+
+  editorial:
+    name: Editorial review
+    needs: gates
+    # Advisory only. It never blocks a merge, and it degrades to a notice
+    # when the secret is absent so forks and contributors are not stuck on
+    # a check they cannot run.
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Review the posts
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          node tools/qa-review.mjs --md > editorial.md || true
+          cat editorial.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment the review on the pull request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('editorial.md', 'utf8');
+            const marker = '<!-- journal-editorial -->';
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            if (!issue_number) return;
+            const existing = await github.paginate(
+              github.rest.issues.listComments, { owner, repo, issue_number });
+            const mine = existing.find(c => c.body && c.body.includes(marker));
+            const payload = `${marker}\n${body}`;
+            if (mine) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: mine.id, body: payload });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body: payload });
+            }
