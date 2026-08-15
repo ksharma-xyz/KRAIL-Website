@@ -2,10 +2,14 @@
 // Print Lighthouse scores as a markdown table.
 // Used by .github/workflows/lighthouse.yml (writes to $GITHUB_STEP_SUMMARY)
 // and by audit/check.sh for local runs.
-const fs = require('fs');
+//
+// ES module syntax because package.json sets "type": "module". Keeping the
+// .js extension matters: .gitignore excludes audit/ except *.js and *.sh,
+// so renaming this to .cjs would silently stop it being committed.
+import { readFileSync } from 'node:fs';
 
-const desktop = JSON.parse(fs.readFileSync('audit/lighthouse.report.json', 'utf8'));
-const mobile  = JSON.parse(fs.readFileSync('audit/lighthouse-mobile.report.json', 'utf8'));
+const desktop = JSON.parse(readFileSync('audit/lighthouse.report.json', 'utf8'));
+const mobile  = JSON.parse(readFileSync('audit/lighthouse-mobile.report.json', 'utf8'));
 
 const score = (r, k) => Math.round(r.categories[k].score * 100);
 const emoji = s => (s >= 90 ? '🟢' : s >= 50 ? '🟡' : '🔴');
