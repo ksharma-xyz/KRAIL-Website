@@ -1,0 +1,51 @@
+/* ============================================================
+   GENERATED FILE, DO NOT EDIT.
+   Regenerate with: node tools/a11y-contrast.mjs --write
+
+   Every value below is derived so that text clears WCAG AA
+   4.5:1 against the surface it sits on. The pure brand hue is
+   kept as --accent for decoration only.
+   ============================================================ */
+
+:root {
+  --accent:      var(--brand-pink);
+  --accent-ink:  #DB287B;   /* 4.56:1 on paper */
+  --accent-fill: #DB287B;
+}
+
+[data-theme="dark"] {
+  --accent-ink:  #FF2F8F;   /* 5.35:1 on ink */
+  --accent-fill: #DB287B;
+}
+
+[data-cat="things-to-do"] {
+  --accent:      var(--train);
+  --accent-ink:  #B16316;   /* 4.50:1 on paper */
+  --accent-fill: #B16316;   /* white on it 4.50:1 */
+}
+[data-cat="eat-and-drink"] {
+  --accent:      var(--ferry);
+  --accent-ink:  #448425;   /* 4.59:1 on paper */
+  --accent-fill: #448425;   /* white on it 4.59:1 */
+}
+[data-cat="app"] {
+  --accent:      var(--metro);
+  --accent-ink:  #008768;   /* 4.50:1 on paper */
+  --accent-fill: #008768;   /* white on it 4.50:1 */
+}
+[data-cat="behind-the-scenes"] {
+  --accent:      var(--coach);
+  --accent-ink:  #742282;   /* 9.16:1 on paper */
+  --accent-fill: #742282;   /* white on it 9.16:1 */
+}
+[data-cat="news"] {
+  --accent:      var(--bus);
+  --accent-ink:  #007FA7;   /* 4.57:1 on paper */
+  --accent-fill: #007FA7;   /* white on it 4.57:1 */
+}
+
+[data-theme="dark"] [data-cat="things-to-do"] { --accent-ink: #F6891F; }   /* 7.52:1 on ink */
+[data-theme="dark"] [data-cat="eat-and-drink"] { --accent-ink: #5AB031; }   /* 6.79:1 on ink */
+[data-theme="dark"] [data-cat="app"] { --accent-ink: #009B77; }   /* 5.26:1 on ink */
+[data-theme="dark"] [data-cat="behind-the-scenes"] { --accent-ink: #A26BAB; }   /* 4.62:1 on ink */
+[data-theme="dark"] [data-cat="news"] { --accent-ink: #00B5EF; }   /* 7.82:1 on ink */

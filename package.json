@@ -1,0 +1,16 @@
+{
+  "name": "krail-website",
+  "private": true,
+  "version": "1.0.0",
+  "description": "KRAIL marketing site and Journal",
+  "type": "module",
+  "scripts": {
+    "build:blog": "node tools/build-blog.mjs",
+    "check:contrast": "node tools/a11y-contrast.mjs",
+    "check:a11y": "node tools/a11y-static.mjs blog/index.html blog/*/index.html",
+    "tokens": "node tools/a11y-contrast.mjs --write"
+  },
+  "dependencies": {
+    "marked": "12.0.2"
+  }
+}
