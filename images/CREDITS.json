@@ -1,0 +1,52 @@
+{
+  "_README": [
+    "Every image published on this site has an entry here. No entry, no publish.",
+    "The legal gate in tools/gates.mjs reads this file and blocks a ready post",
+    "that references an image it does not cover.",
+    "",
+    "licence   Required. 'Own work' for anything we made, otherwise the exact",
+    "          licence name, e.g. 'CC BY-SA 4.0'. Never a placeholder.",
+    "creator   Required. Who made it. 'KRAIL' for our own work.",
+    "source    Required unless licence is 'Own work'. URL of the original.",
+    "licenceUrl Required for any Creative Commons licence. Link to the deed.",
+    "modified  What we changed. Required by the SA licences, useful anyway.",
+    "",
+    "If we cannot fill this in truthfully, we do not use the image."
+  ],
+
+  "/images/auburn-cherry-blossom.webp": {
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "creator": "Maksym Kozlenko",
+    "source": "https://commons.wikimedia.org/wiki/File:Cherry_blossoms_at_Auburn_Botanical_Gardens_01.jpg",
+    "modified": "Centre cropped from 4570x2867 to 16:9, resized to 1600x900, metadata stripped."
+  },
+
+  "/images/auburn-japanese-gardens.webp": {
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "creator": "Sourav Biswas",
+    "source": "https://commons.wikimedia.org/wiki/File:Auburn_botanical_garden_Japanese_garden.jpg",
+    "modified": "Centre cropped from 4160x3120 to 3:2, resized to 1600x1067, metadata stripped."
+  },
+
+  "/images/auburn-departures.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL",
+    "modified": "Screen capture of the KRAIL app, composited to the phone frame ratio and padded to clear the notch."
+  },
+
+  "/images/hero.webp":        { "licence": "Own work", "creator": "KRAIL" },
+  "/images/map.webp":         { "licence": "Own work", "creator": "KRAIL" },
+  "/images/realtime.webp":    { "licence": "Own work", "creator": "KRAIL" },
+  "/images/park_ride.webp":   { "licence": "Own work", "creator": "KRAIL" },
+  "/images/saved_trips.webp": { "licence": "Own work", "creator": "KRAIL" },
+  "/images/stop_labels.webp": { "licence": "Own work", "creator": "KRAIL" },
+  "/images/dark.webp":        { "licence": "Own work", "creator": "KRAIL" },
+  "/images/founder.jpeg":     { "licence": "Own work", "creator": "Karan Sharma" },
+
+  "/images/mobile/map.webp":         { "licence": "Own work", "creator": "KRAIL" },
+  "/images/mobile/realtime.webp":    { "licence": "Own work", "creator": "KRAIL" },
+  "/images/mobile/park_ride.webp":   { "licence": "Own work", "creator": "KRAIL" },
+  "/images/mobile/stop_labels.webp": { "licence": "Own work", "creator": "KRAIL" }
+}

@@ -35,6 +35,37 @@ const STRICT = process.argv.includes('--strict');
 const MAX_IMAGE_BYTES = 300 * 1024;
 const MAX_HERO_BYTES  = 400 * 1024;
 
+/* ============================================================
+   Image licensing.
+
+   The rule is absolute: we publish an image only when we are
+   legally allowed to and the credit is on the page. Otherwise we
+   do not use it. There is no "ship it and sort the licence out
+   later" state, because the shipping is the part that matters.
+
+   images/CREDITS.json is the register. Presence of a credit line
+   was never enough on its own, a heroCredit reading "TODO, needs a
+   real photo" passed the old check while saying in plain words
+   that the image was not cleared. So three things are checked:
+   the image is registered, the register entry is real rather than
+   a placeholder, and for anything we did not make ourselves the
+   creator and licence actually appear in the visible credit.
+   ============================================================ */
+const CREDITS_PATH = join(ROOT, 'images', 'CREDITS.json');
+let CREDITS = {};
+try {
+  CREDITS = JSON.parse(readFileSync(CREDITS_PATH, 'utf8'));
+} catch (err) {
+  console.error(`Cannot read images/CREDITS.json: ${err.message}`);
+  process.exit(2);
+}
+
+/* Words that mean the licence question is still open. Any of these
+   in a credit or a register entry is treated as "not cleared". */
+const PLACEHOLDER = /\b(TODO|TBD|FIXME|placeholder|swap for|needs? a real|coming soon|temp(?:orary)?)\b/i;
+
+const OWN_WORK = /^own work$/i;
+
 const findings = [];
 const add = (level, gate, file, line, message, fix) =>
   findings.push({ level, gate, file, line, message, fix });
@@ -190,21 +221,29 @@ function checkPost(file) {
       add('error', 'a11y', `blog/posts/${file}`, 1, 'Hero image has no heroAlt.',
           'Describe what the image shows. Alt text is not optional.');
     }
-    if (!fm(head, 'heroCredit')) {
+    const heroCredit = fm(head, 'heroCredit');
+    if (!heroCredit) {
       add('error', 'legal', `blog/posts/${file}`, 1, 'Hero image has no heroCredit.',
           'Record the licence or source for every published image.');
     }
     checkAsset(hero, `blog/posts/${file}`, 1, MAX_HERO_BYTES);
+    checkLicence(hero, heroCredit, `blog/posts/${file}`, 1, status, 'Hero image');
   }
 
   for (const m of clean.matchAll(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g)) {
-    const [, alt, src] = m;
+    const [, alt, src, title] = m;
     const line = at(m.index);
     if (!alt.trim()) {
       add('error', 'a11y', `blog/posts/${file}`, line, 'Image has empty alt text.',
           'Describe the image, or explain in review why it is decorative.');
     }
     checkAsset(src, `blog/posts/${file}`, line, MAX_IMAGE_BYTES);
+    /* The title doubles as the style token and the caption, and it is
+       the caption half that carries the credit on the page. */
+    const caption = (title || '').includes('|')
+      ? (title || '').slice((title || '').indexOf('|') + 1).trim()
+      : (title || '').trim();
+    checkLicence(src, caption, `blog/posts/${file}`, line, status, `Image ${src}`);
   }
 
   /* ---- answer-engine readiness ---- */
@@ -229,6 +268,79 @@ function checkPost(file) {
   }
 
   return { file, slug, status, title };
+}
+
+/* ============================================================
+   The licence check.
+
+   Blocks a ready post, warns on a draft, which is the same shape
+   the `sources` gate uses. Drafting with a rough image is fine.
+   Publishing one that is not cleared is not.
+   ============================================================ */
+function checkLicence(src, credit, file, line, status, label) {
+  if (/^(https?:)?\/\//.test(src) || src.startsWith('data:')) {
+    add(status === 'ready' ? 'error' : 'warn', 'legal', file, line,
+        `${label} is hotlinked from another origin.`,
+        'Copy it into images/, register it in images/CREDITS.json, and serve it ourselves.');
+    return;
+  }
+
+  const level = status === 'ready' ? 'error' : 'warn';
+  const entry = CREDITS[src];
+
+  if (!entry) {
+    add(level, 'legal', file, line, `${label} is not in images/CREDITS.json.`,
+        'Add an entry naming the creator and the licence. An image we cannot credit is an image we do not publish.');
+    return;
+  }
+
+  const licence = String(entry.licence || '').trim();
+  const creator = String(entry.creator || '').trim();
+
+  if (!licence || PLACEHOLDER.test(licence)) {
+    add(level, 'legal', file, line, `${label} has no settled licence in the register.`,
+        'Name the actual licence, or drop the image. "Sort it out later" is not a licence.');
+    return;
+  }
+  if (!creator || PLACEHOLDER.test(creator)) {
+    add(level, 'legal', file, line, `${label} has no creator in the register.`,
+        'Name who made it. "Own work" images still need a creator.');
+    return;
+  }
+
+  if (credit && PLACEHOLDER.test(credit)) {
+    add(level, 'legal', file, line, `${label} has a placeholder credit on the page.`,
+        'The credit is what the reader sees. It has to be the real one before this ships.');
+    return;
+  }
+
+  /* Our own work needs no visible credit and no source URL. Anything
+     else does, and the attribution has to be on the page rather than
+     only in the register, which is the whole point of attribution. */
+  if (OWN_WORK.test(licence)) return;
+
+  if (!entry.source) {
+    add(level, 'legal', file, line, `${label} is third party but has no source URL in the register.`,
+        'Record where it came from, so the licence claim can be checked by someone who is not us.');
+  }
+  if (/^CC\b/i.test(licence) && !entry.licenceUrl) {
+    add(level, 'legal', file, line, `${label} is Creative Commons but has no licenceUrl in the register.`,
+        'Creative Commons attribution has to link the licence deed.');
+  }
+
+  if (!credit) {
+    add(level, 'legal', file, line, `${label} is third party but carries no visible credit.`,
+        `Put the credit in the caption: photo by ${creator}, licensed ${licence}.`);
+    return;
+  }
+  if (!credit.includes(creator)) {
+    add(level, 'legal', file, line, `${label} does not name ${creator} in its visible credit.`,
+        'Attribution means the creator is named on the page, not only in the register.');
+  }
+  if (!credit.toLowerCase().includes(licence.toLowerCase())) {
+    add(level, 'legal', file, line, `${label} does not name its licence (${licence}) in the visible credit.`,
+        'State the licence next to the creator, so a reader can see the terms the image is used under.');
+  }
 }
 
 /* Local assets are resolved from the repo root, since that is what

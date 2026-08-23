@@ -203,6 +203,30 @@ referencing, not brand use, and hiding it makes the citation weaker for
 both readers and answer engines. This exception covers the sources block
 only, never body copy or headings.
 
+### Images: cleared, registered, credited
+
+**Zero tolerance.** An image goes on the site only when we are legally
+allowed to publish it and the credit is on the page. Otherwise we do not
+use it. No "ship it and clear the licence later" state, because shipping
+is the part that matters. If the choice is an uncleared image or no
+image, it is **no image**.
+
+- `images/CREDITS.json` is the register. Every published image has an
+  entry with `licence` and `creator`, plus `source` and `licenceUrl` for
+  anything we did not make.
+- Own work needs an entry but no visible credit. **Third-party work needs
+  the credit visible on the page**, naming the creator and the licence.
+  Attribution that lives only in a JSON file is not attribution.
+- Never hotlink. Copy the file into `images/` and serve it ourselves.
+- A generated image is never used as a documentary photo of a real,
+  named, visitable place. If the credit would have to say "illustration",
+  ask first.
+- Enforced by the legal gate in `tools/gates.mjs`, which blocks a `ready`
+  post and warns on a `draft`. Full field reference in `BLOG.md`.
+
+Good sources: Wikimedia Commons (check the licence per file, they vary),
+and our own photos and app screen captures.
+
 ### Always include
 
 - **Footer disclaimer** (verbatim, full screen-width, in the same dark

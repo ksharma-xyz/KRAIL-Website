@@ -242,12 +242,53 @@ Regex checks driven by `CLAUDE.md` section 2. Runs against the markdown
   about it, such as `Sydney rail` or `Transport publishes`
 - No official numbered line shields
 - No partnership or endorsement claim
-- Every image has a `heroCredit` or per-image licence line
+- Every image is cleared to publish, registered and credited. See below
 
 Scope matters here. The gate runs over visible copy, `<title>`, meta
 descriptions, OG and share card text, alt text **and JSON-LD**. The
 structured data is the easiest place for a branded name to survive a
 review, and it is exactly what answer engines quote back.
+
+### Images: cleared, registered, credited
+
+**We publish an image only when we are legally allowed to and the credit
+is on the page. Otherwise we do not use it.** There is no state where a
+post ships with an image whose licence is still being sorted out. If the
+choice is an uncleared image or no image, it is no image.
+
+`images/CREDITS.json` is the register. Every published image has an entry:
+
+| Field | Required | Notes |
+|---|---|---|
+| `licence` | yes | `Own work` for anything we made, otherwise the exact name, e.g. `CC BY-SA 4.0` |
+| `creator` | yes | Who made it. `KRAIL` for our own work |
+| `source` | unless own work | URL of the original, so the claim is checkable by someone who is not us |
+| `licenceUrl` | for any CC licence | Link to the licence deed |
+| `modified` | recommended | What we changed. The SA licences require it |
+
+The legal gate blocks a `ready` post and warns on a `draft` when any of
+these is true:
+
+- the image is not in the register
+- the register entry has no settled licence or no creator
+- the licence or creator field reads like a placeholder (`TODO`, `TBD`,
+  `placeholder`, `swap for`, `needs a real`, `temporary`)
+- the visible credit reads like a placeholder
+- the image is third party and has no `source`, or is CC with no `licenceUrl`
+- the image is third party and its **visible** credit does not name both
+  the creator and the licence
+- the image is hotlinked from another origin instead of served by us
+
+Own work needs a register entry but no visible credit. Third-party work
+needs the credit on the page, because attribution that lives only in a
+JSON file is not attribution.
+
+Where the credit goes: `heroCredit` for the hero, and the caption half of
+the markdown title for a body image, so `![alt](/images/x.webp "phone |
+caption goes here")`.
+
+Note that a credit line renders as escaped text, so a licence URL in it
+is plain text rather than a link.
 
 The full string-by-string table lives in `CLAUDE.md` section 5, including
 the citation exception: a source being cited and linked may be named by
