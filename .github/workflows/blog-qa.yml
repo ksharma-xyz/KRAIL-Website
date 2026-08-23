@@ -56,6 +56,14 @@ jobs:
           fi
           cat report.md >> "$GITHUB_STEP_SUMMARY"
 
+      # Network dependent, so it runs after the blocking gates and
+      # reports rather than gating the whole job. A dead source still
+      # needs a human, but a flaky connection must not fail content QA.
+      - name: Check that every source URL actually resolves
+        continue-on-error: true
+        run: |
+          node tools/check-sources.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+
       - name: Comment the report on the pull request
         uses: actions/github-script@v7
         with:

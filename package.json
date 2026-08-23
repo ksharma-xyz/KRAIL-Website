@@ -12,7 +12,8 @@
     "check:contrast": "node tools/a11y-contrast.mjs",
     "check:editorial": "node tools/qa-review.mjs",
     "tokens": "node tools/a11y-contrast.mjs --write",
-    "serve": "python3 -m http.server 8080 --bind 127.0.0.1"
+    "serve": "python3 -m http.server 8080 --bind 127.0.0.1",
+    "check:sources": "node tools/check-sources.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.117.1",
