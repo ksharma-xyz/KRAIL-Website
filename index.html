@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>KRAIL · Sydney commute, respected.</title>
+<title>KRAIL, Sydney commute respected</title>
 <meta name="description" content="Sydney's prettiest public-transport app. Real-time trains, metro, buses, ferries, light rail. Saved trips, live Park &amp; Ride, dark mode. No ads*. Free*." />
 
 <!-- Favicon · hot pink K circle (mode-pill style) + theme colour for Android -->
@@ -1857,13 +1857,14 @@
     line-height: 1;
   }
   .foot-mark .lets-krail .city-tag::before {
-    content: "·";
-    color: var(--brand-pink);
-    -webkit-text-fill-color: var(--brand-pink);
+    /* Drawn as a small square, never typed as a middle dot. */
+    content: "";
+    display: inline-block;
+    width: 0.34em;
+    height: 0.34em;
+    background: var(--brand-pink);
     margin-right: 12px;
-    font-weight: 900;
-    font-size: 1.4em;
-    vertical-align: -0.05em;
+    vertical-align: 0.12em;
   }
   @media (prefers-reduced-motion: reduce) {
     .foot-mark .lets-krail { animation: none; }
@@ -2513,6 +2514,15 @@
 <nav class="top">
   <div class="container row">
     <a href="#top" class="brand">KRAIL</a>
+    <!-- Same three links the Journal pages carry, so the nav does not
+         change shape when you cross between them. Without Journal here
+         the only route to the blog was the footer, which meant reading
+         the whole page to find out it exists. -->
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="/blog/">Journal</a>
+      <a href="#faq">FAQ</a>
+    </div>
     <a href="#download" id="navGetApp" class="pill-cta">Get the app
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
     </a>
@@ -2564,7 +2574,7 @@
           <div class="phone" id="heroPhone">
             <div class="notch"></div>
             <div class="screen screen--shot">
-              <img src="images/hero.webp" alt="KRAIL · live Sydney departures from Town Hall" loading="eager" fetchpriority="high" />
+              <img src="images/hero.webp" alt="Live Sydney departures from Town Hall in the KRAIL app" loading="eager" fetchpriority="high" />
             </div>
           </div>
         </div>
@@ -2599,7 +2609,7 @@
   <div class="container">
     <div class="stats-head anim" style="--accent: var(--bus);">
       <h2 class="section-title">Sydney, <em>end to end.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h2>
-      <p class="section-sub" style="margin: 14px auto 0;"><b>Tallawong to Bondi · live, every minute.</b></p>
+      <p class="section-sub" style="margin: 14px auto 0;"><b>Tallawong to Bondi. Live, every minute.</b></p>
     </div>
 
     <div class="stats-grid anim anim-stagger">
@@ -2617,7 +2627,7 @@
       </div>
       <div class="stat" style="--i:3">
         <div class="num">20+</div>
-        <div class="lbl"><b>Park &amp; Ride stations · live</b>The only Sydney transit app with live slot counts before you leave the driveway.</div>
+        <div class="lbl"><b>Park &amp; Ride stations, live</b>The only Sydney transit app with live slot counts before you leave the driveway.</div>
       </div>
       <div class="stat" style="--i:4">
         <div class="num">Free<span style="font-size:0.5em;color:var(--brand-pink);">*</span></div>
@@ -2651,16 +2661,18 @@
         <div class="phone">
           <div class="notch"></div>
           <div class="screen screen--shot">
-            <img src="images/saved_trips.webp" alt="KRAIL · saved trips home screen with colour-coded tiles" loading="lazy" />
+            <img src="images/saved_trips.webp" alt="The KRAIL saved trips home screen with colour-coded tiles" loading="lazy" />
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Block 2 · Park & Ride (phone left) — train orange -->
-    <div class="feature-block reverse anim" style="--accent: var(--train);">
+    <!-- Block 2, Park & Ride (phone left). Metro teal, not train orange:
+         Tallawong, Kellyville and Bella Vista are all Metro stations, and
+         the block leads on Tallawong. -->
+    <div class="feature-block reverse anim" style="--accent: var(--metro);">
       <div class="feature-text">
-        <span class="eyebrow" style="color: var(--train);">Park &amp; Ride</span>
+        <span class="eyebrow" style="color: var(--metro);">Park &amp; Ride</span>
         <h3>Live parking, before the <em>driveway.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
         <p class="lead">Tallawong at 7:05 is a parking lottery. Kellyville fills up by 7:15. Bella Vista has a few spots left, but you have to know that before you drive.</p>
         <p class="lead">KRAIL shows live parking availability at <b>20+ Sydney stations</b>, updated every minute. See exactly how full each station is before you leave home.</p>
@@ -2674,7 +2686,7 @@
         <div class="phone">
           <div class="notch"></div>
           <div class="screen screen--shot">
-            <img src="images/park_ride.webp" alt="KRAIL · live Park &amp; Ride availability across Sydney stations" loading="lazy" />
+            <img src="images/park_ride.webp" alt="Live Park &amp; Ride availability across Sydney stations in the KRAIL app" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2685,7 +2697,7 @@
       <div class="feature-text">
         <span class="eyebrow" style="color: var(--metro);">Maps &amp; exits</span>
         <h3>Walk out the right <em>exit.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
-        <p class="lead">Just tell KRAIL where you're going. It builds the full journey · which lines connect, where to change, which platform to head to. You don't need to know the network by heart before you leave.</p>
+        <p class="lead">Just tell KRAIL where you're going. It builds the full journey. Which lines connect, where to change, which platform to head to. You don't need to know the network by heart before you leave.</p>
         <p class="lead">Every leg has a map. Tap any stop to see your exact street. Which side of the road the bus pulls in on. Which platform to walk toward. Where to change trains without crossing back over.</p>
         <p class="lead tip-line">
           <span class="tip-icon" aria-hidden="true">💡</span>
@@ -2704,7 +2716,7 @@
           <div class="screen screen--shot">
             <picture>
               <source srcset="images/mobile/map.webp" media="(max-width: 640px)" type="image/webp">
-              <img src="images/map.webp" alt="KRAIL · Sydney street map view with route and stops" loading="lazy" />
+              <img src="images/map.webp" alt="The KRAIL map view showing a Sydney route and its stops" loading="lazy" />
             </picture>
           </div>
         </div>
@@ -2720,7 +2732,7 @@
         <p class="lead tip-line">
           <span class="tip-icon" aria-hidden="true">⚡</span>
           <span class="tip-num">Live</span>
-          <span class="tip-text">Refreshed while you watch · same feed as the station screen.</span>
+          <span class="tip-text">Refreshed while you watch. Same feed as the station screen.</span>
         </p>
         <div class="feat-meta">
           <div><b>All 5 modes</b>Train, Metro, Bus, Ferry, Light Rail</div>
@@ -2732,7 +2744,7 @@
         <div class="phone">
           <div class="notch"></div>
           <div class="screen screen--shot">
-            <img src="images/realtime.webp" alt="KRAIL · live departure board straight from the platform feed" loading="lazy" />
+            <img src="images/realtime.webp" alt="The KRAIL live departure board, straight from the platform feed" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2741,9 +2753,9 @@
     <!-- Block 5 · Stop labels (phone right) — light rail red, NEW v1.21 -->
     <div class="feature-block anim" style="--accent: var(--lr);">
       <div class="feature-text">
-        <span class="eyebrow" style="color: var(--lr);">Stop labels · new</span>
+        <span class="eyebrow" style="color: var(--lr);">Stop labels, new</span>
         <h3>Wynyard becomes <em>Work.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
-        <p class="lead">You know the stops. KRAIL lets you name them. Label Wynyard as "Work". Label your street corner as "Home". Label that stop near the gym · you know the one. Your labels show up everywhere in the app, replacing the raw stop name with the word that actually means something to you.</p>
+        <p class="lead">You know the stops. KRAIL lets you name them. Label Wynyard as "Work". Label your street corner as "Home". Label that stop near the gym, you know the one. Your labels show up everywhere in the app, replacing the raw stop name with the word that actually means something to you.</p>
         <p class="lead"><b>The smallest feature. The biggest difference when you're half-asleep at 7am.</b></p>
         <div class="feat-meta">
           <div><b>Your words</b>Name any stop anything you want</div>
@@ -2755,7 +2767,7 @@
         <div class="phone">
           <div class="notch"></div>
           <div class="screen screen--shot">
-            <img src="images/stop_labels.webp" alt="KRAIL · custom labels turn stop names into Home, Work, Gym" loading="lazy" />
+            <img src="images/stop_labels.webp" alt="Custom labels in KRAIL turning stop names into Home, Work and Gym" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2764,9 +2776,9 @@
     <!-- Block 6 · Dark mode + Themes (phone left) — coach purple -->
     <div class="feature-block reverse anim" style="--accent: var(--coach);">
       <div class="feature-text">
-        <span class="eyebrow" style="color: var(--coach);">Dark mode · Accessibility</span>
+        <span class="eyebrow" style="color: var(--coach);">Dark mode and accessibility</span>
         <h3>Built for <em>6 AM.<svg class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg></em></h3>
-        <p class="lead">Accessibility isn't a checkbox in KRAIL · it's in the original design. Dark mode with carefully tuned contrast ratios. Large text that goes bigger than your phone's system default. Every screen, every departure board, readable at arm's length at 6am.</p>
+        <p class="lead">Accessibility isn't a checkbox in KRAIL. It's in the original design. Dark mode with carefully tuned contrast ratios. Large text that goes bigger than your phone's system default. Every screen, every departure board, readable at arm's length at 6am.</p>
         <p class="lead tip-line">
           <span class="tip-icon" aria-hidden="true">💡</span>
           <span class="tip-num">6 in 10</span>
@@ -2792,7 +2804,7 @@
         <div class="phone">
           <div class="notch"></div>
           <div class="screen screen--shot">
-            <img src="images/dark.webp" alt="KRAIL · dark mode for the 6am commute" loading="lazy" />
+            <img src="images/dark.webp" alt="KRAIL in dark mode for the 6am commute" loading="lazy" />
           </div>
         </div>
       </div>
@@ -2816,141 +2828,141 @@
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Real-time parking slot updates are an <b>absolute game changer</b>. Reliable, accurate, and super convenient. <b>Being a train driver myself</b>, I can really appreciate how well-designed and practical it is.</p>
-        <div class="who"><span class="av" style="--av-color:#F6891F">N</span><div><div class="name">N. · Sydney train driver</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#F6891F">N</span><div><div class="name">N., Sydney train driver</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Amazing app. <b>Saved me today by guiding me to the right exit and line</b> when leaving Central Station. Easy 5-star app!</p>
-        <div class="who"><span class="av" style="--av-color:#5AB031">S</span><div><div class="name">S. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#5AB031">S</span><div><div class="name">S. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Finally, I found an app that lets me <b>plan and save my most frequent trip</b>. One-click to reverse my home-to-work commute. Awesome, love the app.</p>
-        <div class="who"><span class="av" style="--av-color:#F6891F">J</span><div><div class="name">J. · ★★★★★</div><div class="src">Google Play</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#F6891F">J</span><div><div class="name">J. ★★★★★</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Great app. It updates the timings and <b>shows me which platform to get on</b>, very clearly.</p>
-        <div class="who"><span class="av" style="--av-color:#009B77">A</span><div><div class="name">A. · ★★★★★</div><div class="src">Google Play</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#009B77">A</span><div><div class="name">A. ★★★★★</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>If you come to Sydney and are <b>confused about how public transport works</b>, just install KRAIL. Awesome and user friendly.</p>
-        <div class="who"><span class="av" style="--av-color:#E0218A">N</span><div><div class="name">N. · new to Sydney</div><div class="src">Google Play</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#E0218A">N</span><div><div class="name">N., new to Sydney</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>I collected one of your <b>flyers from Schofields Station</b>, downloaded the app and tried it. The interface is clean and modern. Thank you for creating this transport platform.</p>
-        <div class="who"><span class="av" style="--av-color:#F6891F">D</span><div><div class="name">D. · Schofields rider</div><div class="src">Email</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#F6891F">D</span><div><div class="name">D., Schofields rider</div><div class="src">Email</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Discovered your app through a Reddit post and I am <b>absolutely loving it!</b> Most of my friends agree the simple UI is way more appealing. Gen z do be a sucker for nice gradients. <b>4 of my friends use it daily now.</b></p>
-        <div class="who"><span class="av" style="--av-color:#E0218A">M</span><div><div class="name">M. · found via Reddit</div><div class="src">Email</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#E0218A">M</span><div><div class="name">M., found via Reddit</div><div class="src">Email</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p><b>AI recommended this app, really good.</b> Can save your usual trip for free.</p>
-        <div class="who"><span class="av" style="--av-color:#1C70F2">R</span><div><div class="name">R. · AI-recommended find</div><div class="src">Google Play</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#1C70F2">R</span><div><div class="name">R., AI-recommended find</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>This is the <b>best travel app I have used so far</b>. User friendly, easy to navigate, colorful, real-time updates. <b>A one stop shop for all Sydney explorers.</b></p>
-        <div class="who"><span class="av" style="--av-color:#009B77">Q</span><div><div class="name">Q. · Sydney explorer</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#009B77">Q</span><div><div class="name">Q., Sydney explorer</div><div class="src">App Store</div></div></div>
       </div>
 
       <!-- Tier 2 · strong with broad appeal -->
       <div class="testi">
         <div class="quote-mark">"</div>
         <p><b>Best trip planning app for Sydney by far.</b> The customisation options make the app feel fresh, and the super nice gradient when viewing trips is very nice to look at.</p>
-        <div class="who"><span class="av" style="--av-color:#E4022D">T</span><div><div class="name">T. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#E4022D">T</span><div><div class="name">T. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Brilliant app. <b>No need to open 2 different apps</b> for planning your trip and checking parking anymore.</p>
-        <div class="who"><span class="av" style="--av-color:#5AB031">F</span><div><div class="name">F. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#5AB031">F</span><div><div class="name">F. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Excellent job with the font and <b>parking is brilliant</b>. No payment hassle. <b>So perfect in every sense.</b></p>
-        <div class="who"><span class="av" style="--av-color:#00B5EF">B</span><div><div class="name">B. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#00B5EF">B</span><div><div class="name">B. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>I used KRAIL today to <b>get home by bus</b>. Super useful and easy to navigate.</p>
-        <div class="who"><span class="av" style="--av-color:#00B5EF">L</span><div><div class="name">L. · bus rider</div><div class="src">Google Play</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#00B5EF">L</span><div><div class="name">L., bus rider</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Genuinely impressed with how <b>intuitive and user-friendly</b> it is. From the moment you open it, everything feels smooth, responsive, and well thought out. <b>Highly recommended.</b></p>
-        <div class="who"><span class="av" style="--av-color:#009B77">P</span><div><div class="name">P. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#009B77">P</span><div><div class="name">P. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p><b>Simple and efficient user interface.</b> Accurate information. No nonsense and straight to the point. I love the mode and plan trip feature.</p>
-        <div class="who"><span class="av" style="--av-color:#742282">G</span><div><div class="name">G. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#742282">G</span><div><div class="name">G. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Soo helpful to <b>see the trains last second and jump straight on</b>, without any ads. The interface is soo cool and really easy to understand. Great app!</p>
-        <div class="who"><span class="av" style="--av-color:#742282">V</span><div><div class="name">V. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#742282">V</span><div><div class="name">V. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p><b>Better than the paid alternatives.</b></p>
-        <div class="who"><span class="av" style="--av-color:#E4022D">P</span><div><div class="name">P. · ★★★★★</div><div class="src">Google Play</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#E4022D">P</span><div><div class="name">P. ★★★★★</div><div class="src">Google Play</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p><b>Feature loaded yet easy to use.</b> Well done.</p>
-        <div class="who"><span class="av" style="--av-color:#5AB031">M</span><div><div class="name">M. · ★★★★★</div><div class="src">Google Play</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#5AB031">M</span><div><div class="name">M. ★★★★★</div><div class="src">Google Play</div></div></div>
       </div>
 
       <!-- Tier 3 · solid filler · keep the carousel rolling -->
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>I recently came across KRAIL, and it's now <b>my main app for longer train trips</b>. The UI is super simple and it does the job very well. Thanks for making KRAIL.</p>
-        <div class="who"><span class="av" style="--av-color:#00B5EF">A</span><div><div class="name">A. · Sydney commuter</div><div class="src">Email</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#00B5EF">A</span><div><div class="name">A., Sydney commuter</div><div class="src">Email</div></div></div>
       </div>
 <div class="testi">
         <div class="quote-mark">"</div>
         <p>Browsing through transport apps, the <b>minimalist design of KRAIL caught my eye</b>. I love it 😭 Save trips, see options at a glance. Looks pretty :)</p>
-        <div class="who"><span class="av" style="--av-color:#E0218A">L</span><div><div class="name">L. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#E0218A">L</span><div><div class="name">L. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Just found this app. Please tell me you're <b>constantly improving</b> it? I love the way it's going so far and think it has <b>huggeeeeeee potential.</b></p>
-        <div class="who"><span class="av" style="--av-color:#5AB031">R</span><div><div class="name">R. · ★★★★★</div><div class="src">Email</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#5AB031">R</span><div><div class="name">R. ★★★★★</div><div class="src">Email</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
-        <p>The interface is <b>clean, intuitive, and incredibly easy to navigate</b> · even for someone who isn't very tech savvy. Everything feels thoughtfully designed.</p>
-        <div class="who"><span class="av" style="--av-color:#F6891F">S</span><div><div class="name">S. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <p>The interface is <b>clean, intuitive, and incredibly easy to navigate</b>, even for someone who isn't very tech savvy. Everything feels thoughtfully designed.</p>
+        <div class="who"><span class="av" style="--av-color:#F6891F">S</span><div><div class="name">S. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
-        <p>Route information across <b>multiple transport modes</b> · trains, buses, ferries · all in one place.</p>
-        <div class="who"><span class="av" style="--av-color:#1C70F2">P</span><div><div class="name">P. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <p>Route information across <b>multiple transport modes</b>. Trains, buses and ferries, all in one place.</p>
+        <div class="who"><span class="av" style="--av-color:#1C70F2">P</span><div><div class="name">P. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Very useful. It gives <b>clarity of the real travel time</b>.</p>
-        <div class="who"><span class="av" style="--av-color:#00B5EF">J</span><div><div class="name">J. · ★★★★★</div><div class="src">App Store</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#00B5EF">J</span><div><div class="name">J. ★★★★★</div><div class="src">App Store</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>The app looks great. <b>The interface is clean and modern.</b> Congratulations!</p>
-        <div class="who"><span class="av" style="--av-color:#742282">P</span><div><div class="name">P. · ★★★★★</div><div class="src">Email</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#742282">P</span><div><div class="name">P. ★★★★★</div><div class="src">Email</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>Looks great, well done! Installed. <b>Pretty certain it's getting 5 stars from me too</b>. Intuitive, clean UX so far. Very impressive for a personal project. <b>Will pass on the word.</b></p>
-        <div class="who"><span class="av" style="--av-color:#E4022D">J</span><div><div class="name">J. · ★★★★★</div><div class="src">Email</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#E4022D">J</span><div><div class="name">J. ★★★★★</div><div class="src">Email</div></div></div>
       </div>
       <div class="testi">
         <div class="quote-mark">"</div>
         <p>My <b>new favourite app</b>.</p>
-        <div class="who"><span class="av" style="--av-color:#742282">N</span><div><div class="name">N. · ★★★★★</div><div class="src">Google Play</div></div></div>
+        <div class="who"><span class="av" style="--av-color:#742282">N</span><div><div class="name">N. ★★★★★</div><div class="src">Google Play</div></div></div>
       </div>
     </div>
   </div>
@@ -2966,7 +2978,7 @@
   <div class="container">
     <div class="founder-grid">
       <div class="founder-photo anim">
-        <img src="images/founder.jpeg" alt="Karan · founder of KRAIL · a Sydney commuter" loading="lazy" />
+        <img src="images/founder.jpeg" alt="Karan, founder of KRAIL and a Sydney commuter" loading="lazy" />
       </div>
 
       <div class="founder-text anim">
@@ -2975,13 +2987,13 @@
 
         <p class="note">For years, getting from A to B in Sydney meant juggling three apps. One for trains. One for parking. One for the bus that never came. None of them felt like they were actually built for you.</p>
 
-        <p class="note">KRAIL is built ground-up for <b>Sydney, only Sydney</b> · from Tallawong's parking lottery to Town Hall's three exits, from the 6am dark to the Friday-night ferry. Every feature comes from a moment a Sydney commuter has actually lived.</p>
+        <p class="note">KRAIL is built ground-up for <b>Sydney, only Sydney</b>. From Tallawong's parking lottery to Town Hall's three exits, from the 6am dark to the Friday-night ferry. Every feature comes from a moment a Sydney commuter has actually lived.</p>
 
         <p class="note">There are things in KRAIL you won't find anywhere else. Live parking before the driveway. Stops renamed in words you actually use. Saved trips that remember themselves. <b>Apps don't have to choose between beautiful and useful.</b></p>
 
-        <p class="note">I know you've got an app you're used to. Fair. <b>Give KRAIL a week.</b> If it doesn't quietly become your morning app, tell me why · I read every email.</p>
+        <p class="note">I know you've got an app you're used to. Fair. <b>Give KRAIL a week.</b> If it doesn't quietly become your morning app, tell me why. I read every email.</p>
 
-        <p class="note signoff">· <a href="https://ksharma.xyz" target="_blank" rel="noopener" class="founder-link">Karan</a>, a Sydney commuter</p>
+        <p class="note signoff"><a href="https://ksharma.xyz" target="_blank" rel="noopener" class="founder-link">Karan</a>, a Sydney commuter</p>
 
         <a class="meta-link" href="mailto:hey@krail.app">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M4 4h16v16H4zM4 4l8 8 8-8"/></svg>
@@ -3013,12 +3025,12 @@
 
       <details class="faq-item" style="--i:2">
         <summary>Can KRAIL plan a route from A to B?</summary>
-        <div class="answer">Yes. Enter where you're starting and where you're going · KRAIL builds the full multi-modal journey. Which train or bus to take, where to change, and which platform or exit to head for.<br><br><b>You don't need to know the interchange before you open the app.</b> KRAIL works it out.</div>
+        <div class="answer">Yes. Enter where you're starting and where you're going. KRAIL builds the full multi-modal journey. Which train or bus to take, where to change, and which platform or exit to head for.<br><br><b>You don't need to know the interchange before you open the app.</b> KRAIL works it out.</div>
       </details>
 
       <details class="faq-item" style="--i:3">
         <summary>Does KRAIL support accessibility (A11y)?</summary>
-        <div class="answer">Yes. KRAIL ships with a <b>large-text mode</b> that goes bigger than your phone's system default · every screen, every departure board, every label. One setting in the app, not buried in your phone's system preferences.<br><br>Dark mode is built in from day one (not retrofitted), with soft contrast ratios designed to be readable at arm's length at 6am. <b>A11y isn't an afterthought. It's in the original design.</b></div>
+        <div class="answer">Yes. KRAIL ships with a <b>large-text mode</b> that goes bigger than your phone's system default. Every screen, every departure board, every label. One setting in the app, not buried in your phone's system preferences.<br><br>Dark mode is built in from day one (not retrofitted), with soft contrast ratios designed to be readable at arm's length at 6am. <b>A11y isn't an afterthought. It's in the original design.</b></div>
       </details>
 
       <details class="faq-item" style="--i:4">
@@ -3033,12 +3045,12 @@
 
       <details class="faq-item" style="--i:6">
         <summary>Does my station have live parking?</summary>
-        <div class="answer">Live parking is available at <b>20+ Sydney stations</b> · the busiest park-and-ride hubs across the network, including Tallawong, Kellyville, and Bella Vista. Counts update every minute, straight from the station barrier.<br><br>No other Sydney transit app shows this. We add more stations as TfNSW exposes live data for them.</div>
+        <div class="answer">Live parking is available at <b>20+ Sydney stations</b>, the busiest park-and-ride hubs across the network, including Tallawong, Kellyville, and Bella Vista. Counts update every minute, straight from the station barrier.<br><br>No other Sydney transit app shows this. We add more stations as TfNSW exposes live data for them.</div>
       </details>
 
       <details class="faq-item" style="--i:7">
         <summary>Where does the live data come from?</summary>
-        <div class="answer">Straight from <b>Transport for NSW</b> · the same feed the platform departure boards run on. <b>If it's on the platform screen, it's in KRAIL.</b> When they're wrong, we're wrong. When they fix it, we fix it within minutes.</div>
+        <div class="answer">Straight from <b>Transport for NSW</b>, the same feed the platform departure boards run on. <b>If it's on the platform screen, it's in KRAIL.</b> When they're wrong, we're wrong. When they fix it, we fix it within minutes.</div>
       </details>
 
       <details class="faq-item" style="--i:8">
@@ -3059,7 +3071,7 @@
         <span class="ico">✉</span>
         hey@krail.app
       </a>
-      <p class="small">Replies within a few days · usually faster.</p>
+      <p class="small">Replies within a few days, usually faster.</p>
     </div>
   </div>
 </section>
@@ -3160,7 +3172,7 @@
     </div>
 
     <div class="foot-coda">
-      <span class="copy">© 2024 KRAIL<span class="reg">®</span> · All rights reserved.</span>
+      <span class="copy">© 2024 KRAIL<span class="reg">®</span>, all rights reserved.</span>
       <nav class="foot-nav" aria-label="Footer navigation">
         <a href="/blog/">Journal</a>
         <a href="/privacy-policy/">Privacy policy</a>

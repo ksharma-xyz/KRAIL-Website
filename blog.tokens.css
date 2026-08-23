@@ -49,3 +49,48 @@
 [data-theme="dark"] [data-cat="app"] { --accent-ink: #009B77; }   /* 5.26:1 on ink */
 [data-theme="dark"] [data-cat="behind-the-scenes"] { --accent-ink: #A26BAB; }   /* 4.62:1 on ink */
 [data-theme="dark"] [data-cat="news"] { --accent-ink: #00B5EF; }   /* 7.82:1 on ink */
+
+/* Per-post `tone:` override. Wins over the category default. */
+[data-tone="train"] {
+  --accent:      var(--train);
+  --accent-ink:  #B16316;   /* 4.50:1 on paper */
+  --accent-fill: #B16316;   /* white on it 4.50:1 */
+}
+[data-tone="bus"] {
+  --accent:      var(--bus);
+  --accent-ink:  #007FA7;   /* 4.57:1 on paper */
+  --accent-fill: #007FA7;   /* white on it 4.57:1 */
+}
+[data-tone="metro"] {
+  --accent:      var(--metro);
+  --accent-ink:  #008768;   /* 4.50:1 on paper */
+  --accent-fill: #008768;   /* white on it 4.50:1 */
+}
+[data-tone="ferry"] {
+  --accent:      var(--ferry);
+  --accent-ink:  #448425;   /* 4.59:1 on paper */
+  --accent-fill: #448425;   /* white on it 4.59:1 */
+}
+[data-tone="coach"] {
+  --accent:      var(--coach);
+  --accent-ink:  #742282;   /* 9.16:1 on paper */
+  --accent-fill: #742282;   /* white on it 9.16:1 */
+}
+[data-tone="lr"] {
+  --accent:      var(--lr);
+  --accent-ink:  #E4022D;   /* 4.83:1 on paper */
+  --accent-fill: #E4022D;   /* white on it 4.83:1 */
+}
+[data-tone="pink"] {
+  --accent:      var(--pink);
+  --accent-ink:  #DB287B;   /* 4.56:1 on paper */
+  --accent-fill: #DB287B;   /* white on it 4.56:1 */
+}
+
+[data-theme="dark"] [data-tone="train"] { --accent-ink: #F6891F; }   /* 7.52:1 on ink */
+[data-theme="dark"] [data-tone="bus"] { --accent-ink: #00B5EF; }   /* 7.82:1 on ink */
+[data-theme="dark"] [data-tone="metro"] { --accent-ink: #009B77; }   /* 5.26:1 on ink */
+[data-theme="dark"] [data-tone="ferry"] { --accent-ink: #5AB031; }   /* 6.79:1 on ink */
+[data-theme="dark"] [data-tone="coach"] { --accent-ink: #A26BAB; }   /* 4.62:1 on ink */
+[data-theme="dark"] [data-tone="lr"] { --accent-ink: #E93557; }   /* 4.51:1 on ink */
+[data-theme="dark"] [data-tone="pink"] { --accent-ink: #FF2F8F; }   /* 5.35:1 on ink */

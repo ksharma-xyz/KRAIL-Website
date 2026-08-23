@@ -163,6 +163,31 @@ function checkPost(file) {
 
   const at = (index) => headLines + lineOf(clean, index);
 
+  /* ---- notes to ourselves ----
+
+     The Tallawong draft carried a comment reading "PLACEHOLDER POST,
+     the numbers are not real", and it was reaching the served HTML
+     because markdown passes comments through. The generator strips
+     them now, but stripping is not the whole answer: a post whose own
+     note says the content is invented should not be publishable at
+     all, whether or not the note is visible.
+
+     The comment also ended "it is status: draft so it cannot ship as
+     is", which stopped being true the moment someone set it to ready.
+     A note is not a gate. This is the gate. */
+  for (const m of body.matchAll(/<!--[\s\S]*?-->/g)) {
+    const note = m[0];
+    add(status === 'ready' ? 'error' : 'warn', 'copy', `blog/posts/${file}`,
+        headLines + lineOf(body, m.index),
+        'Comment in the post body.',
+        'Comments are notes to us. Delete it, or move it to a frontmatter field that is never rendered.');
+    if (PLACEHOLDER.test(note) || /\b(not real|do not ship|don't ship|rewrite|delete this file)\b/i.test(note)) {
+      add('error', 'copy', `blog/posts/${file}`, headLines + lineOf(body, m.index),
+          'The post says of itself that it is a placeholder or that its content is not real.',
+          'Believe it. Rewrite it from something true, or delete the file. Do not publish it and fix it later.');
+    }
+  }
+
   /* ---- copy and brand, body only ---- */
   for (const rule of COPY_RULES) {
     for (const m of clean.matchAll(rule.re)) {
@@ -391,6 +416,16 @@ function checkBuilt(htmlPath, label) {
     rule.re.lastIndex = 0;
   }
 
+  /* Belt and braces on "nothing internal escapes". The build strips
+     comments now, but a comment reaching the served HTML is the kind
+     of leak that is only ever found by a reader, so it is checked on
+     the output too rather than trusted to the generator. */
+  for (const m of src.matchAll(/<!--[\s\S]*?-->/g)) {
+    add('error', 'legal', label, lineOf(src, m.index),
+        `HTML comment in built output: ${m[0].slice(0, 60).replace(/\s+/g, ' ')}...`,
+        'Comments in a post are notes to us. Delete it, or move it to frontmatter.');
+  }
+
   if (!src.includes(DISCLAIMER)) {
     add('error', 'legal', label, 1, 'Footer disclaimer missing.',
         'Every page must carry it verbatim.');
@@ -455,6 +490,61 @@ if (existsSync(blogDir)) {
   if (existsSync(idx)) built.push([idx, 'blog/index.html']);
 }
 for (const [p, label] of built) checkBuilt(p, label);
+
+/* ============================================================
+   Hand-authored pages.
+
+   The gates above only ever saw blog/, so the landing page drifted:
+   it carried a middle dot in its own <title>, in nine alt attributes
+   and in a CSS ::before that generated one into the footer. The
+   punctuation rules are voice rules, they do not stop at the Journal.
+
+   Only the two punctuation rules run here. The legal rules would
+   misfire on the FAQ, which legitimately names TfNSW as the source
+   it cites, and that is the documented citation exception.
+   ============================================================ */
+/* privacy-policy/ is deliberately absent. It is reproduced verbatim
+   from krail.app and is a legal document, so its punctuation is not
+   ours to rewrite. A voice rule does not outrank an exact copy. */
+const HAND_WRITTEN = ['index.html'];
+
+for (const rel of HAND_WRITTEN) {
+  const abs = join(ROOT, rel);
+  if (!existsSync(abs)) continue;
+  const src = readFileSync(abs, 'utf8');
+
+  /* Stylesheets, scripts and comments are not user-visible, and the
+     comments are full of section headers that use these characters
+     deliberately. What survives this strip is what a reader sees.
+
+     Newlines are kept so a reported line number still points at the
+     real line in the file. Blanking them out would make every
+     finding after the first <style> block cite the wrong place. */
+  const blank = (m) => m.replace(/[^\n]/g, ' ');
+  const visible = src
+    .replace(/<style[\s\S]*?<\/style>/gi, blank)
+    .replace(/<script[\s\S]*?<\/script>/gi, blank)
+    .replace(/<!--[\s\S]*?-->/g, blank);
+
+  /* A rule can also fire from generated content, which no amount of
+     reading the markup will reveal. Checked separately, and only
+     inside a content: property so a section header comment is safe. */
+  for (const m of src.matchAll(/content\s*:\s*(['"])([^'"]*)\1/g)) {
+    if (/[—·•‧∙]/.test(m[2])) {
+      add('error', 'copy', rel, lineOf(src, m.index),
+          `CSS generates "${m[2]}" into the page.`,
+          'Draw the separator as a box with content:"" plus width, height and background.');
+    }
+  }
+
+  for (const rule of COPY_RULES.slice(0, 2)) {
+    rule.re.lastIndex = 0;
+    for (const m of visible.matchAll(rule.re)) {
+      add('error', 'copy', rel, lineOf(visible, m.index), rule.msg, rule.fix);
+    }
+    rule.re.lastIndex = 0;
+  }
+}
 
 /* ---- report ---- */
 const errors = findings.filter((f) => f.level === 'error');

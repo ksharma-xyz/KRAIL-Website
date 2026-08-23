@@ -21,6 +21,7 @@
    ============================================================ */
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync, rmSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
@@ -182,7 +183,79 @@ function renderContainer(block) {
    One phone per stage. Two framed devices side by side never sit
    symmetrically, so a post needing two screens uses two stages.
    ============================================================ */
+/* ============================================================
+   Stylesheet cache busting.
+
+   The stylesheet URLs never changed, so a browser holding an old
+   copy kept serving it after the tokens were regenerated. That is
+   how a post with `tone: metro` still rendered train orange: the
+   markup was right, the cached CSS simply had no [data-tone] rules
+   in it yet. Hard-refreshing is not a fix, a real reader will not
+   do that.
+
+   A content hash keeps the build deterministic. Same bytes in,
+   same URL out, so an unchanged post still produces a byte
+   identical page and the deploy diff stays meaningful.
+   ============================================================ */
+const assetVersion = (rel) => {
+  try {
+    return createHash('sha256').update(readFileSync(join(ROOT, rel))).digest('hex').slice(0, 8);
+  } catch {
+    return '0';
+  }
+};
+
+/* ============================================================
+   Image credits.
+
+   images/CREDITS.json is the register the legal gate enforces. The
+   build reads it too, so a credit can be rendered as real links
+   rather than escaped text.
+
+   That matters for more than tidiness. Creative Commons attribution
+   asks for a link to the licence deed and a route back to the
+   original, and a URL sitting in a figcaption as plain text is
+   neither. Nothing here invents a credit: the author still writes
+   the line, this only turns what is already in it into anchors.
+   ============================================================ */
+let CREDITS = {};
+try {
+  CREDITS = JSON.parse(readFileSync(join(ROOT, 'images', 'CREDITS.json'), 'utf8'));
+} catch { /* The gate reports a missing register. The build carries on. */ }
+
+const anchor = (href, label) =>
+  `<a href="${esc(href)}" target="_blank" rel="noopener nofollow">${label}</a>`;
+
+/* Runs over already-escaped text, so the href is unescaped back to a
+   real URL before it goes in the attribute and is then re-escaped. */
+const linkifyUrls = (escaped) =>
+  escaped.replace(/\b((?:https?:\/\/|www\.|creativecommons\.org\/)[^\s<)]+[^\s<).,])/g, (m) => {
+    const raw = m.replace(/&amp;/g, '&');
+    return anchor(/^https?:\/\//.test(raw) ? raw : `https://${raw}`, m);
+  });
+
+function renderCredit(src, text) {
+  if (!text) return '';
+  let out = linkifyUrls(esc(text));
+  /* Point the creator's name at the original, so "by X" is a route
+     back to the source rather than a name the reader has to search. */
+  const entry = CREDITS[src];
+  if (entry && entry.source && entry.creator) {
+    const name = esc(entry.creator);
+    if (out.includes(name) && !out.includes(`>${name}<`)) {
+      out = out.replace(name, anchor(entry.source, name));
+    }
+  }
+  return out;
+}
+
 const STYLES = new Set(['plain', 'phone', 'bleed']);
+
+/* Mode colours a post may claim with `tone:` when its category
+   default is the wrong one. Tallawong is a things-to-do post, but
+   it is about the metro, so it should read metro teal rather than
+   train orange. The category still sets the default. */
+const TONES = new Set(['train', 'bus', 'metro', 'ferry', 'coach', 'lr', 'pink']);
 
 function renderImage(href, title, alt, defaultStyle) {
   let style = defaultStyle;
@@ -193,7 +266,7 @@ function renderImage(href, title, alt, defaultStyle) {
     else caption = title.trim();
   }
   const img = `<img src="${esc(href)}" alt="${esc(alt)}" loading="lazy" decoding="async" />`;
-  const cap = caption ? `\n      <figcaption>${esc(caption)}</figcaption>` : '';
+  const cap = caption ? `\n      <figcaption>${renderCredit(href, caption)}</figcaption>` : '';
 
   if (style === 'phone') {
     return `<figure class="shot-stage">\n      <div class="shot-row">\n` +
@@ -206,6 +279,15 @@ function renderImage(href, title, alt, defaultStyle) {
 }
 
 function renderMarkdown(md, defaultStyle) {
+  /* Markdown passes HTML comments straight through, so an editorial
+     note to ourselves ends up in the served page where View Source
+     finds it. The Tallawong draft carried one reading "PLACEHOLDER
+     POST, Claude wrote this, the numbers are not real" and it was
+     sitting in the built HTML. Rule 2 at the top of this file says
+     nothing internal escapes; `sourceRef` was covered and this was
+     not. A comment in a post is always a note to us. */
+  md = md.replace(/<!--[\s\S]*?-->/g, '');
+
   const { md: stripped, blocks } = extractContainers(md);
 
   const renderer = {
@@ -303,8 +385,8 @@ const head = ({ title, description, canonical, image, jsonld = [] }) => `<!docty
 <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap"></noscript>
 
-<link rel="stylesheet" href="/blog.css" />
-<link rel="stylesheet" href="/blog.tokens.css" />
+<link rel="stylesheet" href="/blog.css?v=${assetVersion('blog.css')}" />
+<link rel="stylesheet" href="/blog.tokens.css?v=${assetVersion('blog.tokens.css')}" />
 ${jsonld.map((j) => `<script type="application/ld+json">\n${JSON.stringify(j, null, 2)}\n</script>`).join('\n')}
 </head>`;
 
@@ -369,7 +451,7 @@ ${next ? `      <a class="pn next" href="/blog/${next.data.slug}/">
     </div>` : '';
 
   return `${head({ title: data.title, description: data.summary, canonical: url, image: data.hero, jsonld })}
-<body data-cat="${esc(data.series)}">
+<body data-cat="${esc(data.series)}"${data.tone ? ` data-tone="${esc(data.tone)}"` : ''}>
 
 <div class="progress" aria-hidden="true"></div>
 
@@ -404,7 +486,7 @@ ${data.hero ? `
   <div class="container narrow">
     <figure class="post-hero anim">
       <img src="${esc(data.hero)}" alt="${esc(data.heroAlt || '')}" fetchpriority="high" decoding="async" />${data.heroCredit ? `
-      <figcaption>${esc(data.heroCredit)}</figcaption>` : ''}
+      <figcaption>${renderCredit(data.hero, data.heroCredit)}</figcaption>` : ''}
     </figure>
   </div>` : ''}
 </header>
@@ -611,6 +693,11 @@ function build() {
     }
     const cat = CATEGORIES[data.series];
     if (!cat) throw new Error(`${file}: unknown series "${data.series}". Valid: ${Object.keys(CATEGORIES).join(', ')}`);
+    /* A typo here would silently fall back to the category colour, so
+       it fails loudly instead. */
+    if (data.tone && !TONES.has(data.tone)) {
+      throw new Error(`${file}: unknown tone "${data.tone}". Valid: ${[...TONES].join(', ')}`);
+    }
 
     if (data.status !== 'ready') { skipped.push(`${file} (status: ${data.status || 'unset'})`); continue; }
 

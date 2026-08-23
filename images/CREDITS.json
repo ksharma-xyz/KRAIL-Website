@@ -36,6 +36,18 @@
     "modified": "Screen capture of the KRAIL app, composited to the phone frame ratio and padded to clear the notch."
   },
 
+  "/images/tallawong-carpark.webp": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "modified": "Tallawong Park and Ride, shot 9 August 2026, location confirmed by the photographer. Cropped from portrait 2268x4032 to a 16:9 middle band, resized to 1600x900, metadata stripped."
+  },
+
+  "/images/tallawong-park-ride.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL",
+    "modified": "Screen capture of the KRAIL app, composited to the phone frame ratio, padded to clear the notch, with 74px of blank background trimmed between the list and the search panel."
+  },
+
   "/images/hero.webp":        { "licence": "Own work", "creator": "KRAIL" },
   "/images/map.webp":         { "licence": "Own work", "creator": "KRAIL" },
   "/images/realtime.webp":    { "licence": "Own work", "creator": "KRAIL" },

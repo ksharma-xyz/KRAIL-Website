@@ -19,3 +19,8 @@ krail-bundle.html
 audit/*
 !audit/*.sh
 !audit/*.js
+
+# Untouched originals of app screenshots and photos. The published webp
+# lives in images/, this is the source we crop from. Local only, since the
+# repo is public and every file at the root is served from krail.app.
+images/raw/

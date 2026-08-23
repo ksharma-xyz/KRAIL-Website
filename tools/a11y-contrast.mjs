@@ -175,6 +175,29 @@ const writeTokens = async () => {
   }
   lines.push('');
 
+  /* Per-post override. The category still sets the default, but two
+     posts in one category do not have to look the same, and the
+     colour that fits a post is not always the one its category
+     picked. `tone: metro` in frontmatter wins over [data-cat].
+     Same derivation, so an override cannot quietly go below AA. */
+  lines.push('/* Per-post `tone:` override. Wins over the category default. */');
+  for (const mode of Object.keys(MODES)) {
+    const hex = MODES[mode];
+    const light = derive(hex, PAPER, AA_NORMAL);
+    const fill = fillFor(hex);
+    lines.push(`[data-tone="${mode}"] {`);
+    lines.push(`  --accent:      var(--${mode});`);
+    lines.push(`  --accent-ink:  ${light};   /* ${contrast(light, PAPER).toFixed(2)}:1 on paper */`);
+    lines.push(`  --accent-fill: ${fill};   /* white on it ${contrast('#FFFFFF', fill).toFixed(2)}:1 */`);
+    lines.push('}');
+  }
+  lines.push('');
+  for (const mode of Object.keys(MODES)) {
+    const dark = derive(MODES[mode], INK_BG, AA_NORMAL);
+    lines.push(`[data-theme="dark"] [data-tone="${mode}"] { --accent-ink: ${dark}; }   /* ${contrast(dark, INK_BG).toFixed(2)}:1 on ink */`);
+  }
+  lines.push('');
+
   const out = new URL('../blog.tokens.css', import.meta.url);
   writeFileSync(out, lines.join('\n'));
   console.log(`\n  Wrote blog.tokens.css with ${Object.keys(CATEGORIES).length + 1} accent triplets.\n`);

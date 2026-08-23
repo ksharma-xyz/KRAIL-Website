@@ -13,7 +13,7 @@
 <meta property="og:title" content="KRAIL Journal, stories from the Sydney commute" />
 <meta property="og:description" content="Things to do, places to eat, app stories and behind the scenes, all written for people who actually catch the train in Sydney." />
 <meta property="og:url" content="https://krail.app/blog/" />
-<meta property="og:image" content="https://krail.app/images/auburn-cherry-blossom.webp" />
+<meta property="og:image" content="https://krail.app/images/tallawong-carpark.webp" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="alternate" type="application/rss+xml" title="KRAIL Journal" href="/blog/feed.xml" />
@@ -24,8 +24,8 @@
 <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap"></noscript>
 
-<link rel="stylesheet" href="/blog.css" />
-<link rel="stylesheet" href="/blog.tokens.css" />
+<link rel="stylesheet" href="/blog.css?v=ce071ae9" />
+<link rel="stylesheet" href="/blog.tokens.css?v=6f985d85" />
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -34,6 +34,12 @@
   "url": "https://krail.app/blog/",
   "description": "Things to do, places to eat, app stories and behind the scenes, written for people who actually catch the train in Sydney.",
   "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Beat the Tallawong parking lottery",
+      "url": "https://krail.app/blog/tallawong-parking-lottery/",
+      "datePublished": "2026-08-23"
+    },
     {
       "@type": "BlogPosting",
       "headline": "Auburn Cherry Blossom Festival without a car",
@@ -77,26 +83,46 @@
 
 <section class="featured">
   <div class="container">
-    <a class="featured-card anim" href="/blog/auburn-cherry-blossom-festival-without-a-car/" data-cat="things-to-do">
+    <a class="featured-card anim" href="/blog/tallawong-parking-lottery/" data-cat="things-to-do">
       <div class="featured-media">
         <span class="featured-flag">Latest</span>
-        <img src="/images/auburn-cherry-blossom.webp" alt="A cluster of pink cherry blossoms in full bloom on a branch at Auburn Botanic Gardens" fetchpriority="high" decoding="async" />
+        <img src="/images/tallawong-carpark.webp" alt="Boom gates down across the entry lane of the Tallawong Park and Ride car park, with rows of parked cars filling the lot behind" fetchpriority="high" decoding="async" />
       </div>
       <div class="featured-body">
         <span class="tag">Things to do</span>
-        <h2>Auburn Cherry Blossom Festival without a car</h2>
-        <p class="excerpt">Every ticket is booked online, there is no buying one at the gate. Here is the train and free shuttle that gets you there instead.</p>
+        <h2>Beat the Tallawong parking lottery</h2>
+        <p class="excerpt">Everyone says the carpark fills. Almost nobody knows there are three of them, and the biggest one is usually the emptiest. Here is which one to drive to.</p>
         <span class="stamp ghost">Read the story <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
         <div class="meta">
-          <time datetime="2026-08-14">14 Aug 2026</time>
+          <time datetime="2026-08-23">23 Aug 2026</time>
           <span class="sep"></span>
-          <span>4 min read</span>
+          <span>3 min read</span>
         </div>
       </div>
     </a>
   </div>
 </section>
 
+<section class="grid-section">
+  <div class="container">
+    <div class="grid-head anim">
+      <h2>Everything else</h2>
+      <span class="count" id="postCount">1 story</span>
+    </div>
+
+    <div class="card-grid" id="cardGrid">
+      <a class="card anim" href="/blog/auburn-cherry-blossom-festival-without-a-car/" data-cat="things-to-do">
+        <div class="card-media"><img src="/images/auburn-cherry-blossom.webp" alt="A cluster of pink cherry blossoms in full bloom on a branch at Auburn Botanic Gardens" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">Things to do</span>
+          <h3>Auburn Cherry Blossom Festival without a car</h3>
+          <p class="excerpt">Every ticket is booked online, there is no buying one at the gate. Here is the train and free shuttle that gets you there instead.</p>
+          <div class="meta"><time datetime="2026-08-14">14 Aug 2026</time><span class="sep"></span><span>4 min read</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
 
 </main>
 

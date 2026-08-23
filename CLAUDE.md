@@ -71,12 +71,23 @@ The `*Free` and `*No ads` claims are the only place asterisks appear. They live 
   - Stats → bus blue
   - Features intro → metro teal
   - Saved Trips block → barbie pink
-  - Park & Ride block → train orange
+  - Park & Ride block → **metro teal**, see the station rule below
   - Map block → metro teal
   - Real-time block → bus blue
   - Testimonials → ferry green
   - Founder → coach purple
   - FAQ → light rail red
+- **The station picks the colour.** When a block, post or line is *about*
+  a specific station, it takes that station's mode colour, whatever the
+  section rotation would otherwise say. **Tallawong is Metro, so anywhere
+  Tallawong is the subject it reads metro teal, never train orange.** Same
+  for Kellyville and Bella Vista. This is why the Park & Ride block is
+  teal: it leads on Tallawong at 7:05.
+  - On the landing page, set `--accent` on the block and match the eyebrow.
+  - In the Journal, use `tone:` in frontmatter. It overrides the `series`
+    default, so a `things-to-do` post about the metro still reads teal.
+    Valid: `train`, `bus`, `metro`, `ferry`, `coach`, `lr`, `pink`. An
+    unknown value fails the build rather than silently falling back.
 - **Body background.** ONE continuous soft pink/blue radial-gradient blob
   layer on `<body>`. No per-section blob `::before` (causes visible seams).
   Opacity ≈ 0.16–0.22 — ambient, not dominant.
@@ -164,11 +175,37 @@ have changed before.
 - Generic mode names ("Train", "Metro", "Bus", "Ferry", "Light Rail").
 - The "unaffiliated with TfNSW" disclaimer (mandatory — see footer).
 
+### Photographs of the real world are fine, signage included
+
+**A photo of a real place may show whatever is actually there**, including
+TfNSW and Metro signage, the Park & Ride sign, the vacant-spaces counter, a
+station nameplate with the M roundel beside it, a wayfinding board. Photograph
+the world as it is. We are not claiming those marks, we are showing a place
+that has them in it.
+
+The line is **use as branding versus presence in a photograph**:
+
+| Fine | Not fine |
+|---|---|
+| A photo of the station entrance with the nameplate and roundel in frame | Lifting that roundel out and putting it in our nav, footer or a feature block |
+| A carpark photo with the branded Park & Ride sign in it | Rebuilding that sign as a graphic, or using their logo as a section icon |
+| A departures board on a platform, their livery included | Any layout that reads as though they made or endorsed this site |
+
+The disclaimer in the footer is what keeps this honest, so it stays.
+
+Still applies inside a photo: no claim of partnership or endorsement, and do
+not caption a photo so it reads as their voice.
+
 ### Never put on the site
 
-- TfNSW logo or wordmark
-- NSW Government logo or any state-government mark
-- Sydney Trains / Sydney Metro / Opal wordmarks or branded service names
+The rules below are about **marks we place ourselves**, as design elements,
+icons or graphics. They are not about what happens to be standing in a
+photograph, see above.
+
+- TfNSW logo or wordmark used as an element of our own design
+- NSW Government logo or any state-government mark used the same way
+- Sydney Trains / Sydney Metro / Opal wordmarks or branded service names in
+  our copy
 - The **official numbered line shields** (T1/T2/T3 with their specific
   shape, gradients, white outlines). The current generic "T2" letter on
   a coloured circle is fine — importing the actual TfNSW shield SVG is not.
@@ -223,6 +260,28 @@ image, it is **no image**.
   ask first.
 - Enforced by the legal gate in `tools/gates.mjs`, which blocks a `ready`
   post and warns on a `draft`. Full field reference in `BLOG.md`.
+
+#### People in images
+
+**AI-generated people** may be used as **illustration** when they are labelled
+as AI-generated, visibly and beside the image, not buried in a footer.
+
+**Never** as a testimonial, review, customer or commuter presented as real.
+A label does not repair that. The deception is that a person endorsed the
+product when no person did, and a disclaimer does not undo it. Never place a
+generated face beside a real person's quote either: it implies that face is
+that reviewer, which is the same problem arrived at sideways. Our testimonials
+are real reviews from real people, so this is exactly where the temptation is.
+
+**Real photographs of people need that person's consent** before they go on a
+public marketing site. Consent is a separate question from the licence, and
+`images/CREDITS.json` does not capture it. "Own work" answers who took the
+photo, not who agreed to appear in it.
+
+`KRAIL-SHORTS/engine/public/personas/` mixes both, and the filenames are
+identical in style: `mia/` and `dev/` are AI-generated, `operator/` and
+`others/` are real people. Never take an image of a person from there without
+confirming that specific file.
 
 Good sources: Wikimedia Commons (check the licence per file, they vary),
 and our own photos and app screen captures.
