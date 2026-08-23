@@ -1,0 +1,11 @@
+# KRAIL Journal
+
+Stories from the Sydney commute. Things to do, places to eat, app stories
+and behind the scenes, written for people who actually catch the train.
+
+KRAIL is a Sydney public transport app. It is not affiliated with or
+endorsed by Transport for New South Wales.
+
+## Posts
+
+- [Auburn Cherry Blossom Festival without a car](https://krail.app/blog/auburn-cherry-blossom-festival-without-a-car/): Every ticket is booked online, there is no buying one at the gate. Here is the train and free shuttle that gets you there instead. (Things to do, 14 August 2026)

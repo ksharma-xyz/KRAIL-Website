@@ -6,9 +6,9 @@ accent: without a car.
 summary: Every ticket is booked online, there is no buying one at the gate. Here is the train and free shuttle that gets you there instead.
 updated: 2026-08-14
 author: Karan Sharma
-hero: /images/hero.webp
-heroAlt: Placeholder image, swap for a photo of the cherry blossoms at Auburn Botanic Gardens
-heroCredit: TODO. Needs a real photo with a cleared licence before this can go ready.
+hero: /images/auburn-cherry-blossom.webp
+heroAlt: A cluster of pink cherry blossoms in full bloom on a branch at Auburn Botanic Gardens
+heroCredit: Photo by Maksym Kozlenko, cropped and resized. Licensed CC BY-SA 4.0, creativecommons.org/licenses/by-sa/4.0
 imageStyle: plain
 tags:
   - Auburn
@@ -26,7 +26,7 @@ sources:
   - url: https://transportnsw.info/news/2026/you-may-see-changes-to-your-trip-fare-from-29-june
     title: Transport for NSW fare change notice
     for: Confirming the fare table used here is still current.
-status: draft
+status: ready
 sourceRef: v_cherryblossomfestivalauburn
 publishedUrl: null
 ---
@@ -53,7 +53,7 @@ From Central it is an off-peak fare of about **$3.76**, or $5.38 at peak. Every 
 
 From Auburn Station, a **free shuttle bus** loops between the platform and the gardens every 15 to 20 minutes, running from 8:30am to 5:30pm on festival days. You do not walk it and you do not need to work out a local bus route. Get off the train, get on the shuttle, you are at the gate.
 
-![Live departures on the way to Auburn](/images/realtime.webp "phone | Save the trip once and the next departure is one tap away on the day. Placeholder screen, swap for a real one.")
+![The departure board for Auburn Station, showing the next T1 and T2 trains and the 908 bus with their platforms and stands](/images/auburn-departures.webp "phone | Live departures at Auburn Station. Check the next one on the day instead of guessing a platform time in advance.")
 
 ## Tickets, and the part that catches people out
 
@@ -84,7 +84,7 @@ Beyond the blossoms themselves, which change day to day as they bloom, some tree
 
 Bring water and whatever else you need with you. Bags, hats, prams and umbrellas stay with you the whole visit. The paths stay open in light rain but can get slippery.
 
-![Placeholder, swap for a map or photo of the Japanese Gardens](/images/map.webp "Placeholder image. The same figure component, without the device frame.")
+![The pond in the Japanese Gardens at Auburn Botanic Gardens, with stepping stones, ducks and a tea house on the far bank](/images/auburn-japanese-gardens.webp "The pond, the stepping stones and the tea house. Photo by Sourav Biswas, cropped and resized. Licensed CC BY-SA 4.0, creativecommons.org/licenses/by-sa/4.0")
 
 ## Getting back
 
