@@ -151,7 +151,7 @@ Icons must stay **clear of the H1 reading zone**. Safe positions are
 
 | What | Pull from |
 |---|---|
-| Privacy policy | `https://www.krail.app/privacy-policy` (verbatim) |
+| Privacy policy | `privacy-policy/index.html` is the source of truth, served at `https://www.krail.app/privacy-policy`. Editing rules + release checklist: `docs/PRIVACY.md` |
 | Disclaimer text | The exact paragraph Karan provided — see `index.html` footer |
 | Social URLs | `KRAIL/social/state/.../KrailSocialType.kt` (LinkedIn, Instagram, X, Threads, TikTok, Facebook, Reddit) |
 | Store URLs | `KRAIL/feature/.../ReferFriendManager.kt`: iOS `apps.apple.com/.../id6738934832`, Android `play.google.com/store/apps/details?id=xyz.ksharma.krail` |
@@ -304,7 +304,7 @@ and our own photos and app screen captures.
 | Path | Purpose |
 |---|---|
 | `/` (index.html) | Marketing landing page |
-| `/privacy.html` | Privacy policy (verbatim from krail.app) |
+| `/privacy-policy/` | Privacy policy (see `docs/PRIVACY.md` before editing) |
 
 Anchors on `/`:
 - `#top` — page top
