@@ -536,13 +536,23 @@ function addListIcons(html) {
    back to the build date. That is right twice over: the preview
    shows the date it would get, and the first build after the
    merge replaces it with the real one. */
-const buildDate = () => {
-  const d = new Date();
-  const p = (n) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
-};
+/* Every date on this site is read by someone in Sydney, so every
+   date on this site is a Sydney date. The runner is on UTC, and the
+   daily publish fires at 20:00 UTC, which is six or seven the next
+   morning here. Left on UTC, a post that goes up on Monday morning
+   is stamped Sunday, every time, forever. */
+const SYDNEY = 'Australia/Sydney';
+const buildDate = () => new Intl.DateTimeFormat('en-CA', {
+  timeZone: SYDNEY, year: 'numeric', month: '2-digit', day: '2-digit',
+}).format(new Date());
 
-const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+const git = (...args) => execFileSync('git', args, {
+  cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+  /* format-local reads this, which is how the commit dates below come
+     back as the day it was in Sydney rather than the day it was on
+     the runner. */
+  env: { ...process.env, TZ: SYDNEY },
+});
 
 function publishedDates() {
   let ref;
@@ -553,7 +563,8 @@ function publishedDates() {
 
   let log;
   try {
-    log = git('log', '--reverse', '--format=@%H %aI', '--name-only', '--diff-filter=AM', ref, '--', 'blog/posts');
+    log = git('log', '--reverse', '--date=format-local:%Y-%m-%d', '--format=@%H %ad',
+              '--name-only', '--diff-filter=AM', ref, '--', 'blog/posts');
   } catch { return new Map(); }
 
   const dates = new Map();
