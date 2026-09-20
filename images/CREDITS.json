@@ -13,7 +13,6 @@
     "",
     "If we cannot fill this in truthfully, we do not use the image."
   ],
-
   "/images/auburn-cherry-blossom.webp": {
     "licence": "CC BY-SA 4.0",
     "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -21,7 +20,6 @@
     "source": "https://commons.wikimedia.org/wiki/File:Cherry_blossoms_at_Auburn_Botanical_Gardens_01.jpg",
     "modified": "Centre cropped from 4570x2867 to 16:9, resized to 1600x900, metadata stripped."
   },
-
   "/images/auburn-japanese-gardens.webp": {
     "licence": "CC BY-SA 4.0",
     "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -29,36 +27,302 @@
     "source": "https://commons.wikimedia.org/wiki/File:Auburn_botanical_garden_Japanese_garden.jpg",
     "modified": "Centre cropped from 4160x3120 to 3:2, resized to 1600x1067, metadata stripped."
   },
-
   "/images/auburn-departures.webp": {
     "licence": "Own work",
     "creator": "KRAIL",
     "modified": "Screen capture of the KRAIL app, composited to the phone frame ratio and padded to clear the notch."
   },
-
   "/images/tallawong-carpark.webp": {
     "licence": "Own work",
     "creator": "Karan Sharma",
     "modified": "Tallawong Park and Ride, shot 9 August 2026, location confirmed by the photographer. Cropped from portrait 2268x4032 to a 16:9 middle band, resized to 1600x900, metadata stripped."
   },
-
   "/images/tallawong-park-ride.webp": {
     "licence": "Own work",
     "creator": "KRAIL",
     "modified": "Screen capture of the KRAIL app, composited to the phone frame ratio, padded to clear the notch, with 74px of blank background trimmed between the list and the search panel."
   },
-
-  "/images/hero.webp":        { "licence": "Own work", "creator": "KRAIL" },
-  "/images/map.webp":         { "licence": "Own work", "creator": "KRAIL" },
-  "/images/realtime.webp":    { "licence": "Own work", "creator": "KRAIL" },
-  "/images/park_ride.webp":   { "licence": "Own work", "creator": "KRAIL" },
-  "/images/saved_trips.webp": { "licence": "Own work", "creator": "KRAIL" },
-  "/images/stop_labels.webp": { "licence": "Own work", "creator": "KRAIL" },
-  "/images/dark.webp":        { "licence": "Own work", "creator": "KRAIL" },
-  "/images/founder.jpeg":     { "licence": "Own work", "creator": "Karan Sharma" },
-
-  "/images/mobile/map.webp":         { "licence": "Own work", "creator": "KRAIL" },
-  "/images/mobile/realtime.webp":    { "licence": "Own work", "creator": "KRAIL" },
-  "/images/mobile/park_ride.webp":   { "licence": "Own work", "creator": "KRAIL" },
-  "/images/mobile/stop_labels.webp": { "licence": "Own work", "creator": "KRAIL" }
+  "/images/hero.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/map.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/realtime.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/park_ride.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/saved_trips.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/stop_labels.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/dark.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/founder.jpeg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma"
+  },
+  "/images/mobile/map.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/mobile/realtime.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/mobile/park_ride.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/mobile/stop_labels.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL"
+  },
+  "/images/krail/check-park-and-ride-spaces-before-you-leave/flow-park-and-ride.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/check-park-and-ride-spaces-before-you-leave/flow-park-and-ride-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/check-park-and-ride-spaces-before-you-leave/02-home-card-collapsed.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/check-park-and-ride-spaces-before-you-leave/03-card-expanded-live-spaces.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/save-your-trip-once-open-it-in-one-tap/flow-saved-trip-one-tap.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/save-your-trip-once-open-it-in-one-tap/flow-saved-trip-one-tap-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/save-your-trip-once-open-it-in-one-tap/01-timetable-star-unsaved.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/save-your-trip-once-open-it-in-one-tap/03-home-saved-trips-card.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/pick-your-stop-on-the-map/flow-select-on-map.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/pick-your-stop-on-the-map/flow-select-on-map-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/pick-your-stop-on-the-map/02-map-sydney-cbd-stops.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/pick-your-stop-on-the-map/03-stop-sheet-select-stop.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/find-your-stop-by-bus-number/flow-route-number-search.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/find-your-stop-by-bus-number/flow-route-number-search-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/find-your-stop-by-bus-number/01-route-cards-collapsed.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/find-your-stop-by-bus-number/02-route-333-stop-list.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/see-your-whole-trip-on-a-map/flow-trip-on-map-ferry.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/see-your-whole-trip-on-a-map/flow-trip-on-map-ferry-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/see-your-whole-trip-on-a-map/01-trip-card-expanded-with-maps-button.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/see-your-whole-trip-on-a-map/03-ferry-route-line-harbour.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/live-times-for-every-train-bus-and-ferry/03-train-delayed-4-mins.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/live-times-for-every-train-bus-and-ferry/04-train-expanded-1-alert.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/live-times-for-every-train-bus-and-ferry/05-service-alerts-sheet.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/leave-at-or-arrive-by/02-arrive-tomorrow-9am-set.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/leave-at-or-arrive-by/01-leave-arrive-date-time-sheet.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/leave-at-or-arrive-by/03-results-for-arrive-tomorrow-9am.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/choose-how-you-want-to-travel/flow-mode-filter.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/choose-how-you-want-to-travel/flow-mode-filter-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/choose-how-you-want-to-travel/01-mode-sheet-all-on.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/choose-how-you-want-to-travel/03-results-ferry-only.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/see-whats-leaving-from-any-stop/flow-departure-board.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/see-whats-leaving-from-any-stop/flow-departure-board-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/see-whats-leaving-from-any-stop/01-stop-sheet-departure-board-button.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/see-whats-leaving-from-any-stop/02-live-board-delays.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/make-krail-your-colour/flow-themes-dark-mode.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/make-krail-your-colour/flow-themes-dark-mode-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/make-krail-your-colour/01-theme-picker.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/make-krail-your-colour/03-home-dark.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/pick-your-stop-on-the-map/02-map-sydney-cbd-stops.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/pick-your-stop-on-the-map/03-stop-sheet-select-stop.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/see-your-whole-trip-on-a-map/03-ferry-route-line-harbour.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/leave-at-or-arrive-by/flow-plan-your-trip.mp4": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/krail/leave-at-or-arrive-by/flow-plan-your-trip-poster.jpg": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "Poster frame for the screen recording"
+  },
+  "/images/krail/check-park-and-ride-spaces-before-you-leave/01-picker-list.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/live-times-for-every-train-bus-and-ferry/01-ferry-live-countdown-wharf.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/live-times-for-every-train-bus-and-ferry/02-ferry-trip-expanded.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  },
+  "/images/krail/make-krail-your-colour/02-theme-picker-dark.png": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "note": "KRAIL app screen capture, iPhone simulator"
+  }
 }

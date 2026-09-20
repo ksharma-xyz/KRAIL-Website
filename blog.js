@@ -137,4 +137,89 @@
       });
     }
   }
+
+  /* ---------- Hold the last frame, then replay ----------
+     A plain `loop` restarts the instant the last frame lands, so a flow
+     clip snaps back with no pause at all and reads as a twitch rather than
+     a demonstration. These run once, rest on the final frame, and start
+     over.
+
+     The default rest is a beat, not a stare, because a clip that ends on a
+     rest state (a card closed again) has already given the reader its time
+     in the middle. A clip that ends ON its payoff wants longer, and asks
+     for it with `data-replay="4000"`.
+
+     Rewinding to 0 and playing is what replays it. Setting `currentTime`
+     first means the poster never flashes back in between. */
+  var REPLAY_HOLD_MS = 1200;
+
+  function holdThenReplay(clip) {
+    var timer = null;
+    var hold = parseInt(clip.dataset.replay, 10);
+    if (!(hold >= 0)) hold = REPLAY_HOLD_MS;
+
+    clip.addEventListener('ended', function () {
+      if (timer) return;
+      timer = window.setTimeout(function () {
+        timer = null;
+        if (clip.dataset.calm === 'on') return;
+        try { clip.currentTime = 0; } catch (err) {}
+        var playing = clip.play();
+        if (playing && playing.catch) playing.catch(function () {});
+      }, hold);
+    });
+
+    /* A clip that is paused for reduced motion must not be restarted by a
+       timer that was already in flight when the setting changed. */
+    clip.addEventListener('pause', function () {
+      if (clip.dataset.calm === 'on' && timer) {
+        window.clearTimeout(timer);
+        timer = null;
+      }
+    });
+  }
+
+  var replayClips = document.querySelectorAll('video[data-replay]');
+  for (var r = 0; r < replayClips.length; r++) holdThenReplay(replayClips[r]);
+
+  /* ---------- Reduced motion, for the device recordings ----------
+     The flow clips in a phone frame autoplay and loop. CSS can turn off an
+     animation but it cannot stop a video, so the reduced-motion half of
+     that promise has to be script. Pausing on the first frame still leaves
+     the poster visible, so the screen reads as a screenshot rather than
+     going blank. Kept live rather than read once, because the setting can
+     change while the page is open. */
+  var calmQuery = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
+
+  function applyCalm() {
+    if (!calmQuery) return;
+    var clips = document.querySelectorAll('.phone video');
+    for (var i = 0; i < clips.length; i++) {
+      var clip = clips[i];
+      if (calmQuery.matches) {
+        clip.dataset.calm = 'on';
+        clip.removeAttribute('autoplay');
+        clip.loop = false;
+        clip.pause();
+        try { clip.currentTime = 0; } catch (err) {}
+        continue;
+      }
+      clip.dataset.calm = '';
+      if (clip.paused) {
+        var playing = clip.play();
+        /* Safari rejects this if it decides the gesture rules were not met.
+           A still frame is an acceptable outcome, an unhandled rejection
+           in the console is not. */
+        if (playing && playing.catch) playing.catch(function () {});
+      }
+    }
+  }
+
+  if (calmQuery) {
+    applyCalm();
+    if (calmQuery.addEventListener) calmQuery.addEventListener('change', applyCalm);
+    else if (calmQuery.addListener) calmQuery.addListener(applyCalm);
+  }
 })();

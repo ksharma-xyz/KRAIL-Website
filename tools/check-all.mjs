@@ -52,6 +52,8 @@ steps.push(pages.length
   : { label: 'Accessibility structure', ok: true, out: '  No published pages to check yet.\n' });
 
 steps.push(run(['tools/gates.mjs', ...(AS_MD ? ['--md'] : [])], 'Content gates'));
+steps.push(run(['tools/check-layout.mjs', ...(AS_MD ? ['--md'] : [])], 'Layout contract'));
+steps.push(run(['tools/check-seo.mjs', ...(AS_MD ? ['--md'] : [])], 'Titles, slugs and search'));
 
 const failed = steps.filter((s) => !s.ok);
 

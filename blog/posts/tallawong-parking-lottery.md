@@ -1,9 +1,9 @@
 ---
-title: Beat the Tallawong parking lottery
+title: Beat the Tallawong Park & Ride parking lottery
 slug: tallawong-parking-lottery
 series: things-to-do
 accent: parking lottery.
-summary: Everyone says the carpark fills. Almost nobody knows there are three of them, and they do not fill at the same rate. Here is how to see which one has room.
+summary: Everyone says the Tallawong car park fills. Almost nobody knows there are three of them, and they do not fill at the same rate.
 updated: 2026-08-23
 author: Karan Sharma
 hero: /images/tallawong-carpark.webp

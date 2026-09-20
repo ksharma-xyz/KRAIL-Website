@@ -111,7 +111,7 @@ a { color: inherit; text-decoration: none; }
 ::selection { background: var(--brand-pink); color: #fff; }
 
 .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 32px; }
-.container.narrow { max-width: 1040px; }
+.container.narrow { max-width: 1160px; }
 .container.prose { max-width: 760px; }
 
 /* ============================================================
@@ -384,6 +384,25 @@ nav.top .row {
 }
 .band-actions { display: flex; flex-wrap: wrap; gap: 14px; justify-content: flex-end; }
 
+/* Store buttons, the landing page stamp inverted for the dark band. */
+.store-row { display: inline-flex; flex-wrap: wrap; gap: 14px; align-items: stretch; }
+.store-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  padding: 14px 22px;
+  background: var(--paper); color: var(--ink);
+  border: 2px solid var(--paper); border-radius: 0;
+  text-decoration: none; white-space: nowrap;
+  box-shadow: 5px 5px 0 var(--accent);
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.store-btn:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--accent); }
+.store-btn:active { transform: translate(0, 0); box-shadow: 3px 3px 0 var(--accent); }
+.store-btn .badge-icon { width: 22px; height: 22px; flex-shrink: 0; color: var(--ink); }
+.store-btn .big {
+  font-family: var(--display); font-style: italic;
+  font-size: 17px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink);
+}
+
 /* ============================================================
    POST PAGE
    ============================================================ */
@@ -422,12 +441,159 @@ nav.top .row {
   border-top: 2px solid var(--ink); background: var(--surface);
 }
 
+/* ---------- Split head · title one side, the screen the other ----------
+   A post about one thing the app does opens on that thing. Without this the
+   title column sits left inside a centred container and the whole right half
+   of the first screen is empty, which is the single biggest reason the page
+   read as unfinished. Same arrangement as the landing page hero, and the
+   copy column keeps its own measure so the headline still breaks well. */
+.post-head--split .post-head__copy { padding-top: 4px; }
+.post-head--split .post-deck { max-width: 38ch; }
+
+@media (min-width: 900px) {
+  .post-head--split > .container {
+    display: grid;
+    grid-template-columns: minmax(0, var(--measure, 700px)) minmax(0, 1fr);
+    gap: var(--col-gap, 64px);
+    align-items: center;
+  }
+}
+
+/* ---------- the post column contract ----------
+   Three numbers decide the whole post page, so they are declared once and
+   everything else reads them. `--measure` is the reading column, and every
+   left edge on the page is the left edge of that column: the headline, each
+   paragraph, each heading, and the text half of a `::: shot` block. Nothing
+   is allowed to bleed sideways to find room, because a block that starts
+   80px further left than the paragraph above it reads as a mistake, which is
+   exactly what it was. `--device-col` is the phone's own column, always to
+   the right of the measure, never inside it and never on the other side.
+
+   Checked by tools/check-layout.mjs, which fails the build if these drift. */
+.post-wrap {
+  --measure: 700px;
+  --device-col: 224px;
+  --col-gap: 64px;
+}
+.post-column > * { max-width: none; }
+.prose-body > * { max-width: var(--measure); }
+/* The two blocks that own a phone column of their own. Capping these at the
+   measure collapses that column to zero and the phone overflows it. */
+.prose-body > .shot-aside,
+.prose-body > figure.bleed { max-width: none; }
+
+.post-head__device { display: flex; justify-content: center; }
+.post-head__device .phone {
+  transform: perspective(1300px) rotateY(-10deg) rotateX(5deg) rotateZ(-2deg);
+}
+
+/* ---------- ::: shot · the step beside the screen ----------
+   The text half sits in the reading measure and the phone sits in the column
+   beside it, so the step lines up with the paragraph above and below it.
+   Below the breakpoint it stacks, text first, because the sentence is what
+   the reader is following. */
+.shot-aside {
+  margin: 46px 0;
+  padding: 36px 0;
+  border-top: 2px solid var(--line);
+  border-bottom: 2px solid var(--line);
+}
+.shot-aside__text > :first-child { margin-top: 0; }
+.shot-aside__text > :last-child { margin-bottom: 0; }
+.shot-aside__text h3 { margin-top: 0; }
+
+/* The prose figure rule paints a border and an offset shadow on every
+   figure. A device frame already has its own bezel, so this one opts out.
+   `.prose-body .shot-aside__device` outranks `.prose-body figure`. */
+.prose-body .shot-aside__device {
+  margin: 0; border: 0; box-shadow: none; background: none;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.prose-body .shot-aside__device figcaption {
+  padding: 0; border: 0; background: none;
+  font-size: 13px; line-height: 1.5; color: var(--muted); text-align: center;
+  max-width: 34ch;
+}
+
+@media (min-width: 1100px) {
+  /* The text column is the reading measure itself, so the heading inside a
+     shot block starts on the same vertical line as every paragraph around
+     it. The phone takes whatever is left, on the right, in both variants.
+
+     `flip` used to move the phone to the left and the text to the right. It
+     did two bad things at once: the text lost the shared left edge, and,
+     because the columns never swapped with the order, the paragraph landed
+     in the 216px column and the phone took the wide one. The alternation is
+     worth keeping, so it moved to the tilt below, which costs no alignment. */
+  .shot-aside {
+    display: grid;
+    grid-template-columns: minmax(0, var(--measure)) minmax(0, 1fr);
+    gap: var(--col-gap);
+    /* Top-aligned, not centred. A 1206x2622 screen is more than twice as
+       tall as it is wide, so a step of three or four lines centred against
+       it leaves a large hole above the heading and another below the text.
+       Aligning to the top reads as prose with a tall figure beside it,
+       which is what it is. Same call as `.hero-grid` on the landing page. */
+    align-items: start;
+  }
+  .shot-aside__device .phone {
+    transform: perspective(1300px) rotateY(-9deg) rotateX(4deg) rotateZ(-2deg);
+  }
+  .shot-aside.reverse .shot-aside__device .phone {
+    transform: perspective(1300px) rotateY(9deg) rotateX(4deg) rotateZ(2deg);
+  }
+  .shot-aside--bare { display: block; }
+}
+
+/* Stacked, the device is decoration under the step rather than beside it,
+   so it comes second and sits smaller. No crop to a 4:5 card here the way
+   the landing page does it: a flow recording has its payoff in the middle
+   of the screen, and cropping to the top would cut the rows being pointed at. */
+@media (max-width: 1099px) {
+  .shot-aside__text { margin-bottom: 26px; }
+  /* Moves the token, not `--phone-w` on the device. Setting the phone width
+     here would be shadowed by the rule further down the file that derives it
+     from `--device-col`, which is the kind of quiet override that puts a
+     320px phone on a 430px screen. */
+  .post-wrap { --device-col: 240px; }
+}
+
+/* ---------- bleed ----------
+   Documented in build-blog.mjs and BLOG.md since the first build and never
+   given a rule, so it silently fell back to a plain figure. */
+@media (min-width: 1100px) {
+  /* A bleed figure widens to the right, into the device column, rather than
+   sideways in both directions. Left edge stays on the measure. */
+.prose-body figure.bleed { max-width: none; }
+}
+
 /* ---------- Prose ---------- */
 .prose-body { padding: 52px 0 0; font-size: 19px; line-height: 1.75; color: var(--ink-2); }
 .prose-body > p { margin: 0 0 26px; }
+/* The drop cap is the one place the Journal is allowed a serif. Roboto
+   Black was the wordmark face doing a job it is not shaped for: a flat
+   grotesque Y leaves a wedge of dead air under its diagonal that no amount
+   of metric tuning fixes. A high contrast display serif has the thick and
+   thin strokes that make a cap read as set rather than pasted in, and it
+   costs one subset woff2 because it sets exactly one glyph per page.
+
+   Sized off the body metrics, not by eye. Body is 19px on 1.75, so a line
+   is 33.25px, and Fraunces sits at about a 0.73em cap height. A cap that
+   starts on the first line's cap top and lands on the second line's
+   baseline is one line plus the body's own cap height tall:
+   (33.25 + 13.5) / 0.73, which is 64px. `line-height: 1` then makes the
+   float box two lines deep, and the float box is what the text wraps
+   around. The fallback stack is serif, never the sans, so a failed font
+   load degrades to a different serif rather than back to the old problem. */
 .prose-body > p:first-of-type::first-letter {
-  float: left; font-family: var(--roboto-black); font-weight: 900;
-  font-size: 74px; line-height: 0.78; padding: 6px 12px 0 0; color: var(--accent-ink);
+  float: left;
+  font-family: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-weight: 900;
+  font-size: 64px;
+  line-height: 1;
+  padding-top: 2px;
+  margin-right: 12px;
+  color: var(--accent-ink);
 }
 .prose-body h2 {
   font-family: var(--display); font-size: clamp(26px, 3.2vw, 34px);
@@ -459,6 +625,28 @@ nav.top .row {
   border-top: 2px solid var(--ink); background: var(--surface);
 }
 
+/* ---------- ::: highlight, the line worth stopping on ----------
+   Not a callout and not a blockquote. Those are both boxed stamps, and a
+   third box on the same page stops the boxes meaning anything at all. This
+   is the plain magazine pull quote instead: rules above and below, the
+   type stepped up, the accent carrying it, and air on both sides. No quote
+   marks, because nobody said it. It is the author raising their voice. */
+.prose-body > .highlight {
+  margin: 48px 0;
+  padding: 24px 0;
+  border-top: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(21px, 2.3vw, 27px);
+  line-height: 1.38;
+  letter-spacing: -0.02em;
+  color: var(--accent-ink);
+  text-wrap: balance;
+}
+.prose-body > .highlight strong { color: inherit; font-weight: 800; }
+
 .prose-body blockquote {
   margin: 42px 0; padding: 28px 30px;
   border: 2px solid var(--ink); background: var(--surface);
@@ -473,10 +661,20 @@ nav.top .row {
   text-transform: uppercase; color: var(--accent-ink);
 }
 
+/* A tip has to win against a page of bordered blocks, so it takes the full
+   stamp: the hard offset shadow every button on the site already has, plus
+   a wash of the section accent inside so the box reads as lit rather than
+   as one more outline. No blurred halo. The site has no glow anywhere and
+   one would be the only soft edge on the page. */
 .callout {
   margin: 38px 0; padding: 24px 26px;
   border: 2px solid var(--ink); border-left-width: 10px; border-left-color: var(--accent);
-  background: var(--surface);
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--accent) 13%, transparent),
+      color-mix(in srgb, var(--accent) 4%, transparent)),
+    var(--surface);
+  box-shadow: 8px 8px 0 var(--accent);
   font-size: 17px; line-height: 1.6;
 }
 .callout .callout-label {
@@ -538,10 +736,27 @@ nav.top .row {
   width: 100%; height: 100%; background: #0a0908;
   overflow: hidden; position: relative;
 }
-.phone .screen img {
+.phone .screen img,
+.phone .screen video {
   display: block; width: 100%; height: 100%;
   object-fit: cover; object-position: top center; border: 0;
 }
+
+/* The centred stage keeps 240x500 because the two screenshots already on
+   the Journal are 480x1000, cut for exactly that frame. The newer captures
+   come off the simulator raw at 1206x2622, so the blocks that use them take
+   the device's real aspect and crop nothing. Mixing the two in one rule is
+   what would letterbox one family or clip the other. */
+.shot-aside__device .phone,
+.post-head__device .phone {
+  width: var(--phone-w, 272px);
+  height: auto;
+  aspect-ratio: 1206 / 2622;
+}
+/* One phone width for the whole post page, so the hero phone and every step
+   phone share a left edge all the way down. */
+.shot-aside__device,
+.post-head__device { --phone-w: var(--device-col, 224px); }
 /* One phone, centred and square on. Two framed devices side by side
    never sit symmetrically, the frames fight each other. If a post
    genuinely needs two screens, use two separate stages. */
@@ -722,6 +937,8 @@ nav.top .row {
   .featured-body { padding: 28px 24px 30px; }
   .band { grid-template-columns: 1fr; padding: 36px 26px; box-shadow: 8px 8px 0 var(--accent); }
   .band-actions { justify-content: flex-start; }
+.store-row { width: 100%; }
+.store-btn { flex: 1 1 auto; justify-content: center; padding: 14px 16px; }
   .prevnext { grid-template-columns: 1fr; }
   .pn.next { text-align: left; }
   .img-pair { grid-template-columns: 1fr; }
