@@ -14,8 +14,8 @@ tags:
   - Auburn
   - Day trip
   - No car needed
-ctaTitle: Check the next train on the day, not the day before.
-ctaBody: Save the trip once and the next departure is one tap away. Free for every Sydney commuter until December 2026, no ads during the launch period.
+ctaTitle: Save your trip to Auburn once.
+ctaBody: The next train is one tap away. Free until December 2026, no ads.
 sources:
   - url: https://www.cumberland.nsw.gov.au/sydneycherryblossomfestival
     title: Cumberland City Council, Sydney Cherry Blossom Festival
