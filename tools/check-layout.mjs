@@ -183,9 +183,17 @@ function checkPage(rel) {
       add(rel, 'A device clip is missing data-replay.',
           'Without it blog.js never rewinds the clip and it stops after one pass.');
     }
-    if (!/\bposter=/.test(tag)) {
+    const poster = (tag.match(/\bposter="([^"]*)"/) || [])[1];
+    if (!poster) {
       add(rel, 'A device clip has no poster.',
           'The phone screen is black until the video arrives, which is a layout shift on a page budgeted to CLS 0.1.');
+    } else if (!existsSync(join(ROOT, poster.replace(/^\//, '')))) {
+      /* The poster path is derived from the clip name rather than authored,
+         so the attribute is always present and always looks right. Checking
+         the string proves nothing; only the file on disk does. A missing one
+         is a 404 and a black phone above the fold. */
+      add(rel, `A device clip points at a poster that does not exist: ${poster}`,
+          'Generate it beside the clip. The attribute is derived, so it is there whether the file is or not.');
     }
   }
 

@@ -343,8 +343,11 @@ function mediaTag(href, alt, { eager = false } = {}) {
      screen away before it can be read. blog.js holds the last frame for
      REPLAY_HOLD_MS and then replays, so every pass ends on a readable
      screenshot. `data-replay` is the marker it looks for. */
+  /* `metadata`, never `auto`, even above the fold. The poster is what paints
+     and it is preloaded; letting the clip pull its whole self down at the
+     same time just takes bandwidth away from the paint being measured. */
   return `<video src="${esc(href)}" poster="${esc(poster)}" autoplay muted ` +
-         `data-replay playsinline preload="${eager ? 'auto' : 'metadata'}" ` +
+         `data-replay playsinline preload="metadata" ` +
          `aria-label="${esc(alt)}"></video>`;
 }
 
@@ -486,7 +489,7 @@ const DROPCAP_FONT =
   'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@144,900' +
   '&text=ABCDEFGHIJKLMNOPQRSTUVWXYZ&display=swap';
 
-const head = ({ title, description, canonical, image, jsonld = [] }) => `<!doctype html>
+const head = ({ title, description, canonical, image, lcp, jsonld = [] }) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -514,7 +517,8 @@ const head = ({ title, description, canonical, image, jsonld = [] }) => `<!docty
 <link rel="stylesheet" media="print" onload="this.media='all'" href="${DROPCAP_FONT}">
 <noscript><link rel="stylesheet" href="${DROPCAP_FONT}"></noscript>
 
-<link rel="stylesheet" href="/blog.css?v=${assetVersion('blog.css')}" />
+${lcp ? `<link rel="preload" as="image" href="${esc(lcp)}" fetchpriority="high">
+` : ''}<link rel="stylesheet" href="/blog.css?v=${assetVersion('blog.css')}" />
 <link rel="stylesheet" href="/blog.tokens.css?v=${assetVersion('blog.tokens.css')}" />
 ${jsonld.map((j) => `<script type="application/ld+json">\n${JSON.stringify(j, null, 2)}\n</script>`).join('\n')}
 </head>`;
@@ -579,7 +583,14 @@ ${next ? `      <a class="pn next" href="/blog/${next.data.slug}/">
       </a>` : ''}
     </div>` : '';
 
-  return `${head({ title: data.title, description: data.summary, canonical: url, image: data.cardImage, jsonld })}
+  /* Whatever paints first above the fold. Without this the browser only
+     discovers it after the stylesheet, which on a throttled phone is most
+     of the way to the LCP budget already. A device clip never paints first,
+     its poster does, so that is what gets preloaded. */
+  const lcp = data.hero
+    || (data.heroShot ? data.heroShot.replace(/\.(mp4|webm)$/i, '-poster.jpg') : '');
+
+  return `${head({ title: data.title, description: data.summary, canonical: url, image: data.cardImage, lcp, jsonld })}
 <body data-cat="${esc(data.series)}"${data.tone ? ` data-tone="${esc(data.tone)}"` : ''}>
 
 <div class="progress" aria-hidden="true"></div>
