@@ -41,7 +41,7 @@ the numbers are.
 :::
 
 ::: shot flip
-![The Add Park and Ride screen with a search box and an alphabetical list of stations, each with a plus button](/images/krail/check-park-and-ride-spaces-before-you-leave/01-picker-list.png "The picker, A to Z. Campbelltown carries two car parks of its own.")
+![The home screen with Add another tapped, the A to Z station list sliding in, and the plus beside Bella Vista turning into a tick](/images/krail/check-park-and-ride-spaces-before-you-leave/flow-add-park-and-ride.mp4 "Tap the plus and the station is on your home screen. Bella Vista here, a Metro Park & Ride.")
 
 ## Add your station in a few taps
 
