@@ -282,7 +282,10 @@ function checkPost(file) {
     add('warn', 'ai', `blog/posts/${file}`, 1, 'No facts block.',
         'Add a ::: facts block. It is the part readers skim and engines lift.');
   }
-  if (!/^sources:/m.test(head) || /^sources:\s*\[\]\s*$/m.test(head)) {
+  /* App-tour posts show our own screens, so there is nothing external
+     to cite. Every other series still has to say what it checked. */
+  const series = fm(head, 'series');
+  if (series !== 'app' && (!/^sources:/m.test(head) || /^sources:\s*\[\]\s*$/m.test(head))) {
     add(status === 'ready' ? 'error' : 'warn', 'ai', `blog/posts/${file}`, 1,
         'No sources listed.', 'Cite what the post was checked against, with a URL and what it covers.');
   }

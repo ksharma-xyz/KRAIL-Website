@@ -145,7 +145,7 @@ function parseFrontmatter(raw, file) {
    ============================================================ */
 function extractContainers(md) {
   const blocks = [];
-  const out = md.replace(/^::: +(facts|callout)(?: +([^\n]*))?\n([\s\S]*?)^:::\s*$/gm,
+  const out = md.replace(/^::: +(facts|callout|shot|highlight)(?: +([^\n]*))?\n([\s\S]*?)^:::\s*$/gm,
     (_all, kind, title, content) => {
       blocks.push({ kind, title: (title || '').trim(), content: content.trim() });
       return `\n\nKRAILBLOCK${blocks.length - 1}KRAILBLOCK\n\n`;
@@ -153,8 +153,68 @@ function extractContainers(md) {
   return { md: out, blocks };
 }
 
+/* ============================================================
+   ::: shot · the step, beside the screen it happens on
+
+   A tall phone screenshot run full width across a reading column is a
+   bad trade: the column is 760px and the screen is 1206 by 2622, so it
+   arrives either enormous or letterboxed, and either way the sentence
+   explaining it has scrolled off. The landing page already solved this
+   for features, with copy one side and the device the other and a
+   `reverse` class to alternate. This is the same block for prose.
+
+     ::: shot
+     ![The Park and Ride card opened](/images/krail/x.mp4 "One tap to open.")
+
+     Tap the station and the three car parks unfold, each with its
+     own count and its own update time.
+     :::
+
+   The first image line in the block is the device. Everything else is
+   the text column, so it takes ordinary markdown: paragraphs, a list,
+   bold, a sub-heading. `::: shot flip` puts the device on the left.
+
+   One device per block. Two frames side by side never sit symmetrically,
+   which is the same reason `.shot-row` only ever holds one.
+   ============================================================ */
+function renderShot(block) {
+  const m = block.content.match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)[ \t]*$/m);
+
+  /* No image means no device to place. Degrade to the author's prose in a
+     single column rather than swallowing the block. */
+  if (!m) {
+    return `    <div class="shot-aside shot-aside--bare">\n` +
+           `      <div class="shot-aside__text">\n${indent(marked.parse(block.content), 8)}\n      </div>\n` +
+           `    </div>`;
+  }
+
+  const [raw, alt, src, caption] = m;
+  const prose = block.content.replace(raw, '').trim();
+  const flip = /\b(flip|reverse)\b/i.test(block.title || '');
+  const cap = caption
+    ? `\n        <figcaption>${renderCredit(src, caption)}</figcaption>`
+    : '';
+
+  return `    <div class="shot-aside${flip ? ' reverse' : ''}">\n` +
+         `      <div class="shot-aside__text">\n${indent(marked.parse(prose), 8)}\n      </div>\n` +
+         `      <figure class="shot-aside__device">\n` +
+         `        ${deviceFrame(mediaTag(src, alt))}${cap}\n` +
+         `      </figure>\n` +
+         `    </div>`;
+}
+
+const indent = (s, n) =>
+  s.trimEnd().split('\n').map((l) => (l ? ' '.repeat(n) + l : l)).join('\n');
+
 function renderContainer(block) {
   const inline = (s) => marked.parseInline(s);
+  if (block.kind === 'shot') return renderShot(block);
+  /* The pull quote. No label and no attribution, because nobody said it:
+     it is the author's own line, stepped up because it is the one a reader
+     skimming the post should not miss. */
+  if (block.kind === 'highlight') {
+    return `    <p class="highlight">${inline(block.content)}</p>`;
+  }
   if (block.kind === 'facts') {
     const rows = block.content.split(/\n/).map((l) => l.trim()).filter(Boolean).map((line) => {
       const i = line.indexOf(':');
@@ -251,6 +311,76 @@ function renderCredit(src, text) {
 
 const STYLES = new Set(['plain', 'phone', 'bleed']);
 
+/* ============================================================
+   Media in a device frame.
+
+   A screen recording sits in the same slot as a screenshot. Inside the
+   phone frame a short muted loop is what makes the frame read as a real
+   phone rather than a picture of one, and these flows are three to five
+   seconds, so there is nothing for a reader to operate: it plays, it
+   loops, and the file carries no audio track at all.
+
+   The poster still is not optional. Without it the screen is black until
+   the video arrives, which is both an ugly first paint and a layout shift
+   on a page that has to clear CLS 0.1. `trim-videos` writes one beside
+   every clip, so the path is derived rather than authored.
+
+   Autoplay respects a reader who asked for less motion: blog.js pauses
+   every one of these when `prefers-reduced-motion` matches. CSS cannot
+   stop a video, so that half has to be script.
+   ============================================================ */
+const isVideo = (src) => /\.(mp4|webm)$/i.test(src);
+
+function mediaTag(href, alt, { eager = false } = {}) {
+  if (!isVideo(href)) {
+    return `<img src="${esc(href)}" alt="${esc(alt)}"` +
+           (eager ? ' fetchpriority="high"' : ' loading="lazy"') +
+           ' decoding="async" />';
+  }
+  const poster = href.replace(/\.(mp4|webm)$/i, '-poster.jpg');
+  /* No `loop` attribute. These clips end on the screen the step is about,
+     and a browser loop restarts on the last frame, which snatches that
+     screen away before it can be read. blog.js holds the last frame for
+     REPLAY_HOLD_MS and then replays, so every pass ends on a readable
+     screenshot. `data-replay` is the marker it looks for. */
+  /* `metadata`, never `auto`, even above the fold. The poster is what paints
+     and it is preloaded; letting the clip pull its whole self down at the
+     same time just takes bandwidth away from the paint being measured. */
+  return `<video src="${esc(href)}" poster="${esc(poster)}" autoplay muted ` +
+         `data-replay playsinline preload="metadata" ` +
+         `aria-label="${esc(alt)}"></video>`;
+}
+
+/* A hero photo is the only image that fills the reading column, so it is the
+   only one a phone downloads far more of than it paints. Where a `-800`
+   variant sits beside it, hand the browser both and let it choose: the
+   phone takes 51KB, the desktop still gets the full file. Shrinking the one
+   file instead would have softened the hero everywhere to fix a budget only
+   the phone was failing. */
+function heroCandidates(src) {
+  if (!src) return null;
+  const variant = src.replace(/(\.[a-z]+)$/i, '-800$1');
+  if (!existsSync(join(ROOT, variant.replace(/^\//, '')))) return { href: src };
+  return {
+    href: src,
+    srcset: `${variant} 800w, ${src} 1600w`,
+    sizes: '(max-width: 780px) 100vw, 1096px',
+  };
+}
+
+function heroImg(src, alt) {
+  const c = heroCandidates(src);
+  const set = c.srcset ? ` srcset="${esc(c.srcset)}" sizes="${esc(c.sizes)}"` : '';
+  return `<img src="${esc(src)}"${set} alt="${esc(alt)}" fetchpriority="high" decoding="async" />`;
+}
+
+/* The bezel and notch are markup, not CSS, because the notch has to sit
+   above the screen in the stacking order. Both the centred stage and the
+   beside-the-text block use this, so the frame is described once. */
+const deviceFrame = (media) =>
+  `<div class="phone">\n          <div class="notch"></div>\n` +
+  `          <div class="screen">${media}</div>\n        </div>`;
+
 /* Mode colours a post may claim with `tone:` when its category
    default is the wrong one. Tallawong is a things-to-do post, but
    it is about the metro, so it should read metro teal rather than
@@ -265,13 +395,12 @@ function renderImage(href, title, alt, defaultStyle) {
     if (STYLES.has(first.trim())) { style = first.trim(); caption = rest.join('|').trim(); }
     else caption = title.trim();
   }
-  const img = `<img src="${esc(href)}" alt="${esc(alt)}" loading="lazy" decoding="async" />`;
+  const img = mediaTag(href, alt);
   const cap = caption ? `\n      <figcaption>${renderCredit(href, caption)}</figcaption>` : '';
 
   if (style === 'phone') {
     return `<figure class="shot-stage">\n      <div class="shot-row">\n` +
-           `        <div class="phone">\n          <div class="notch"></div>\n` +
-           `          <div class="screen">${img}</div>\n        </div>\n` +
+           `        ${deviceFrame(img)}\n` +
            `      </div>${cap}\n    </figure>`;
   }
   const cls = style === 'bleed' ? ' class="bleed"' : '';
@@ -312,6 +441,18 @@ function renderMarkdown(md, defaultStyle) {
 const ARROW = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>';
 
 const SQUIGGLE = '<svg aria-hidden="true" class="sq-line" viewBox="0 0 100 10" preserveAspectRatio="none"><path class="stroke-bold" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/><path class="stroke-thin" pathLength="100" d="M0 5 Q 5 0 10 5 T 20 5 T 30 5 T 40 5 T 50 5 T 60 5 T 70 5 T 80 5 T 90 5 T 100 5"/></svg>';
+
+/* Store buttons, same stamp pattern and icons as the landing page. */
+const STORE_ROW = `<div class="store-row">
+          <a href="https://apps.apple.com/us/app/krail-app/id6738934832" target="_blank" rel="noopener" class="store-btn" aria-label="Download KRAIL on the App Store">
+            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+            <span class="text"><span class="big">App Store</span></span>
+          </a>
+          <a href="https://play.google.com/store/apps/details?id=xyz.ksharma.krail" target="_blank" rel="noopener" class="store-btn" aria-label="Get KRAIL on Google Play">
+            <svg class="badge-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20.5V3.5c0-.59.34-1.11.84-1.35l13.69 9.85L3.84 21.85c-.5-.25-.84-.76-.84-1.35zm14.81-8.91L5.39 2.04l11.05 6.34 1.37 3.21zM6.05 21.34l11.78-6.78-1.45-3.16-10.33 9.94zm15.97-9.83c.45.36.71.91.71 1.49s-.27 1.13-.72 1.5l-2.55 1.47-2.78-2.97 2.78-2.97 2.56 1.48z"/></svg>
+            <span class="text"><span class="big">Google Play</span></span>
+          </a>
+        </div>`;
 
 const MODE_PILLS = ['train','metro','bus','ferry','lr','coach']
   .map((m, i) => `      <span class="mp" style="background:var(--${m})">${'TMBFLC'[i]}</span>`).join('\n');
@@ -359,7 +500,7 @@ ${MODE_PILLS}
   </div>
 </footer>`;
 
-const head = ({ title, description, canonical, image, jsonld = [] }) => `<!doctype html>
+const head = ({ title, description, canonical, image, lcp, jsonld = [] }) => `<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -379,13 +520,11 @@ const head = ({ title, description, canonical, image, jsonld = [] }) => `<!docty
 
 <link rel="alternate" type="application/rss+xml" title="KRAIL Journal" href="/blog/feed.xml" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
-<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/roboto-900-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-900-caps.woff2" crossorigin>
 
-<link rel="stylesheet" href="/blog.css?v=${assetVersion('blog.css')}" />
+${lcp ? `<link rel="preload" as="image" href="${esc(lcp.href || lcp)}"${lcp.srcset ? ` imagesrcset="${esc(lcp.srcset)}" imagesizes="${esc(lcp.sizes)}"` : ''} fetchpriority="high">
+` : ''}<link rel="stylesheet" href="/blog.css?v=${assetVersion('blog.css')}" />
 <link rel="stylesheet" href="/blog.tokens.css?v=${assetVersion('blog.tokens.css')}" />
 ${jsonld.map((j) => `<script type="application/ld+json">\n${JSON.stringify(j, null, 2)}\n</script>`).join('\n')}
 </head>`;
@@ -418,7 +557,7 @@ function renderPost(post, prev, next) {
     author: { '@type': 'Person', name: data.author || 'Karan Sharma' },
     publisher: { '@type': 'Organization', name: 'KRAIL' },
     mainEntityOfPage: url,
-    ...(data.hero ? { image: SITE + data.hero } : {}),
+    ...(data.cardImage ? { image: SITE + data.cardImage } : {}),
   }];
 
   const sources = Array.isArray(data.sources) && data.sources.length ? `
@@ -450,7 +589,15 @@ ${next ? `      <a class="pn next" href="/blog/${next.data.slug}/">
       </a>` : ''}
     </div>` : '';
 
-  return `${head({ title: data.title, description: data.summary, canonical: url, image: data.hero, jsonld })}
+  /* Whatever paints first above the fold. Without this the browser only
+     discovers it after the stylesheet, which on a throttled phone is most
+     of the way to the LCP budget already. A device clip never paints first,
+     its poster does, so that is what gets preloaded. */
+  const lcp = data.hero
+    ? heroCandidates(data.hero)
+    : (data.heroShot ? { href: data.heroShot.replace(/\.(mp4|webm)$/i, '-poster.jpg') } : null);
+
+  return `${head({ title: data.title, description: data.summary, canonical: url, image: data.cardImage, lcp, jsonld })}
 <body data-cat="${esc(data.series)}"${data.tone ? ` data-tone="${esc(data.tone)}"` : ''}>
 
 <div class="progress" aria-hidden="true"></div>
@@ -459,8 +606,9 @@ ${nav()}
 
 <main class="post-wrap">
 
-<header class="post-head">
-  <div class="container prose">
+<header class="post-head${data.heroShot ? ' post-head--split' : ''}">
+  <div class="container ${data.heroShot ? 'narrow' : 'prose'}">
+    <div class="post-head__copy">
     <a class="backlink" href="/blog/">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>
       All stories
@@ -481,17 +629,21 @@ ${nav()}
       <span class="sep"></span>
       <span>${minutes} min read</span>
     </div>
+    </div>${data.heroShot ? `
+    <div class="post-head__device">
+      ${deviceFrame(mediaTag(data.heroShot, data.heroShotAlt || '', { eager: true }))}
+    </div>` : ''}
   </div>
 ${data.hero ? `
   <div class="container narrow">
     <figure class="post-hero anim">
-      <img src="${esc(data.hero)}" alt="${esc(data.heroAlt || '')}" fetchpriority="high" decoding="async" />${data.heroCredit ? `
+      ${heroImg(data.hero, data.heroAlt || '')}${data.heroCredit ? `
       <figcaption>${renderCredit(data.hero, data.heroCredit)}</figcaption>` : ''}
     </figure>
   </div>` : ''}
 </header>
 
-<article class="container prose">
+<article class="container ${data.heroShot ? 'narrow post-column' : 'prose'}">
   <div class="prose-body">
 ${html.split('\n').map((l) => (l ? '    ' + l : l)).join('\n')}
   </div>
@@ -505,7 +657,7 @@ ${sources}
         <p>${esc(data.ctaBody || 'Save the trip once and the next departure is one tap away. Free for every Sydney commuter until December 2026, no ads during the launch period.')}</p>
       </div>
       <div class="band-actions">
-        <a class="stamp" href="/#download">Get the app ${ARROW}</a>
+        ${STORE_ROW}
       </div>
     </section>
   </div>
@@ -530,7 +682,7 @@ function renderIndex(posts) {
     .sort((a, b) => CATEGORIES[a].order - CATEGORIES[b].order);
 
   const card = (p) => `      <a class="card anim" href="/blog/${p.data.slug}/" data-cat="${esc(p.data.series)}">
-${p.data.hero ? `        <div class="card-media"><img src="${esc(p.data.hero)}" alt="${esc(p.data.heroAlt || '')}" loading="lazy" decoding="async" /></div>` : ''}
+${p.data.cardImage ? `        <div class="card-media"><img src="${esc(p.data.cardImage)}" alt="${esc(p.data.cardImageAlt)}" loading="lazy" decoding="async" /></div>` : ''}
         <div class="card-body">
           <span class="tag">${esc(p.cat.label)}</span>
           <h3>${esc(p.data.title)}</h3>
@@ -557,7 +709,10 @@ ${p.data.hero ? `        <div class="card-media"><img src="${esc(p.data.hero)}" 
     title: 'KRAIL Journal, stories from the Sydney commute',
     description: 'Things to do, places to eat, app stories and behind the scenes, all written for people who actually catch the train in Sydney.',
     canonical: `${SITE}/blog/`,
-    image: featured?.data.hero,
+    image: featured?.data.cardImage,
+    /* The featured card is the first thing that paints here, and it was
+       being discovered only after the stylesheet, same as the posts. */
+    lcp: featured?.data.cardImage ? { href: featured.data.cardImage } : null,
     jsonld,
   })}
 <body>
@@ -584,9 +739,9 @@ ${featured ? `
 <section class="featured">
   <div class="container">
     <a class="featured-card anim" href="/blog/${featured.data.slug}/" data-cat="${esc(featured.data.series)}">
-${featured.data.hero ? `      <div class="featured-media">
+${featured.data.cardImage ? `      <div class="featured-media">
         <span class="featured-flag">Latest</span>
-        <img src="${esc(featured.data.hero)}" alt="${esc(featured.data.heroAlt || '')}" fetchpriority="high" decoding="async" />
+        <img src="${esc(featured.data.cardImage)}" alt="${esc(featured.data.cardImageAlt)}" fetchpriority="high" decoding="async" />
       </div>` : ''}
       <div class="featured-body">
         <span class="tag">${esc(featured.cat.label)}</span>
@@ -703,6 +858,20 @@ function build() {
 
     /* Internal-only fields are read, never rendered. */
     delete data.sourceRef;
+
+    /* One still per post for the places that need a flat rectangle: the
+       Open Graph and JSON-LD image, the index card, the featured slab.
+       A post whose opening image is a device recording has no `hero`, so
+       without this it shipped with no share card at all and a blank card
+       on the index. The poster frame beside every clip is the same image
+       a reader sees before it plays, so it is the honest one to use. */
+    data.cardImage = data.hero
+      || (data.heroShot
+        ? (isVideo(data.heroShot)
+          ? data.heroShot.replace(/\.(mp4|webm)$/i, '-poster.jpg')
+          : data.heroShot)
+        : '');
+    data.cardImageAlt = data.heroAlt || data.heroShotAlt || '';
 
     posts.push({
       data, cat,

@@ -13,18 +13,16 @@
 <meta property="og:title" content="KRAIL Journal, stories from the Sydney commute" />
 <meta property="og:description" content="Things to do, places to eat, app stories and behind the scenes, all written for people who actually catch the train in Sydney." />
 <meta property="og:url" content="https://krail.app/blog/" />
-<meta property="og:image" content="https://krail.app/images/tallawong-carpark.webp" />
+<meta property="og:image" content="https://krail.app/images/krail/choose-how-you-want-to-travel/flow-mode-filter-poster.jpg" />
 <meta name="twitter:card" content="summary_large_image" />
 
 <link rel="alternate" type="application/rss+xml" title="KRAIL Journal" href="/blog/feed.xml" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
-<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/roboto-900-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-900-caps.woff2" crossorigin>
 
-<link rel="stylesheet" href="/blog.css?v=ce071ae9" />
+<link rel="preload" as="image" href="/images/krail/choose-how-you-want-to-travel/flow-mode-filter-poster.jpg" fetchpriority="high">
+<link rel="stylesheet" href="/blog.css?v=c4b4ef6e" />
 <link rel="stylesheet" href="/blog.tokens.css?v=6f985d85" />
 <script type="application/ld+json">
 {
@@ -36,13 +34,73 @@
   "blogPost": [
     {
       "@type": "BlogPosting",
-      "headline": "Beat the Tallawong parking lottery",
+      "headline": "Rather take the ferry? Filter your Sydney trip",
+      "url": "https://krail.app/blog/choose-sydney-transport-mode/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Know the route number? Find your Sydney bus stop",
+      "url": "https://krail.app/blog/find-sydney-bus-stop-by-number/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Find any Sydney bus or train stop on the map",
+      "url": "https://krail.app/blog/find-sydney-stop-on-map/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Six colours and dark mode for your Sydney commute",
+      "url": "https://krail.app/blog/krail-colours-dark-mode-sydney/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Is it late or gone? Live Sydney train and bus times",
+      "url": "https://krail.app/blog/live-sydney-train-bus-ferry-times/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Need to be there by 9? Plan the Sydney trip ahead",
+      "url": "https://krail.app/blog/plan-sydney-trip-leave-or-arrive/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Save your Sydney commute, open it in one tap",
+      "url": "https://krail.app/blog/save-sydney-commute-one-tap/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "See your whole Sydney trip drawn on a map",
+      "url": "https://krail.app/blog/see-sydney-trip-on-map/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Check Sydney Park & Ride spaces before you leave",
+      "url": "https://krail.app/blog/sydney-park-and-ride-live-spaces/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Live departure board for any Sydney stop",
+      "url": "https://krail.app/blog/sydney-stop-departure-board/",
+      "datePublished": "2026-09-17"
+    },
+    {
+      "@type": "BlogPosting",
+      "headline": "Beat the Tallawong Park & Ride parking lottery",
       "url": "https://krail.app/blog/tallawong-parking-lottery/",
       "datePublished": "2026-08-23"
     },
     {
       "@type": "BlogPosting",
-      "headline": "Auburn Cherry Blossom Festival without a car",
+      "headline": "Auburn Cherry Blossom Festival by train and shuttle",
       "url": "https://krail.app/blog/auburn-cherry-blossom-festival-without-a-car/",
       "datePublished": "2026-08-14"
     }
@@ -77,26 +135,27 @@
     <div class="chips" role="group" aria-label="Filter posts by category">
       <button class="chip" data-filter="all" aria-pressed="true" style="--accent: var(--brand-pink);"><span class="dotk"></span>All</button>
       <button class="chip" data-filter="things-to-do" aria-pressed="false" data-cat="things-to-do"><span class="dotk"></span>Things to do</button>
+      <button class="chip" data-filter="app" aria-pressed="false" data-cat="app"><span class="dotk"></span>App showcase</button>
     </div>
   </div>
 </section>
 
 <section class="featured">
   <div class="container">
-    <a class="featured-card anim" href="/blog/tallawong-parking-lottery/" data-cat="things-to-do">
+    <a class="featured-card anim" href="/blog/choose-sydney-transport-mode/" data-cat="app">
       <div class="featured-media">
         <span class="featured-flag">Latest</span>
-        <img src="/images/tallawong-carpark.webp" alt="Boom gates down across the entry lane of the Tallawong Park and Ride car park, with rows of parked cars filling the lot behind" fetchpriority="high" decoding="async" />
+        <img src="/images/krail/choose-how-you-want-to-travel/flow-mode-filter-poster.jpg" alt="Transport mode chips being switched off one at a time until only ferries are left in the results" fetchpriority="high" decoding="async" />
       </div>
       <div class="featured-body">
-        <span class="tag">Things to do</span>
-        <h2>Beat the Tallawong parking lottery</h2>
-        <p class="excerpt">Everyone says the carpark fills. Almost nobody knows there are three of them, and they do not fill at the same rate. Here is how to see which one has room.</p>
+        <span class="tag">App showcase</span>
+        <h2>Rather take the ferry? Filter your Sydney trip</h2>
+        <p class="excerpt">The Mode button in KRAIL switches off the kinds of travel you do not want, so your Sydney results only show trips on train, bus, ferry or metro.</p>
         <span class="stamp ghost">Read the story <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>
         <div class="meta">
-          <time datetime="2026-08-23">23 Aug 2026</time>
+          <time datetime="2026-09-17">17 Sep 2026</time>
           <span class="sep"></span>
-          <span>3 min read</span>
+          <span>1 min read</span>
         </div>
       </div>
     </a>
@@ -107,16 +166,116 @@
   <div class="container">
     <div class="grid-head anim">
       <h2>Everything else</h2>
-      <span class="count" id="postCount">1 story</span>
+      <span class="count" id="postCount">11 stories</span>
     </div>
 
     <div class="card-grid" id="cardGrid">
+      <a class="card anim" href="/blog/find-sydney-bus-stop-by-number/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/find-your-stop-by-bus-number/flow-route-number-search-poster.jpg" alt="The number 333 being typed, route cards appearing, and the stop list opening" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>Know the route number? Find your Sydney bus stop</h3>
+          <p class="excerpt">Type a bus route number into KRAIL and you get every Sydney stop that bus goes past, in order, so you pick yours without knowing its official name.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>2 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/find-sydney-stop-on-map/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/pick-your-stop-on-the-map/flow-select-on-map-poster.jpg" alt="A stop pin being tapped on the map, the stop sheet rising, and the stop landing in the search field" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>Find any Sydney bus or train stop on the map</h3>
+          <p class="excerpt">In KRAIL you can find a Sydney bus, train or ferry stop by tapping it on a map, see what is leaving from it, and choose it for your trip without typing.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>2 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/krail-colours-dark-mode-sydney/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/make-krail-your-colour/flow-themes-dark-mode-poster.jpg" alt="A new theme colour being picked, the app settling into it, and then switching to dark mode" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>Six colours and dark mode for your Sydney commute</h3>
+          <p class="excerpt">KRAIL comes in six colours, each with its own little tagline, plus light and dark mode, so your Sydney commute app reads right at 6am and at 6pm.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>1 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/live-sydney-train-bus-ferry-times/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/live-times-for-every-train-bus-and-ferry/01-ferry-live-countdown-wharf.png" alt="A Circular Quay to Manly ferry showing in 4 mins, Wharf 2 Side A, departing 8:20 PM and arriving 8:40 PM" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>Is it late or gone? Live Sydney train and bus times</h3>
+          <p class="excerpt">KRAIL shows a live countdown, the platform or wharf, and crosses out the old time when a Sydney train, bus or ferry runs late. Every mode, not just trains.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>2 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/plan-sydney-trip-leave-or-arrive/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/leave-at-or-arrive-by/flow-plan-your-trip-poster.jpg" alt="The date being stepped to Tomorrow, the time set to 9:59 on the clock face, and the results rebuilding to arrive by then" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>Need to be there by 9? Plan the Sydney trip ahead</h3>
+          <p class="excerpt">KRAIL plans a Sydney train, bus or ferry trip for later, either leaving at a set time or arriving by one, for today or any day up to a week ahead.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>1 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/save-sydney-commute-one-tap/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/save-your-trip-once-open-it-in-one-tap/flow-saved-trip-one-tap-poster.jpg" alt="A saved trip being tapped on the home screen, opening straight into live departures" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>Save your Sydney commute, open it in one tap</h3>
+          <p class="excerpt">Tap the star on any trip in KRAIL and it lives on your home screen, so tomorrow morning your Sydney commute is one tap away instead of two searches.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>2 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/see-sydney-trip-on-map/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/see-your-whole-trip-on-a-map/flow-trip-on-map-ferry-poster.jpg" alt="The Maps button being tapped on a ferry trip, opening a map with the route drawn across the harbour" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>See your whole Sydney trip drawn on a map</h3>
+          <p class="excerpt">Tap Maps on any trip in KRAIL and you see where every Sydney train, bus or ferry goes, where you walk, and where you change, in each line&#39;s own colours.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>2 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/sydney-park-and-ride-live-spaces/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/check-park-and-ride-spaces-before-you-leave/flow-park-and-ride-poster.jpg" alt="The Tallawong Station card being tapped open to show live spaces at three car parks, then tapped closed again" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>Check Sydney Park &amp; Ride spaces before you leave</h3>
+          <p class="excerpt">KRAIL puts live Park &amp; Ride spaces for Sydney stations on the home screen, so you know there is a spot before you back out of the driveway.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>2 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/sydney-stop-departure-board/" data-cat="app">
+        <div class="card-media"><img src="/images/krail/see-whats-leaving-from-any-stop/flow-departure-board-poster.jpg" alt="The departures icon being tapped, the stop sheet opening, and the live board scrolling" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">App showcase</span>
+          <h3>Live departure board for any Sydney stop</h3>
+          <p class="excerpt">KRAIL has a live departure board for any Sydney stop, with countdowns, platforms and a line filter, so you see everything leaving from where you stand.</p>
+          <div class="meta"><time datetime="2026-09-17">17 Sep 2026</time><span class="sep"></span><span>1 min read</span></div>
+        </div>
+      </a>
+
+      <a class="card anim" href="/blog/tallawong-parking-lottery/" data-cat="things-to-do">
+        <div class="card-media"><img src="/images/tallawong-carpark.webp" alt="Boom gates down across the entry lane of the Tallawong Park and Ride car park, with rows of parked cars filling the lot behind" loading="lazy" decoding="async" /></div>
+        <div class="card-body">
+          <span class="tag">Things to do</span>
+          <h3>Beat the Tallawong Park &amp; Ride parking lottery</h3>
+          <p class="excerpt">Everyone says the Tallawong car park fills. Almost nobody knows there are three of them, and they do not fill at the same rate.</p>
+          <div class="meta"><time datetime="2026-08-23">23 Aug 2026</time><span class="sep"></span><span>3 min read</span></div>
+        </div>
+      </a>
+
       <a class="card anim" href="/blog/auburn-cherry-blossom-festival-without-a-car/" data-cat="things-to-do">
         <div class="card-media"><img src="/images/auburn-cherry-blossom.webp" alt="A cluster of pink cherry blossoms in full bloom on a branch at Auburn Botanic Gardens" loading="lazy" decoding="async" /></div>
         <div class="card-body">
           <span class="tag">Things to do</span>
-          <h3>Auburn Cherry Blossom Festival without a car</h3>
-          <p class="excerpt">Every ticket is booked online, there is no buying one at the gate. Here is the train and free shuttle that gets you there instead.</p>
+          <h3>Auburn Cherry Blossom Festival by train and shuttle</h3>
+          <p class="excerpt">Every ticket is booked online, there is no buying one at the gate. Here is the Sydney train and free shuttle that gets you to Auburn instead.</p>
           <div class="meta"><time datetime="2026-08-14">14 Aug 2026</time><span class="sep"></span><span>4 min read</span></div>
         </div>
       </a>

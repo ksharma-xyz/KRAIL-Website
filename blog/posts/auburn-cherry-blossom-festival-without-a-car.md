@@ -1,9 +1,9 @@
 ---
-title: Auburn Cherry Blossom Festival without a car
+title: Auburn Cherry Blossom Festival by train and shuttle
 slug: auburn-cherry-blossom-festival-without-a-car
 series: things-to-do
 accent: without a car.
-summary: Every ticket is booked online, there is no buying one at the gate. Here is the train and free shuttle that gets you there instead.
+summary: Every ticket is booked online, there is no buying one at the gate. Here is the Sydney train and free shuttle that gets you to Auburn instead.
 updated: 2026-08-14
 author: Karan Sharma
 hero: /images/auburn-cherry-blossom.webp
