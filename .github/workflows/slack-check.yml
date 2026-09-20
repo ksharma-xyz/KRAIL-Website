@@ -1,0 +1,49 @@
+name: Slack check
+
+# Posts one test message as krail-claude-bot, on demand only.
+#
+# There is no schedule and nothing here touches the site. It exists
+# because the daily publish only speaks to Slack after it has merged
+# and built something, so the first time anyone finds out the token is
+# wrong or the bot was never invited to the channel would otherwise be
+# a morning when a post was supposed to go out and quietly did not.
+#
+# Run it after creating the app, after rotating the token, and after
+# moving the channel.
+#
+#   gh workflow run slack-check.yml
+#
+# Unlike the publish, this one does not swallow the error. A failure
+# here is the whole point of running it.
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'Channel to post to. Blank uses the SLACK_CHANNEL variable.'
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Post a test message
+        uses: ./.github/actions/slack-notify
+        with:
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel: ${{ inputs.channel || vars.SLACK_CHANNEL || 'krail-dev-hq' }}
+          text: 'krail-claude-bot is wired up'
+          title: 'krail-claude-bot is wired up'
+          body: >-
+            Token, channel and invite all check out. The Journal will
+            post here when a post goes live, one a day.
+          context: 'Test message from ${{ github.repository }}, triggered by hand'
+          status: ok
