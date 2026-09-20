@@ -351,6 +351,29 @@ function mediaTag(href, alt, { eager = false } = {}) {
          `aria-label="${esc(alt)}"></video>`;
 }
 
+/* A hero photo is the only image that fills the reading column, so it is the
+   only one a phone downloads far more of than it paints. Where a `-800`
+   variant sits beside it, hand the browser both and let it choose: the
+   phone takes 51KB, the desktop still gets the full file. Shrinking the one
+   file instead would have softened the hero everywhere to fix a budget only
+   the phone was failing. */
+function heroCandidates(src) {
+  if (!src) return null;
+  const variant = src.replace(/(\.[a-z]+)$/i, '-800$1');
+  if (!existsSync(join(ROOT, variant.replace(/^\//, '')))) return { href: src };
+  return {
+    href: src,
+    srcset: `${variant} 800w, ${src} 1600w`,
+    sizes: '(max-width: 780px) 100vw, 1096px',
+  };
+}
+
+function heroImg(src, alt) {
+  const c = heroCandidates(src);
+  const set = c.srcset ? ` srcset="${esc(c.srcset)}" sizes="${esc(c.sizes)}"` : '';
+  return `<img src="${esc(src)}"${set} alt="${esc(alt)}" fetchpriority="high" decoding="async" />`;
+}
+
 /* The bezel and notch are markup, not CSS, because the notch has to sit
    above the screen in the stacking order. Both the centred stage and the
    beside-the-text block use this, so the frame is described once. */
@@ -517,7 +540,7 @@ const head = ({ title, description, canonical, image, lcp, jsonld = [] }) => `<!
 <link rel="stylesheet" media="print" onload="this.media='all'" href="${DROPCAP_FONT}">
 <noscript><link rel="stylesheet" href="${DROPCAP_FONT}"></noscript>
 
-${lcp ? `<link rel="preload" as="image" href="${esc(lcp)}" fetchpriority="high">
+${lcp ? `<link rel="preload" as="image" href="${esc(lcp.href || lcp)}"${lcp.srcset ? ` imagesrcset="${esc(lcp.srcset)}" imagesizes="${esc(lcp.sizes)}"` : ''} fetchpriority="high">
 ` : ''}<link rel="stylesheet" href="/blog.css?v=${assetVersion('blog.css')}" />
 <link rel="stylesheet" href="/blog.tokens.css?v=${assetVersion('blog.tokens.css')}" />
 ${jsonld.map((j) => `<script type="application/ld+json">\n${JSON.stringify(j, null, 2)}\n</script>`).join('\n')}
@@ -588,7 +611,8 @@ ${next ? `      <a class="pn next" href="/blog/${next.data.slug}/">
      of the way to the LCP budget already. A device clip never paints first,
      its poster does, so that is what gets preloaded. */
   const lcp = data.hero
-    || (data.heroShot ? data.heroShot.replace(/\.(mp4|webm)$/i, '-poster.jpg') : '');
+    ? heroCandidates(data.hero)
+    : (data.heroShot ? { href: data.heroShot.replace(/\.(mp4|webm)$/i, '-poster.jpg') } : null);
 
   return `${head({ title: data.title, description: data.summary, canonical: url, image: data.cardImage, lcp, jsonld })}
 <body data-cat="${esc(data.series)}"${data.tone ? ` data-tone="${esc(data.tone)}"` : ''}>
@@ -630,7 +654,7 @@ ${nav()}
 ${data.hero ? `
   <div class="container narrow">
     <figure class="post-hero anim">
-      <img src="${esc(data.hero)}" alt="${esc(data.heroAlt || '')}" fetchpriority="high" decoding="async" />${data.heroCredit ? `
+      ${heroImg(data.hero, data.heroAlt || '')}${data.heroCredit ? `
       <figcaption>${renderCredit(data.hero, data.heroCredit)}</figcaption>` : ''}
     </figure>
   </div>` : ''}
@@ -703,6 +727,9 @@ ${p.data.cardImage ? `        <div class="card-media"><img src="${esc(p.data.car
     description: 'Things to do, places to eat, app stories and behind the scenes, all written for people who actually catch the train in Sydney.',
     canonical: `${SITE}/blog/`,
     image: featured?.data.cardImage,
+    /* The featured card is the first thing that paints here, and it was
+       being discovered only after the stylesheet, same as the posts. */
+    lcp: featured?.data.cardImage ? { href: featured.data.cardImage } : null,
     jsonld,
   })}
 <body>
