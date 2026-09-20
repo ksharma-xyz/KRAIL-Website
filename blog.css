@@ -641,6 +641,16 @@ nav.top .row {
   content: ""; position: absolute; left: 0; top: 11px;
   width: 9px; height: 9px; background: var(--accent);
 }
+
+/* The practical-stuff list. The builder gives each row an icon
+   in place of the accent square, so the reader can find the one
+   line they came for without reading all eight. An unmatched row
+   gets an empty gutter of the same width, which is why the text
+   column stays straight. */
+.prose-body ul.ico-list > li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; padding-left: 0; align-items: start; }
+.prose-body ul.ico-list > li::before { content: none; }
+.prose-body ul.ico-list .li-ico { width: 22px; height: 22px; display: block; margin-top: 3px; color: var(--accent); }
+
 .prose-body hr { border: 0; border-top: 2px solid var(--line); margin: 44px 0; }
 
 .prose-body figure { margin: 38px 0; border: 2px solid var(--ink); box-shadow: 8px 8px 0 var(--accent); }
@@ -800,22 +810,20 @@ nav.top .row {
   margin: 0 0 16px; font-size: 11px; font-weight: 800;
   letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent-ink);
 }
-.sources ol { margin: 0; padding: 0; list-style: none; counter-reset: src; }
+/* A list of links reads as a list of links. The numbered counters were
+   carrying a paragraph each; with the paragraphs gone they were just
+   decoration on something the reader scans in two seconds. */
+.sources ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 9px; }
 .sources li {
-  position: relative; padding-left: 34px; margin: 0 0 14px;
-  font-size: 15px; line-height: 1.55; color: var(--muted);
+  position: relative; padding-left: 18px;
+  font-size: 15px; line-height: 1.5;
 }
-.sources li:last-child { margin-bottom: 0; }
 .sources li::before {
-  counter-increment: src; content: counter(src);
-  position: absolute; left: 0; top: 1px;
-  width: 22px; height: 22px; display: grid; place-items: center;
-  background: var(--accent-fill); color: #fff;
-  font-size: 11px; font-weight: 800;
+  content: ""; position: absolute; left: 0; top: 0.55em;
+  width: 7px; height: 7px; background: var(--accent);
 }
-.sources a { color: var(--ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent); word-break: break-word; }
+.sources a { color: var(--ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent); }
 .sources a:hover { background: var(--accent-fill); color: #fff; box-shadow: none; }
-.sources .for { display: block; font-size: 13px; color: var(--muted); margin-top: 3px; }
 .sources .checked { margin: 16px 0 0; font-size: 13px; color: var(--muted); }
 
 /* ============================================================

@@ -20,9 +20,9 @@ sources:
   - url: https://www.cumberland.nsw.gov.au/sydneycherryblossomfestival
     title: Cumberland City Council, Sydney Cherry Blossom Festival
     for: Dates, hours, ticket prices, shuttle timing, parking, best time to visit.
-  - url: https://en.wikipedia.org/wiki/Auburn_railway_station,_Sydney
-    title: Auburn railway station, Sydney
-    for: Which line runs to Auburn Station every day.
+  - url: https://transportnsw.info/routes/details/sydney-trains-network/t2/02t2
+    title: Transport for NSW, T2 line route and timetable
+    for: Which line runs to Auburn Station every day, and which services only touch it early, late or on weekends.
   - url: https://transportnsw.info/news/2026/you-may-see-changes-to-your-trip-fare-from-29-june
     title: Transport for NSW fare change notice
     for: Confirming the fare table used here is still current.
