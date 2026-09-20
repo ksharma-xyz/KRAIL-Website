@@ -64,7 +64,16 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           # Generated paths only. Sources are never touched here.
-          git add --all blog/index.html blog/feed.xml blog/sitemap.xml blog/llms.txt 2>/dev/null || true
+          #
+          # The root sitemap and robots.txt are on this list because the
+          # build writes them too. They were not, and the cost was not a
+          # stale sitemap: anything the build touches and this does not
+          # stage is left dirty, `git pull --rebase` refuses to run with
+          # unstaged changes, and the push never happens. The commit is
+          # made, the job fails at exit 128, and the post sits on main
+          # with no page ever generated from it.
+          git add --all blog/index.html blog/feed.xml blog/sitemap.xml blog/llms.txt \
+                        sitemap.xml robots.txt 2>/dev/null || true
           for d in blog/*/; do
             [ "$d" = "blog/posts/" ] && continue
             git add --all "$d" 2>/dev/null || true
@@ -73,6 +82,17 @@ jobs:
           if git diff --staged --quiet; then
             echo "Journal output unchanged. Nothing to commit."
             exit 0
+          fi
+
+          # Whatever the build wrote that is still unstaged is either a
+          # generated file nobody added to the list above or a stray
+          # edit. Either way it must not ride along into the rebase, and
+          # discarding it is safe because every source file is already
+          # committed by the time this job runs.
+          if ! git diff --quiet; then
+            echo "Unstaged after staging the generated set:"
+            git diff --name-only
+            git checkout -- .
           fi
 
           git commit -m "Journal: rebuild from posts
