@@ -1,0 +1,127 @@
+name: Publish one a day
+
+# Publishes at most one queued post per day, and only one you have
+# already looked at.
+#
+# The queue is open pull requests carrying the `ready-to-publish`
+# label. You read the preview, and when you are happy you put the
+# label on. The next morning this merges the oldest labelled one and
+# stops. Nothing else goes out that day.
+#
+# Two things follow from that. Nothing reaches krail.app that you have
+# not seen, because the label is the only way in. And the Journal
+# never publishes two posts on one date, which is what made the last
+# batch look like a content dump.
+#
+# The publish date is read from the commit that lands on main, so the
+# dates take care of themselves. Merging on six mornings gives six
+# dates. There is no field to set and nothing to keep in sync.
+
+on:
+  schedule:
+    # 20:00 UTC is 6am in Sydney through winter and 7am through
+    # summer, so the post is up before the morning commute either way.
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report what would be published, merge nothing'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: publish-daily
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Has something already gone out today
+        id: today
+        run: |
+          today=$(date -u +%F)
+          # Any commit on main touching a post counts, including one
+          # merged by hand. Two posts on one date is the thing this
+          # workflow exists to prevent, so it does not matter who
+          # published the first one.
+          last=$(git log -1 --format=%cd --date=format:%F origin/main -- blog/posts || true)
+          echo "today=$today" >> "$GITHUB_OUTPUT"
+          if [ "$last" = "$today" ]; then
+            echo "already=yes" >> "$GITHUB_OUTPUT"
+            echo "A post already went out on $today. Nothing more today." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "already=no" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Pick the oldest queued post
+        id: pick
+        if: steps.today.outputs.already == 'no'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Oldest first, so the queue drains in the order you approved
+          # it rather than newest wins.
+          pr=$(gh pr list \
+                 --state open \
+                 --label ready-to-publish \
+                 --json number,title,createdAt,mergeable \
+                 --jq 'sort_by(.createdAt) | map(select(.mergeable != "CONFLICTING")) | .[0] // empty')
+
+          if [ -z "$pr" ]; then
+            echo "number=" >> "$GITHUB_OUTPUT"
+            echo "Nothing is labelled ready-to-publish, so nothing goes out today." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          number=$(echo "$pr" | jq -r .number)
+          title=$(echo "$pr" | jq -r .title)
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "title=$title"   >> "$GITHUB_OUTPUT"
+          {
+            echo "### Publishing today"
+            echo ""
+            echo "- #$number $title"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Merge it
+        if: steps.pick.outputs.number != '' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Squash, because the post is one change however many times
+          # it was revised in review. The gates on the pull request
+          # have to be green first; --auto waits for them rather than
+          # forcing past them.
+          gh pr merge "${{ steps.pick.outputs.number }}" \
+            --squash --auto --delete-branch
+
+      - name: Say what is queued behind it
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo ""
+            echo "### Still queued"
+            echo ""
+            gh pr list --state open --label ready-to-publish \
+              --json number,title --jq '.[] | "- #\(.number) \(.title)"' \
+              || echo "Could not read the queue."
+            echo ""
+            echo "### Waiting on you"
+            echo ""
+            gh pr list --state open \
+              --json number,title,labels \
+              --jq '.[] | select([.labels[].name] | index("ready-to-publish") | not) | "- #\(.number) \(.title)"' \
+              || echo "Could not read the open pull requests."
+          } >> "$GITHUB_STEP_SUMMARY"
