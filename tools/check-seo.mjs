@@ -59,6 +59,14 @@ const PLACES = [
   'chatswood', 'epping', 'auburn', 'manly', 'bondi', 'newtown', 'strathfield',
   'campbelltown', 'ashfield', 'brookvale', 'cherrybrook', 'beverly hills',
   'museum', 'macquarie', 'penrith', 'liverpool', 'blacktown', 'redfern',
+  /* The walks. This list was written against ten app posts, all of which
+     could say Sydney and be done. A post about a specific walk names the
+     place people actually search for, and the gate should know those too
+     rather than push a title toward a vaguer word. */
+  'coogee', 'bronte', 'tamarama', 'clovelly', 'watsons bay', 'dover heights',
+  'bundeena', 'cronulla', 'berowra', 'cowan', 'cremorne', 'mosman',
+  'wentworth falls', 'blue mountains', 'balmain', 'barangaroo', 'seven hills',
+  'north sydney', 'milsons point', 'darling harbour', 'olympic park', 'hurstville',
 ];
 
 /* The thing half. A mode or the job being done. */
@@ -136,6 +144,63 @@ function publishedSlugs() {
   return map;
 }
 
+/* ============================================================
+   Sources have to be worth citing.
+
+   A source is the body that runs the thing, or publishes the data, or
+   manages the land. A walk site's page is somebody's write-up of a
+   place they visited, and an encyclopedia article is a summary of
+   other people's sources. Neither is where a distance, a grade, a
+   fare or a departure time comes from, and citing one lends it an
+   authority the page does not have. If the official body does not
+   publish a number, the honest move is to say so, which several of
+   these posts already do well.
+
+   Government at any level qualifies, and so does the operator of the
+   service being described, because a ferry company is primary for its
+   own timetable.
+   ============================================================ */
+const OFFICIAL = [
+  /(^|\.)nsw\.gov\.au$/, /(^|\.)gov\.au$/,
+  /^transportnsw\.info$/, /^sydneymetro\.info$/,
+  /^opendata\.transport\.nsw\.gov\.au$/,
+  /^cronullaferries\.com\.au$/,     /* operates the Bundeena ferry */
+];
+
+function checkSourceQuality(file, head) {
+  const block = (head.match(/^sources:\n((?:[ \t]+.*\n|\n(?=[ \t]))*)/m) || [])[1];
+  if (!block) return;
+  for (const entry of block.split(/(?=^[ \t]+- url: )/m)) {
+    const url = (entry.match(/- url: (\S+)/) || [])[1];
+    if (!url) continue;
+    let host;
+    try { host = new URL(url).hostname.replace(/^www\./, ''); } catch { continue; }
+    if (!OFFICIAL.some((re) => re.test(host))) {
+      add(file, `Source is not an official one: ${host}`,
+          'Cite the body that runs the service, publishes the data or manages the land. If none of them publishes the number, say that instead of borrowing somebody else\'s.');
+    }
+    /* A timetable PDF is the most tempting citation on a transport
+       site and the worst one to leave in a post. The bus and ferry
+       ones come back 403 to anyone the site does not recognise, so a
+       reader clicking the source we gave them gets Access Denied and
+       has no reason to believe the rest. The route pages are stable
+       and the site itself always resolves, so schedule claims cite
+       one of those instead. */
+    if (/\/documents\/timetables\//.test(url)) {
+      add(file, `Source deep-links a timetable PDF: ${url.split('/').pop()}`,
+          'Cite the route page, or transportnsw.info itself. The PDFs answer 403 to a plain request and the filename carries a date that goes stale on the next timetable.');
+    }
+    if (/NOT READ/i.test(entry)) {
+      add(file, `A source is listed that was never read: ${host}`,
+          'A page you could not open is not a source. Take it out. If the gap matters, the body should say so in words.');
+    }
+    if (!/^\s+title: .+$/m.test(entry)) {
+      add(file, `Source has no title: ${host}`,
+          'The title is what shows on the page. Without one the reader gets a bare domain, and two links to the same site look identical.');
+    }
+  }
+}
+
 /* ---------- the checks ---------- */
 
 const posts = readdirSync(join(ROOT, 'blog/posts'))
@@ -146,6 +211,7 @@ const posts = readdirSync(join(ROOT, 'blog/posts'))
     return {
       file: `blog/posts/${f}`,
       basename: f.replace(/\.md$/, ''),
+      head,
       title: field(head, 'title'),
       slug: field(head, 'slug'),
       summary: field(head, 'summary'),
@@ -226,6 +292,8 @@ for (const p of posts) {
           'Say Sydney, or name the station the post is about. Without it the post competes with every transit app on earth.');
     }
   }
+
+  checkSourceQuality(p.file, p.head);
 
   /* ---- the description ---- */
   if (!p.summary) {

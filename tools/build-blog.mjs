@@ -25,6 +25,7 @@ import { createHash } from 'node:crypto';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const POSTS_DIR = join(ROOT, 'blog', 'posts');
@@ -407,6 +408,170 @@ function renderImage(href, title, alt, defaultStyle) {
   return `<figure${cls}>\n      ${img}${cap}\n    </figure>`;
 }
 
+/* ============================================================
+   Practical-stuff icons
+   ============================================================
+   Every walk post ends on the list you actually want before you
+   leave the house: toilets, water, coffee, whether the kids and
+   the dog can come. As a stack of bold words it scans as one
+   grey block and people skip the line they needed. The renderer
+   gives each line a glyph instead.
+
+   The markdown stays plain. A writer should not have to carry a
+   design decision in the prose, and the same list rendered
+   somewhere else should still read fine.
+
+   Two things keep this from firing where it should not. It only
+   runs inside a list that sits under a "practical stuff" style
+   heading, so a bullet opening on `**Monday to Friday**` in a
+   timetable section never picks up an icon. And an unmatched
+   label renders with an empty gutter rather than a guessed
+   icon, so a line nobody planned for still lines up. */
+
+const ICON_PATHS = {
+  toilet: '<rect x="3.4" y="2.4" width="17.2" height="19.2" rx="2.4"/><circle cx="12" cy="8.4" r="2.6"/><path d="M7.2 18.6a4.8 4.8 0 0 1 9.6 0"/>',
+  water: '<path d="M12 3.2S6 9.6 6 13.8a6 6 0 0 0 12 0C18 9.6 12 3.2 12 3.2Z"/>',
+  coffee: '<path d="M4 8.4h12.4v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8.4Z"/><path d="M16.4 10h1.6a2.2 2.2 0 0 1 0 4.4h-1.6"/><path d="M7.8 3v2.2M11.6 3v2.2"/>',
+  food: '<path d="M6.6 2.8v8.4M4.4 2.8v3.6a2.2 2.2 0 0 0 4.4 0V2.8M6.6 11.2V21.2"/><path d="M17.4 2.8c-1.6 0-2.7 2.1-2.7 5.2s1.1 4.2 2.7 4.2v9"/>',
+  kids: '<circle cx="12" cy="5.6" r="3"/><path d="M12 8.6v7M8.2 11.6h7.6M9.4 21.2 12 15.6l2.6 5.6"/>',
+  pram: '<path d="M4.4 13.2a6.4 6.4 0 0 1 12.8 0"/><path d="M4.4 13.2h12.8"/><path d="M17.2 13.2V6.6a2.4 2.4 0 0 1 2.4-2.4"/><path d="M6.9 13.2 5.6 16.6M15 13.2l1.4 3.4"/><circle cx="5.2" cy="18.6" r="1.9"/><circle cx="16.8" cy="18.6" r="1.9"/>',
+  dog: '<ellipse cx="6.6" cy="9.2" rx="2" ry="2.6"/><ellipse cx="12" cy="6.6" rx="2.1" ry="2.8"/><ellipse cx="17.4" cy="9.2" rx="2" ry="2.6"/><path d="M12 12.4c-3.1 0-5.4 2.2-5.4 4.6 0 1.9 1.6 2.9 3.2 2.4a7.6 7.6 0 0 1 4.4 0c1.6.5 3.2-.5 3.2-2.4 0-2.4-2.3-4.6-5.4-4.6Z"/>',
+  swim: '<circle cx="16.4" cy="5.4" r="1.9"/><path d="M4 11.4 8.6 9l3.6 2.6 2.9-1.1"/><path d="M2 16c2.3 0 2.3-1.8 4.6-1.8S8.9 16 11.2 16s2.3-1.8 4.6-1.8S18.1 16 20.4 16"/><path d="M2 20c2.3 0 2.3-1.8 4.6-1.8S8.9 20 11.2 20s2.3-1.8 4.6-1.8S18.1 20 20.4 20"/>',
+  rain: '<path d="M7.2 15.6a4.6 4.6 0 0 1 .7-9.1 6.1 6.1 0 0 1 11.4 2.6 3.6 3.6 0 0 1-.6 6.5"/><path d="M8.4 18.4 7.2 21.4M12.6 18.4l-1.2 3M16.8 18.4l-1.2 3"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 1.8v2.6M12 19.6v2.6M4.8 4.8l1.9 1.9M17.3 17.3l1.9 1.9M1.8 12h2.6M19.6 12h2.6M4.8 19.2l1.9-1.9M17.3 6.7l1.9-1.9"/>',
+  shoes: '<path d="M2.6 17.4h11.2c2 0 2.6-1 4.4-1.6l2.4-.8a1.6 1.6 0 0 0 1-1.5c0-1-.8-1.5-1.8-1.7l-3.6-.7c-1-.2-1.6-.6-2.4-1.4L11 7.2a1.8 1.8 0 0 0-2.9.5L6.8 10H2.6Z"/><path d="M2.6 17.4v2.4h19.4"/>',
+  phone: '<rect x="6.4" y="2.4" width="11.2" height="19.2" rx="2.4"/><path d="M10.6 18.6h2.8"/>',
+  whale: '<path d="M2.6 14.6c0-3.5 3.8-6.4 8.5-6.4 3.4 0 6.3 1.5 7.7 3.7v5.4c-1.4 2.2-4.3 3.7-7.7 3.7-4.7 0-8.5-2.9-8.5-6.4Z"/><path d="M18.8 11.9 21.8 10v9.2l-3-1.9"/><path d="M9.8 8.3C9.8 6.3 10.9 4.8 12.5 4"/><circle cx="7" cy="13" r=".9"/>',
+  money: '<circle cx="12" cy="12" r="9"/><path d="M14.6 8.6h-3.4a2.1 2.1 0 0 0 0 4.2h1.6a2.1 2.1 0 0 1 0 4.2H9.4M12 6.8v1.8M12 15.4v1.8"/>',
+};
+
+/* First match wins, so the specific rows sit above the general
+   ones. `Coffee and a pub` and `Lunch and coffee` both want the
+   cup, and neither should fall through to the fork. */
+const ICON_RULES = [
+  [/toilet|loo|bathroom|change room/i, 'toilet'],
+  [/water|fountain|bubbler|tap/i, 'water'],
+  [/coffee|cafe|pub|drink/i, 'coffee'],
+  [/lunch|food|eat|snack|picnic/i, 'food'],
+  [/kid|child|family|teen/i, 'kids'],
+  [/pram|stroller|buggy|wheelchair|accessib/i, 'pram'],
+  [/dog|pet/i, 'dog'],
+  [/swim|pool|beach|surf/i, 'swim'],
+  [/rain|wet|storm|weather/i, 'rain'],
+  [/shade|sun|heat|hot|summer/i, 'sun'],
+  [/shoe|boot|footwear|grip/i, 'shoes'],
+  [/phone|signal|reception|battery|offline/i, 'phone'],
+  [/whale|dolphin|wildlife|birdlife/i, 'whale'],
+  [/cost|fare|price|money|cash|card/i, 'money'],
+];
+
+function listIcon(label) {
+  const hit = ICON_RULES.find(([re]) => re.test(label));
+  if (!hit) return '';
+  return `<svg class="li-ico" aria-hidden="true" viewBox="-1.5 -1.5 27 27" fill="none" stroke="currentColor" `
+    + `stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[hit[1]]}</svg>`;
+}
+
+const ICON_LIST_MIN_ROWS = 4;
+const ICON_LIST_MIN_HIT = 0.7;
+
+const ICON_LIST_HEADING = /practical|good to know|before you (go|leave)|what to (bring|know)/i;
+
+/* Rewrites the list under a practical-stuff heading into two
+   columns, icon and text. Every row gets the grid even when the
+   label matched nothing, because a list where only some rows are
+   indented reads as broken rather than as deliberate. */
+function addListIcons(html) {
+  return html.replace(/<h2>([^<]*)<\/h2>\n(\s*)<ul>\n([\s\S]*?)(\s*)<\/ul>/g,
+    (whole, heading, pad, items, tail) => {
+      if (!ICON_LIST_HEADING.test(heading)) return whole;
+      let matched = 0;
+      const rows = items.replace(/<li>([\s\S]*?)<\/li>/g, (row, inner) => {
+        /* Most rows open on a bold label and that is what gets
+           matched. A row written as a plain sentence falls back
+           to its opening words, which catches `May to November is
+           whale season` without letting a word buried in the middle
+           of a long line pull in an icon that misreads it. */
+        const bold = (inner.match(/^<strong>([^<]+)<\/strong>/) || [])[1];
+        const label = bold || inner.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).slice(0, 8).join(' ');
+        const icon = listIcon(label);
+        if (icon) matched++;
+        const gutter = icon || '<span class="li-ico" aria-hidden="true"></span>';
+        return `<li>${gutter}<span>${inner}</span></li>`;
+      });
+      /* A row with no icon still holds its gutter, so the text
+         column stays straight, but a list that is mostly empty
+         gutters just looks like a list that failed. The app
+         posts put whole sentences under `Good to know` and
+         match about a quarter of the time; the walk posts put
+         one labelled thing per line and match nearly all of it.
+         Converting only above the line keeps the icons where
+         they mean something. */
+      const rowCount = (items.match(/<li>/g) || []).length;
+      if (rowCount < ICON_LIST_MIN_ROWS || matched / rowCount < ICON_LIST_MIN_HIT) return whole;
+      return `<h2>${heading}</h2>\n${pad}<ul class="ico-list">\n${rows}${tail}</ul>`;
+    });
+}
+
+/* ============================================================
+   When a post went live
+   ============================================================
+   `updated` is the day the facts were last checked. It is not the
+   day the post appeared, and using it for both was giving the
+   Journal three posts stamped the same August date and ten
+   stamped the same September one, none of which were the days
+   any of them actually went up.
+
+   The publish date is not a field anyone types, because a typed
+   one is a guess that nobody goes back and corrects. Git already
+   knows: a post is live the moment its commit lands on main, and
+   Pages serves it minutes later. So the date is read from the
+   first commit on main that carried this slug.
+
+   Keyed on the slug rather than the filename, because posts get
+   renamed and a rename would otherwise reset the date and make a
+   year-old post look like today's.
+
+   A post that is not on main yet has no publish date, so it falls
+   back to the build date. That is right twice over: the preview
+   shows the date it would get, and the first build after the
+   merge replaces it with the real one. */
+const buildDate = () => {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+};
+
+const git = (...args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+
+function publishedDates() {
+  let ref;
+  for (const candidate of ['origin/main', 'main']) {
+    try { git('rev-parse', '--verify', '--quiet', candidate); ref = candidate; break; } catch { /* not there */ }
+  }
+  if (!ref) return new Map();
+
+  let log;
+  try {
+    log = git('log', '--reverse', '--format=@%H %aI', '--name-only', '--diff-filter=AM', ref, '--', 'blog/posts');
+  } catch { return new Map(); }
+
+  const dates = new Map();
+  let sha = null, day = null;
+  for (const line of log.split('\n')) {
+    if (line.startsWith('@')) {
+      [sha, day] = [line.slice(1, 41), line.slice(42, 52)];
+    } else if (line.endsWith('.md') && sha) {
+      let slug;
+      try {
+        slug = (git('show', `${sha}:${line}`).match(/^slug: (.+)$/m) || [])[1];
+      } catch { continue; }
+      if (slug && !dates.has(slug.trim())) dates.set(slug.trim(), day);
+    }
+  }
+  return dates;
+}
+
 function renderMarkdown(md, defaultStyle) {
   /* Markdown passes HTML comments straight through, so an editorial
      note to ourselves ends up in the served page where View Source
@@ -432,6 +597,7 @@ function renderMarkdown(md, defaultStyle) {
 
   let html = marked.parse(stripped);
   html = html.replace(/<p>KRAILBLOCK(\d+)KRAILBLOCK<\/p>/g, (_m, i) => renderContainer(blocks[+i]));
+  html = addListIcons(html);
   return html.trim();
 }
 
@@ -543,7 +709,7 @@ function splitHeadline(title, accent) {
    Post page
    ============================================================ */
 function renderPost(post, prev, next) {
-  const { data, html, minutes, date, cat } = post;
+  const { data, html, minutes, date, checked, cat } = post;
   const [lead, accent] = splitHeadline(data.title, data.accent);
   const url = `${SITE}/blog/${data.slug}/`;
 
@@ -553,23 +719,26 @@ function renderPost(post, prev, next) {
     headline: data.title,
     description: data.summary,
     datePublished: date.iso,
-    dateModified: date.iso,
+    dateModified: checked.iso,
     author: { '@type': 'Person', name: data.author || 'Karan Sharma' },
     publisher: { '@type': 'Organization', name: 'KRAIL' },
     mainEntityOfPage: url,
     ...(data.cardImage ? { image: SITE + data.cardImage } : {}),
   }];
 
+  /* Sources, not a research log. The `for` line in the frontmatter says what
+     each link was read for and stays there, because the next person editing
+     the post needs it. It does not belong on the page: a reader wants to know
+     where a time came from and to be able to go and look, and three sentences
+     about which timetable tables were compared is the writer talking to
+     themselves. The title is what shows, so every source carries a short one. */
   const sources = Array.isArray(data.sources) && data.sources.length ? `
   <aside class="sources">
-    <p class="block-title">Checked against</p>
-    <ol>
-${data.sources.map((s) => `      <li>
-        <a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a>
-        <span class="for">${esc(s.for || '')}</span>
-      </li>`).join('\n')}
-    </ol>
-    <p class="checked">Last checked ${longDate(date)}. Details can change, so verify on the day.</p>
+    <p class="block-title">Sources</p>
+    <ul>
+${data.sources.map((s) => `      <li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title || s.url.replace(/^https?:\/\/(www\.)?/, '').split('/')[0])}</a></li>`).join('\n')}
+    </ul>
+    <p class="checked">Times and prices change, so check before you go.</p>
   </aside>` : '';
 
   const tags = Array.isArray(data.tags) && data.tags.length ? `
@@ -807,7 +976,7 @@ ${posts.map((p) => `    <item>
 const renderSitemap = (posts) => `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE}/blog/</loc><changefreq>weekly</changefreq></url>
-${posts.map((p) => `  <url><loc>${SITE}/blog/${p.data.slug}/</loc><lastmod>${p.date.iso}</lastmod></url>`).join('\n')}
+${posts.map((p) => `  <url><loc>${SITE}/blog/${p.data.slug}/</loc><lastmod>${p.checked.iso}</lastmod></url>`).join('\n')}
 </urlset>
 `;
 
@@ -867,6 +1036,7 @@ function build() {
   const files = readdirSync(POSTS_DIR).filter((f) => f.endsWith('.md')).sort();
   const posts = [];
   const skipped = [];
+  const LIVE_DATES = publishedDates();
 
   for (const file of files) {
     const raw = readFileSync(join(POSTS_DIR, file), 'utf8');
@@ -902,9 +1072,22 @@ function build() {
         : '');
     data.cardImageAlt = data.heroAlt || data.heroShotAlt || '';
 
+    const published = parseDate(LIVE_DATES.get(data.slug) || buildDate());
+    const checkedOn = parseDate(data.updated);
+
     posts.push({
       data, cat,
-      date: parseDate(data.updated),
+      /* `date` stays the one the page shows and sorts on, so every
+         existing call site keeps working. `checked` is the last time
+         the facts were verified, which is what dateModified and the
+         sitemap want. */
+      date: published,
+      /* A post checked in August and published in September was
+         emitting dateModified earlier than datePublished, which is
+         not a thing that can happen and which search engines read as
+         broken markup. The later of the two is the honest answer: a
+         post cannot have been revised before it existed. */
+      checked: published.iso > checkedOn.iso ? published : checkedOn,
       minutes: readingTime(body),
       html: renderMarkdown(body, STYLES.has(data.imageStyle) ? data.imageStyle : 'plain'),
     });

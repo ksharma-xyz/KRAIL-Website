@@ -175,6 +175,28 @@ function checkPage(rel) {
         'Use the store buttons. They carry the App Store and Google Play icons and the stamp styling the rest of the site uses.');
   }
 
+  /* ---- practical-stuff icon lists keep one straight text column ----
+     The icons are a rendering decision, not something a writer types,
+     so the failure mode is not a typo in a post. It is someone later
+     editing the builder and producing a list where some rows have a
+     gutter and some do not, which reads as a bug rather than a style.
+     Both halves of the contract are checked: every row carries a
+     gutter element, and enough of them carry a real icon that the
+     list is worth converting at all. */
+  for (const list of prose.match(/<ul class="ico-list">[\s\S]*?<\/ul>/g) || []) {
+    const rows = list.match(/<li>[\s\S]*?<\/li>/g) || [];
+    const gutters = rows.filter((r) => /^<li>\s*<(svg|span) class="li-ico"/.test(r)).length;
+    const icons = rows.filter((r) => /^<li>\s*<svg class="li-ico"/.test(r)).length;
+    if (gutters !== rows.length) {
+      add(rel, `An icon list has ${rows.length - gutters} row(s) with no gutter element.`,
+          'Every row needs the icon slot, empty or not, or the text column steps in and out down the list.');
+    }
+    if (rows.length < 4 || icons / rows.length < 0.7) {
+      add(rel, `An icon list matched only ${icons} of ${rows.length} rows.`,
+          'Below the threshold the list is mostly blank gutters, so it should render as plain accent squares instead. Check ICON_LIST_MIN_HIT in build-blog.mjs.');
+    }
+  }
+
   /* ---- flow clips hold their last frame ---- */
   for (const tag of src.match(/<video\b[^>]*>/g) || []) {
     if (/\bloop\b/.test(tag)) {
