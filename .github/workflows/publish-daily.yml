@@ -32,6 +32,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 concurrency:
   group: publish-daily
@@ -40,7 +41,7 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,16 +50,17 @@ jobs:
       - name: Has something already gone out today
         id: today
         run: |
-          today=$(date -u +%F)
-          # Any commit on main touching a post counts, including one
-          # merged by hand. Two posts on one date is the thing this
-          # workflow exists to prevent, so it does not matter who
-          # published the first one.
-          last=$(git log -1 --format=%cd --date=format:%F origin/main -- blog/posts || true)
+          # Sydney, not the runner. This fires at 20:00 UTC, which is
+          # already tomorrow here, so a UTC date would let two posts
+          # share a day and hold a third back on the day after.
+          today=$(TZ=Australia/Sydney date +%F)
+          last=$(TZ=Australia/Sydney git log -1 \
+                   --date=format-local:%Y-%m-%d --format=%ad \
+                   origin/main -- blog/posts || true)
           echo "today=$today" >> "$GITHUB_OUTPUT"
           if [ "$last" = "$today" ]; then
             echo "already=yes" >> "$GITHUB_OUTPUT"
-            echo "A post already went out on $today. Nothing more today." >> "$GITHUB_STEP_SUMMARY"
+            echo "A post already went out on $today in Sydney. Nothing more today." >> "$GITHUB_STEP_SUMMARY"
           else
             echo "already=no" >> "$GITHUB_OUTPUT"
           fi
@@ -74,7 +76,7 @@ jobs:
           pr=$(gh pr list \
                  --state open \
                  --label ready-to-publish \
-                 --json number,title,createdAt,mergeable \
+                 --json number,title,createdAt,mergeable,files \
                  --jq 'sort_by(.createdAt) | map(select(.mergeable != "CONFLICTING")) | .[0] // empty')
 
           if [ -z "$pr" ]; then
@@ -84,9 +86,14 @@ jobs:
           fi
 
           number=$(echo "$pr" | jq -r .number)
-          title=$(echo "$pr" | jq -r .title)
+          title=$(echo "$pr"  | jq -r .title)
+          # The post file is what tells us the slug, and the slug is
+          # the live URL we put in Slack.
+          post=$(echo "$pr" | jq -r '[.files[].path | select(startswith("blog/posts/"))] | .[0] // ""')
+
           echo "number=$number" >> "$GITHUB_OUTPUT"
           echo "title=$title"   >> "$GITHUB_OUTPUT"
+          echo "post=$post"     >> "$GITHUB_OUTPUT"
           {
             echo "### Publishing today"
             echo ""
@@ -94,16 +101,95 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Merge it
+        id: merge
         if: steps.pick.outputs.number != '' && inputs.dry_run != true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          set -euo pipefail
           # Squash, because the post is one change however many times
-          # it was revised in review. The gates on the pull request
-          # have to be green first; --auto waits for them rather than
-          # forcing past them.
-          gh pr merge "${{ steps.pick.outputs.number }}" \
-            --squash --auto --delete-branch
+          # it was revised in review.
+          #
+          # Not --auto. Auto merge hands off and returns, and this job
+          # needs the merge to have actually happened before it can
+          # build the page and say so in Slack. The gates already ran
+          # on the pull request, and a merge that is not allowed fails
+          # here loudly rather than silently queueing.
+          gh pr merge "${{ steps.pick.outputs.number }}" --squash --delete-branch
+
+          for _ in $(seq 1 30); do
+            state=$(gh pr view "${{ steps.pick.outputs.number }}" --json state --jq .state)
+            [ "$state" = "MERGED" ] && break
+            sleep 4
+          done
+          if [ "$state" != "MERGED" ]; then
+            echo "Pull request did not reach MERGED, it is $state." >&2
+            exit 1
+          fi
+
+      - name: Build the page
+        id: build
+        if: steps.merge.outcome == 'success' && steps.pick.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # A push made with GITHUB_TOKEN does not start another
+          # workflow, so merging from here does NOT trigger the Build
+          # Journal run that turns the markdown into a page. Without
+          # this the post is merged, the site never rebuilds, and the
+          # URL we post to Slack is a 404. Dispatching it explicitly
+          # is what closes that gap, and needs no personal token.
+          gh workflow run build-blog.yml --ref main
+          sleep 10
+
+          run_id=$(gh run list --workflow build-blog.yml --branch main \
+                     --limit 1 --json databaseId --jq '.[0].databaseId')
+          gh run watch "$run_id" --exit-status --interval 10
+
+          git fetch origin main
+          git checkout -q origin/main
+
+          slug=$(sed -n 's/^slug: //p' "${{ steps.pick.outputs.post }}" | head -1 | tr -d '\r')
+          echo "slug=$slug" >> "$GITHUB_OUTPUT"
+          echo "url=https://krail.app/blog/$slug/" >> "$GITHUB_OUTPUT"
+
+      - name: Count what is left
+        id: queue
+        if: always() && steps.pick.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          left=$(gh pr list --state open --label ready-to-publish --json number --jq 'length')
+          waiting=$(gh pr list --state open --json labels \
+                      --jq '[.[] | select([.labels[].name] | index("ready-to-publish") | not)] | length')
+          echo "left=$left"       >> "$GITHUB_OUTPUT"
+          echo "waiting=$waiting" >> "$GITHUB_OUTPUT"
+
+      - name: Say so in Slack
+        if: steps.build.outcome == 'success'
+        continue-on-error: true
+        uses: ./.github/actions/slack-notify
+        with:
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel: ${{ vars.SLACK_CHANNEL || 'krail-dev-hq' }}
+          title: ${{ steps.pick.outputs.title }}
+          url: ${{ steps.build.outputs.url }}
+          text: "New on the Journal: ${{ steps.pick.outputs.title }}"
+          context: "${{ steps.queue.outputs.left }} queued behind it, ${{ steps.queue.outputs.waiting }} waiting on your review"
+          status: ok
+
+      - name: Say so in Slack when it breaks
+        if: failure() && steps.pick.outputs.number != ''
+        continue-on-error: true
+        uses: ./.github/actions/slack-notify
+        with:
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel: ${{ vars.SLACK_CHANNEL || 'krail-dev-hq' }}
+          title: "Daily publish failed"
+          url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          text: "The daily publish failed on #${{ steps.pick.outputs.number }} ${{ steps.pick.outputs.title }}. Nothing went out."
+          status: fail
 
       - name: Say what is queued behind it
         if: always()
