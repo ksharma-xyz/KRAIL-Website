@@ -1,0 +1,160 @@
+name: Slack notify
+description: >
+  Post a message to Slack as krail-claude-bot. One bot, one token,
+  usable from any repo.
+
+# Why this is an action and not four lines of curl in each workflow.
+#
+# The four lines are easy. Keeping them the same in six repos is not,
+# and the day the message format changes is the day five of them start
+# lying. This is the one place the format lives.
+#
+# It is deliberately generic. A publish, a failed build, a release,
+# a nightly report: they are all a line of text, sometimes a link,
+# sometimes a smaller line underneath. Anything that needs more than
+# that can pass its own Block Kit through `blocks`.
+#
+# From another repo:
+#
+#   - uses: ksharma-xyz/KRAIL-Website/.github/actions/slack-notify@main
+#     with:
+#       token: ${{ secrets.SLACK_BOT_TOKEN }}
+#       channel: krail-dev-hq
+#       text: Nightly build failed
+#       status: fail
+#
+# The token is a per-repo secret because this account is a user and
+# not an organisation, so there is no org-level secret to inherit.
+# Same token every time, added once per repo.
+
+inputs:
+  token:
+    description: Slack bot token, xoxb-. Store it as a repo secret, never inline.
+    required: true
+  channel:
+    description: Channel name without the hash, or a channel ID.
+    required: true
+  text:
+    description: >
+      The notification preview and the screen reader fallback. Never
+      rendered in the message itself, so it can repeat the title
+      without the message reading twice.
+    required: true
+  body:
+    description: Optional paragraph under the headline.
+    required: false
+    default: ''
+  title:
+    description: Optional headline. Becomes a link when url is set.
+    required: false
+    default: ''
+  url:
+    description: Optional link for the title.
+    required: false
+    default: ''
+  context:
+    description: Optional smaller line underneath, for counts and next steps.
+    required: false
+    default: ''
+  status:
+    description: ok, warn or fail. Picks the colour down the left edge.
+    required: false
+    default: 'ok'
+  thread_ts:
+    description: Reply in a thread instead of posting to the channel.
+    required: false
+    default: ''
+  blocks:
+    description: Raw Block Kit JSON. Overrides title, url and context.
+    required: false
+    default: ''
+
+outputs:
+  ts:
+    description: Timestamp of the posted message, to thread replies onto it.
+    value: ${{ steps.post.outputs.ts }}
+
+runs:
+  using: composite
+  steps:
+    - id: post
+      shell: bash
+      env:
+        SLACK_TOKEN: ${{ inputs.token }}
+        CHANNEL: ${{ inputs.channel }}
+        TEXT: ${{ inputs.text }}
+        BODY: ${{ inputs.body }}
+        TITLE: ${{ inputs.title }}
+        URL: ${{ inputs.url }}
+        CONTEXT: ${{ inputs.context }}
+        STATUS: ${{ inputs.status }}
+        THREAD_TS: ${{ inputs.thread_ts }}
+        BLOCKS: ${{ inputs.blocks }}
+      run: |
+        set -euo pipefail
+
+        case "$STATUS" in
+          fail) colour='#D93025' ;;
+          warn) colour='#F6891F' ;;
+          *)    colour='#1ADBFF' ;;
+        esac
+
+        # jq builds the payload rather than string interpolation,
+        # because a post title with a quote or a newline in it would
+        # otherwise produce invalid JSON and the failure would look
+        # like a Slack problem.
+        payload=$(jq -n \
+          --arg channel "$CHANNEL" \
+          --arg text    "$TEXT" \
+          --arg body    "$BODY" \
+          --arg title   "$TITLE" \
+          --arg url     "$URL" \
+          --arg ctx     "$CONTEXT" \
+          --arg colour  "$colour" \
+          --arg thread  "$THREAD_TS" \
+          --arg blocks  "$BLOCKS" '
+          def headline:
+            if $title == "" then $text
+            elif $url == "" then $title
+            else "<\($url)|\($title)>" end;
+
+          def built:
+            [ { type: "section",
+                text: { type: "mrkdwn", text: headline } } ]
+            + (if $body != ""
+               then [ { type: "section",
+                        text: { type: "mrkdwn", text: $body } } ]
+               else [] end)
+            + (if $ctx != ""
+               then [ { type: "context",
+                        elements: [ { type: "mrkdwn", text: $ctx } ] } ]
+               else [] end);
+
+          {
+            channel: $channel,
+            text: $text,
+            attachments: [ {
+              color: $colour,
+              blocks: (if $blocks != "" then ($blocks | fromjson) else built end)
+            } ]
+          }
+          + (if $thread != "" then { thread_ts: $thread } else {} end)
+        ')
+
+        response=$(curl -sS -X POST https://slack.com/api/chat.postMessage \
+          -H "Authorization: Bearer ${SLACK_TOKEN}" \
+          -H 'Content-Type: application/json; charset=utf-8' \
+          --data "$payload")
+
+        # Slack answers 200 with ok:false for a bad token, a channel
+        # the bot is not in, or a malformed block. Without this the
+        # step goes green and the message is simply never seen, which
+        # is the worst of both.
+        if [ "$(echo "$response" | jq -r '.ok')" != "true" ]; then
+          echo "Slack refused the message: $(echo "$response" | jq -r '.error // "unknown"')" >&2
+          echo "$response" | jq -r '.response_metadata.messages[]?' >&2 || true
+          exit 1
+        fi
+
+        echo "ts=$(echo "$response" | jq -r '.ts')" >> "$GITHUB_OUTPUT"
+        echo "Posted to #${CHANNEL}." >> "$GITHUB_STEP_SUMMARY"
