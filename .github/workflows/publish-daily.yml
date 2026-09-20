@@ -19,9 +19,19 @@ name: Publish one a day
 
 on:
   schedule:
-    # 20:00 UTC is 6am in Sydney through winter and 7am through
-    # summer, so the post is up before the morning commute either way.
-    - cron: '0 20 * * *'
+    # Hourly, not daily, because a scheduled run is not a promise.
+    # GitHub skips the first window after a schedule is added and drops
+    # runs under load, and a once-a-day cron that gets dropped costs a
+    # whole day. This one costs an hour.
+    #
+    # It does not publish more. The guard below stops on the second run
+    # of any Sydney day, so the rate is one a day whatever the cron
+    # says. Hourly only buys retries.
+    #
+    # The window below is what keeps those retries in the morning
+    # rather than letting a post appear at three in the afternoon
+    # because the earlier runs were dropped.
+    - cron: '0 * * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -47,8 +57,25 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Is this the right time of day
+        id: window
+        run: |
+          # 6am to noon in Sydney, so seven attempts at the morning
+          # rather than one. A run by hand ignores the window, which is
+          # how a missed morning gets published later the same day.
+          hour=$(TZ=Australia/Sydney date +%-H)
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "open=yes" >> "$GITHUB_OUTPUT"
+          elif [ "$hour" -ge 6 ] && [ "$hour" -lt 12 ]; then
+            echo "open=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "open=no" >> "$GITHUB_OUTPUT"
+            echo "It is ${hour}:00 in Sydney, outside the 6am to noon window. Nothing to do." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Has something already gone out today
         id: today
+        if: steps.window.outputs.open == 'yes'
         run: |
           # Sydney, not the runner. This fires at 20:00 UTC, which is
           # already tomorrow here, so a UTC date would let two posts
@@ -67,7 +94,7 @@ jobs:
 
       - name: Pick the oldest queued post
         id: pick
-        if: steps.today.outputs.already == 'no'
+        if: steps.window.outputs.open == 'yes' && steps.today.outputs.already == 'no'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -192,7 +219,7 @@ jobs:
           status: fail
 
       - name: Say what is queued behind it
-        if: always()
+        if: always() && steps.window.outputs.open == 'yes'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
