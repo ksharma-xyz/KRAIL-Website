@@ -143,21 +143,23 @@ function builtPosts() {
 
 const STORE_HOSTS = /(?:apps\.apple\.com|play\.google\.com)/;
 
-/* The display serif sets one glyph per page. Unsubset it is roughly 40KB on
-   a page budgeted to LCP 2.5s, so the subset is the reason it is affordable
-   at all rather than a nicety. */
-function checkDropcapFont(rel, src, add2) {
-  const links = src.match(/<link\b[^>]*fonts\.googleapis\.com[^>]*>/g) || [];
-  const serif = links.filter((l) => /family=Fraunces/.test(l));
-  if (!serif.length) {
-    add2(rel, 'No drop cap font is loaded.',
-         'The first letter falls back to a system serif, which is not the face the cap was sized for.');
-    return;
+/* Fonts are served from our own origin. Going back to Google Fonts costs
+   four cross-origin requests across two domains, and CI measured those
+   handshakes as the largest single cost on every page: 30 to 41ms before a
+   byte moved, against 2 to 4ms for everything local. */
+function checkFonts(rel, src, add2) {
+  if (/fonts\.googleapis\.com|fonts\.gstatic\.com/.test(src)) {
+    add2(rel, 'A page requests fonts from Google.',
+         'Serve them from /fonts/ instead. See fonts/README.md. The handshakes alone were most of the LCP budget.');
   }
-  for (const link of serif) {
-    if (!/[?&]text=/.test(link)) {
-      add2(rel, 'The drop cap font is requested without a text= subset.',
-           'Subset it to A-Z. The family is roughly 40KB to set a single letter.');
+  for (const font of ['/fonts/roboto-900-latin.woff2', '/fonts/fraunces-900-caps.woff2']) {
+    if (!existsSync(join(ROOT, font.replace(/^\//, '')))) {
+      add2(rel, `A font file is missing: ${font}`,
+           'Both faces are self-hosted. fonts/README.md says how to fetch them again.');
+    }
+    if (!src.includes(`href="${font}"`)) {
+      add2(rel, `The page does not preload ${font}.`,
+           'A font discovered only after the stylesheet parses arrives too late to paint with.');
     }
   }
 }
@@ -197,7 +199,7 @@ function checkPage(rel) {
     }
   }
 
-  checkDropcapFont(rel, src, add);
+  checkFonts(rel, src, add);
 
   /* ---- app-tour posts cite nothing, because they show our own screens ---- */
   const isAppTour = /<body[^>]*data-cat="app"/.test(src);

@@ -500,18 +500,6 @@ ${MODE_PILLS}
   </div>
 </footer>`;
 
-/* The drop cap is the only thing on the page set in a serif, and it is one
-   glyph, so the request is subset with `text=` to the twenty six capitals it
-   could ever need. That is a single woff2 of a few hundred bytes against
-   roughly 40KB for the family, which is the difference between a display
-   serif being affordable on a page budgeted to LCP 2.5s and not.
-
-   Subsetting this way is load bearing, so tools/check-layout.mjs fails the
-   build if the `text=` ever comes off. */
-const DROPCAP_FONT =
-  'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@144,900' +
-  '&text=ABCDEFGHIJKLMNOPQRSTUVWXYZ&display=swap';
-
 const head = ({ title, description, canonical, image, lcp, jsonld = [] }) => `<!doctype html>
 <html lang="en">
 <head>
@@ -532,13 +520,8 @@ const head = ({ title, description, canonical, image, lcp, jsonld = [] }) => `<!
 
 <link rel="alternate" type="application/rss+xml" title="KRAIL Journal" href="/blog/feed.xml" />
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
-<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap"></noscript>
-<link rel="stylesheet" media="print" onload="this.media='all'" href="${DROPCAP_FONT}">
-<noscript><link rel="stylesheet" href="${DROPCAP_FONT}"></noscript>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/roboto-900-latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-900-caps.woff2" crossorigin>
 
 ${lcp ? `<link rel="preload" as="image" href="${esc(lcp.href || lcp)}"${lcp.srcset ? ` imagesrcset="${esc(lcp.srcset)}" imagesizes="${esc(lcp.sizes)}"` : ''} fetchpriority="high">
 ` : ''}<link rel="stylesheet" href="/blog.css?v=${assetVersion('blog.css')}" />
