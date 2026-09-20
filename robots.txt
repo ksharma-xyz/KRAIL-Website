@@ -1,0 +1,5 @@
+# https://krail.app
+User-agent: *
+Allow: /
+
+Sitemap: https://krail.app/sitemap.xml

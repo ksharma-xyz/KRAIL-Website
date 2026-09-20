@@ -40,7 +40,7 @@
      node tools/check-seo.mjs --md      markdown, for a PR comment
    ============================================================ */
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
@@ -107,19 +107,33 @@ const field = (head, key) => {
   return m ? m[1].trim().replace(/^["']|["']$/g, '') : '';
 };
 
-/* The slugs that are already live. Changing one of these breaks a URL
-   other people have, so it is the one rule here that blocks outright.
+/* The slug each post had the last time it shipped. Changing one breaks a
+   URL other people already have, so it is the one rule here that blocks
+   outright.
+
+   This reads the slug out of the published frontmatter rather than off the
+   filename. They are not the same thing and never had to be: a post can be
+   renamed for search while its markdown file keeps whatever it was called
+   the day it was written. Comparing against the filename looked right for
+   as long as the two happened to match, then called every renamed post a
+   broken URL the moment they stopped.
+
    If origin/main cannot be read we say so rather than quietly passing,
    because a silent pass is exactly how a live URL gets renamed. */
 function publishedSlugs() {
-  const r = spawnSync('git', ['ls-tree', '-r', '--name-only', 'origin/main', '--', 'blog/posts/'],
+  const ls = spawnSync('git', ['ls-tree', '-r', '--name-only', 'origin/main', '--', 'blog/posts/'],
     { cwd: ROOT, encoding: 'utf8' });
-  if (r.status !== 0) return null;
-  return new Set(
-    r.stdout.split('\n')
-      .filter((l) => l.endsWith('.md'))
-      .map((l) => l.replace(/^blog\/posts\//, '').replace(/\.md$/, ''))
-  );
+  if (ls.status !== 0) return null;
+
+  const map = new Map();
+  for (const path of ls.stdout.split('\n').filter((l) => l.endsWith('.md'))) {
+    const show = spawnSync('git', ['show', `origin/main:${path}`], { cwd: ROOT, encoding: 'utf8' });
+    if (show.status !== 0) continue;
+    const { head } = frontmatter(show.stdout);
+    const slug = field(head, 'slug');
+    if (slug) map.set(path.replace(/^blog\/posts\//, ''), slug);
+  }
+  return map;
 }
 
 /* ---------- the checks ---------- */
@@ -155,8 +169,9 @@ for (const p of posts) {
   const d = p.summary.toLowerCase();
 
   /* ---- the slug is the URL, and a live one is frozen ---- */
-  if (live && live.has(p.basename) && p.slug !== p.basename) {
-    add(p.file, `Slug changed on a published post: ${p.basename} became ${p.slug}.`,
+  const wasPublishedAs = live && live.get(`${p.basename}.md`);
+  if (wasPublishedAs && wasPublishedAs !== p.slug) {
+    add(p.file, `Slug changed on a published post: ${wasPublishedAs} became ${p.slug}.`,
         'That URL is live at krail.app and other people link to it. Keep the slug and change the title instead, or ship a redirect first.');
   }
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(p.slug)) {
@@ -245,7 +260,82 @@ for (const p of posts) {
   }
 }
 
+/* ============================================================
+   The things that are true of the site, not of one post.
+
+   Every one of these was missing until the Journal went live, and
+   none of them announces itself: a site with no robots.txt still
+   serves, a page with no canonical still renders, and a link with no
+   Open Graph tags still opens. They only show up as absence, which
+   is why they need a check rather than a reviewer.
+   ============================================================ */
+function checkSiteWide() {
+  const robots = join(ROOT, 'robots.txt');
+  if (!existsSync(robots)) {
+    add('robots.txt', 'No robots.txt.',
+        'It is where a crawler looks for the sitemap. build-blog.mjs generates it.');
+  } else if (!readFileSync(robots, 'utf8').includes('/sitemap.xml')) {
+    add('robots.txt', 'robots.txt does not point at the sitemap.',
+        'Add a Sitemap: line. Without it the sitemap is found by luck.');
+  }
+
+  const rootMap = join(ROOT, 'sitemap.xml');
+  if (!existsSync(rootMap)) {
+    add('sitemap.xml', 'No sitemap at the site root.',
+        'A crawler looks there by convention. The Journal has its own, but nothing outside it was listed anywhere.');
+    return;
+  }
+  const map = readFileSync(rootMap, 'utf8');
+
+  /* Every page we actually publish has to be in it, including the two
+     that are not part of the Journal and so are easy to forget. */
+  const pages = [
+    ['index.html', 'https://krail.app/'],
+    ['privacy-policy/index.html', 'https://krail.app/privacy-policy/'],
+  ];
+  for (const [file, url] of pages) {
+    if (!existsSync(join(ROOT, file))) continue;
+    if (!map.includes(`<loc>${url}</loc>`)) {
+      add('sitemap.xml', `${url} is published but not in the sitemap.`,
+          'Add it to STATIC_PAGES in build-blog.mjs.');
+    }
+    const src = readFileSync(join(ROOT, file), 'utf8');
+    if (!/<link[^>]+rel="canonical"/.test(src)) {
+      add(file, 'No canonical link.',
+          'Without one, any variant of the URL that gets linked competes with the real page.');
+    }
+    for (const tag of ['og:title', 'og:description', 'og:url']) {
+      if (!src.includes(`property="${tag}"`)) {
+        add(file, `No ${tag}.`,
+            'A link to this page posted anywhere renders as a bare URL with no title and no description.');
+      }
+    }
+  }
+
+  /* The landing page is the one that has to explain what this is to a
+     machine, because it is the one an answer engine is sent to first. */
+  const home = join(ROOT, 'index.html');
+  if (existsSync(home)) {
+    const src = readFileSync(home, 'utf8');
+    if (!/<script type="application\/ld\+json">/.test(src)) {
+      add('index.html', 'The landing page carries no structured data.',
+          'Describe the organisation, the site and the app. It is what an answer engine quotes back.');
+    }
+    /* Install counts and star ratings are private numbers, and
+       CLAUDE.md keeps them off anything outward facing. Structured data
+       is outward facing, and it is the easiest place to leak them. */
+    for (const banned of ['aggregateRating', 'ratingCount', 'reviewCount', 'userInteractionCount']) {
+      if (src.includes(banned)) {
+        add('index.html', `Structured data carries ${banned}.`,
+            'That is a private number on a public page. Describe the app without counting anything.');
+      }
+    }
+  }
+}
+
 /* ---------- report ---------- */
+
+checkSiteWide();
 
 const line = (f) => `  ${f.file}\n    ${f.message}\n    fix: ${f.fix}`;
 

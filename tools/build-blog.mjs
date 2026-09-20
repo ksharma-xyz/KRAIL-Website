@@ -811,6 +811,35 @@ ${posts.map((p) => `  <url><loc>${SITE}/blog/${p.data.slug}/</loc><lastmod>${p.d
 </urlset>
 `;
 
+/* The whole site, at the root, because that is the only one a crawler
+   looks for by convention and the only one robots.txt points at. The
+   Journal keeps its own at /blog/sitemap.xml, but nothing outside the
+   Journal was ever listed anywhere: the landing page and the privacy
+   policy were left to be found by luck. */
+const STATIC_PAGES = [
+  { loc: `${SITE}/`, changefreq: 'weekly', priority: '1.0' },
+  { loc: `${SITE}/privacy-policy/`, changefreq: 'yearly', priority: '0.3' },
+];
+
+const renderRootSitemap = (posts) => `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${STATIC_PAGES.map((u) =>
+  `  <url><loc>${u.loc}</loc><changefreq>${u.changefreq}</changefreq><priority>${u.priority}</priority></url>`).join('\n')}
+  <url><loc>${SITE}/blog/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+${posts.map((p) =>
+  `  <url><loc>${SITE}/blog/${p.data.slug}/</loc><lastmod>${p.date.iso}</lastmod><priority>0.6</priority></url>`).join('\n')}
+</urlset>
+`;
+
+/* Generated rather than hand written, so it can never point at a sitemap
+   that has moved or name a path that no longer exists. */
+const renderRobots = () => `# https://krail.app
+User-agent: *
+Allow: /
+
+Sitemap: ${SITE}/sitemap.xml
+`;
+
 /* A plain-text map for answer engines. Cheap to produce, and it
    gives a crawler the shape of the Journal without parsing HTML. */
 const renderLlms = (posts) => `# KRAIL Journal
@@ -931,6 +960,8 @@ function build() {
   write(join(OUT_DIR, 'index.html'), renderIndex(posts));
   write(join(OUT_DIR, 'feed.xml'), renderFeed(posts));
   write(join(OUT_DIR, 'sitemap.xml'), renderSitemap(posts));
+write(join(ROOT, 'sitemap.xml'), renderRootSitemap(posts));
+write(join(ROOT, 'robots.txt'), renderRobots());
   write(join(OUT_DIR, 'llms.txt'), renderLlms(posts));
 
   console.log(`\n  ${CHECK_ONLY ? 'Checked' : 'Built'} ${posts.length} post(s), ${written.length} file(s).`);
