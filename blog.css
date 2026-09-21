@@ -620,6 +620,12 @@ nav.top .row {
   margin-right: 12px;
   color: var(--accent-ink);
 }
+/* The cap is two lines deep and floats. When the opening paragraph is
+   a single line, the float hung down into the next paragraph and pushed
+   its first line in, which read as a stray indent. A flow root keeps
+   the float inside the paragraph it belongs to, so a short opener just
+   gets a little air under it. */
+.prose-body > p:first-of-type { display: flow-root; }
 .prose-body h2 {
   font-family: var(--display); font-size: clamp(26px, 3.2vw, 34px);
   font-weight: 800; letter-spacing: -0.03em; line-height: 1.14;
@@ -635,6 +641,24 @@ nav.top .row {
 .prose-body strong { color: var(--ink); font-weight: 800; }
 .prose-body ul, .prose-body ol { margin: 0 0 26px; padding-left: 22px; }
 .prose-body li { margin: 0 0 10px; }
+/* Numbered steps are stamps, never plain "1." markers: the square, the
+   ink and the hard offset shadow every button on the site uses, in the
+   post's mode colour. The number comes from a counter, so the markup
+   stays a plain <ol> and a screen reader still hears a numbered list. */
+.prose-body ol { list-style: none; padding-left: 0; counter-reset: step; }
+.prose-body ol > li {
+  counter-increment: step; position: relative;
+  padding-left: 46px; min-height: 30px; margin-bottom: 16px;
+}
+.prose-body ol > li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 3px;
+  width: 28px; height: 28px; box-sizing: border-box;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 14px; font-weight: 800; line-height: 1;
+  color: #fff; background: var(--ink); border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--accent);
+}
 .prose-body ul { list-style: none; padding-left: 0; }
 .prose-body ul > li { position: relative; padding-left: 26px; }
 .prose-body ul > li::before {
