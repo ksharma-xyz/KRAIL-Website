@@ -105,7 +105,7 @@ show your event ticket. You can
 
 - **The ferry** arrives at Sydney Olympic Park Wharf, which is 3.6km from the stadium, about a 40 minute walk. The 526 bus connects. F3 services are popular and can reach capacity.
 - **Taxi ranks** on Herb Elliott Avenue at the Pullman Hotel, and a second on Edwin Flack Avenue opposite the stadium, open from 30 minutes before the scheduled finish.
-- **Rideshare** is geo-fenced around the precinct, and prices surge after full time.
+- **Rideshare** is geo-fenced around the precinct, and demand after full time is high.
 - **Roads** inside the precinct are closed. Grand Parade is shut across the long weekend.
 - **Before the game** there are food trucks and entertainment at Fig Grove, and the local cafes and restaurants are open.
 - **Getting dropped off** puts you in the traffic everyone else is in. The station does not have that problem.
