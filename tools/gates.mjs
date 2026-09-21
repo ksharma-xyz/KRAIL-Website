@@ -268,6 +268,24 @@ function checkPost(file) {
     }
   }
 
+  /* ---- nothing internal in a public file ----
+     The repository is public, so the post file is published even where
+     the page is not. A research log of what was cut and why, and a
+     competitor named anywhere in the file, are both readable by anyone
+     browsing the source, frontmatter included. The body-only copy rule
+     above never saw the frontmatter, which is how one got through. */
+  if (/^corrected:/m.test(head)) {
+    add('error', 'copy', `blog/posts/${file}`, 1 + head.split('\n').findIndex((l) => l.startsWith('corrected:')) + 1,
+        'Research log in a public post file.',
+        'Keep the record of what was cut and why in the private source. It never renders, but this file is public.');
+  }
+  for (const m of raw.matchAll(/\b(TripView|Opal Travel|Citymapper|Moovit|AnyTrip|Google Maps)\b/gi)) {
+    if (m.index >= raw.length - body.length) continue; // the body is checked above
+    add('error', 'copy', `blog/posts/${file}`, lineOf(raw, m.index),
+        `Competitor named in the frontmatter. Found "${m[0]}".`,
+        'Never name a competitor anywhere public, and this file is public even where the page is not.');
+  }
+
   /* ---- the Journal never sells, body and rendered frontmatter ---- */
   for (const rule of SELLING_RULES) {
     for (const m of clean.matchAll(rule.re)) {

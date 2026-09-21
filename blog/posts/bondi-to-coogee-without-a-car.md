@@ -11,15 +11,6 @@ sources:
   - url: https://transportnsw.info/
     title: Transport for NSW, timetables and service information
 lastServiceBack: "There is no last bus to miss at either end, on any night of the week. Route 373 leaves Coogee from Arden St opposite Coogee Bay Rd right through the small hours, and route 333 runs at Bondi Beach around the clock. The only thing that changes is how often. Sunday to Friday nights it is every half hour after midnight until 3.31am. On a Saturday night it drops to hourly after 12.31am, which is the opposite of what most people would guess."
-corrected:
-  - "Off leash all day at Burrows Park near Clovelly, and at Marks Park before 8:30am and after 4:30pm." Removed. Those are Waverley and Randwick council rules and both council websites refuse us outright, so we could not confirm the hours at the people who set them. We are not printing dog hours we cannot stand behind.
-  - "Around 11:40pm, the 350, 370 and 374 connect with a train or the light rail" and "the overnight N60 and 438N nightride services run through there too". Both came from a KRAIL app screen capture on 1 August 2026, not from a timetable, and neither is needed. The 373 goes to the city on its own, all night.
-  - "the 373 to the 324, leaving roughly every 30 minutes (1:31am, 2:01am, 2:31am, 3:01am, 3:31am, 4:01am)". Presented as a Saturday night reading and wrong for a Saturday night. The small hours of Sunday are hourly, not half hourly, and there is no 4.01am.
-  - "Weeknights are a different timetable and we have not checked those yet." Checked, at the published timetables. They run all night too, and half hourly at that.
-  - "Six kilometres, two to three hours if you stop" and "It is graded easy." Waverley and Randwick manage half of this walk each and neither site could be read, so there is no land manager distance, time or grade. Cut rather than estimated.
-  - "A bus takes twelve minutes." Never sourced.
-  - "From the city it is roughly half an hour." It is about 40 minutes on the 333 from Circular Quay.
-  - "It is about a two minute walk to the start of the path." Never sourced.
 publishedUrl: null
 tags:
   - Coastal walks
