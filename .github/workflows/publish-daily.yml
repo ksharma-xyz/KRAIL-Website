@@ -80,8 +80,12 @@ jobs:
           # Sydney, not the runner. This fires at 20:00 UTC, which is
           # already tomorrow here, so a UTC date would let two posts
           # share a day and hold a third back on the day after.
+          #
+          # A new post file is what counts, not any change under
+          # blog/posts. A copy fix to a live post landing on a Thursday
+          # morning must not take the slot of the walk scheduled for it.
           today=$(TZ=Australia/Sydney date +%F)
-          last=$(TZ=Australia/Sydney git log -1 \
+          last=$(TZ=Australia/Sydney git log -1 --diff-filter=A \
                    --date=format-local:%Y-%m-%d --format=%ad \
                    origin/main -- blog/posts || true)
           echo "today=$today" >> "$GITHUB_OUTPUT"
@@ -92,7 +96,7 @@ jobs:
             echo "already=no" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Pick the oldest queued post
+      - name: Pick the next queued post that is due
         id: pick
         if: steps.window.outputs.open == 'yes' && steps.today.outputs.already == 'no'
         env:
@@ -114,21 +118,68 @@ jobs:
                  --json number,createdAt,mergeable \
                  --jq 'sort_by(.createdAt) | map(select(.mergeable != "CONFLICTING")) | .[].number')
 
-          pr=""
+          #
+          # A post can also carry a date. `publishAt:` in its frontmatter,
+          # such as 2026-09-24T09:00+10:00, is the earliest it may go.
+          # Before that it waits whatever else happens, a run by hand
+          # included. Once due, a dated post goes ahead of undated ones,
+          # and on the day a dated post is due, undated ones do not take
+          # the slot first at 6am.
+          now=$(date +%s)
+          today=$(TZ=Australia/Sydney date +%F)
+          pr=""; post=""; pick_at=""; hold=""
+
           for n in $candidates; do
-            view=$(gh pr view "$n" --json number,title,headRefOid,files,statusCheckRollup)
+            view=$(gh pr view "$n" --json number,title,headRefOid,statusCheckRollup)
             bad=$(echo "$view" | jq '[.statusCheckRollup[] | (.conclusion // .state // .status) | select(IN("SUCCESS","SKIPPED","NEUTRAL") | not)] | length')
             gates=$(echo "$view" | jq '[.statusCheckRollup[] | select(.name == "Content, accessibility and legal gates" and .conclusion == "SUCCESS")] | length')
-            if [ "$bad" = "0" ] && [ "$gates" != "0" ]; then
-              pr="$view"
-              break
+            if [ "$bad" != "0" ] || [ "$gates" = "0" ]; then
+              echo "- #$n is queued but not green on its latest commit, so it waits." >> "$GITHUB_STEP_SUMMARY"
+              continue
             fi
-            echo "- #$n is queued but not green on its latest commit, so it waits." >> "$GITHUB_STEP_SUMMARY"
+
+            # The post file tells us the slug, which is the live URL we
+            # put in Slack, and the date. Removed files are skipped, so a
+            # pull request that replaces a post finds the new one.
+            head=$(echo "$view" | jq -r .headRefOid)
+            file=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$n/files" \
+                     --jq '[.[] | select(.status != "removed") | .filename | select(startswith("blog/posts/") and endswith(".md"))] | .[0] // ""')
+            at=""
+            if [ -n "$file" ]; then
+              at=$(gh api "repos/$GITHUB_REPOSITORY/contents/$file?ref=$head" --jq .content \
+                     | base64 -d | sed -n 's/^publishAt:[[:space:]]*//p' | head -1 | tr -d "\r\"'")
+            fi
+
+            if [ -z "$at" ]; then
+              # Undated. Oldest first, and only if nothing is picked yet.
+              if [ -z "$pr" ]; then pr="$view"; post="$file"; fi
+              continue
+            fi
+
+            at_s=$(date -d "$at" +%s 2>/dev/null || true)
+            if [ -z "$at_s" ]; then
+              echo "- #$n has a publishAt this cannot read, \`$at\`, so it waits." >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+            if [ "$at_s" -gt "$now" ]; then
+              echo "- #$n is scheduled for $at, so it waits." >> "$GITHUB_STEP_SUMMARY"
+              if [ "$(TZ=Australia/Sydney date -d "$at" +%F)" = "$today" ]; then hold="$n"; fi
+              continue
+            fi
+            # Due. Beats an undated pick, and the earliest date wins.
+            if [ -z "$pick_at" ] || [ "$at_s" -lt "$pick_at" ]; then
+              pr="$view"; post="$file"; pick_at="$at_s"
+            fi
           done
+
+          if [ -n "$pr" ] && [ -z "$pick_at" ] && [ -n "$hold" ]; then
+            echo "- Today's slot is kept for #$hold, which is scheduled for later today." >> "$GITHUB_STEP_SUMMARY"
+            pr=""
+          fi
 
           if [ -z "$pr" ]; then
             echo "number=" >> "$GITHUB_OUTPUT"
-            echo "Nothing labelled ready-to-publish is green, so nothing goes out today." >> "$GITHUB_STEP_SUMMARY"
+            echo "Nothing labelled ready-to-publish is green and due, so nothing goes out this run." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
@@ -137,9 +188,6 @@ jobs:
           # The commit the checks passed on. The merge below refuses if
           # anything was pushed after it.
           echo "head=$(echo "$pr" | jq -r .headRefOid)" >> "$GITHUB_OUTPUT"
-          # The post file is what tells us the slug, and the slug is
-          # the live URL we put in Slack.
-          post=$(echo "$pr" | jq -r '[.files[].path | select(startswith("blog/posts/"))] | .[0] // ""')
 
           echo "number=$number" >> "$GITHUB_OUTPUT"
           echo "title=$title"   >> "$GITHUB_OUTPUT"
