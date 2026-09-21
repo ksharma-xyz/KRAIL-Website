@@ -15,7 +15,7 @@ tags:
   - Day trip
   - No car needed
 ctaTitle: Save your trip to Auburn once.
-ctaBody: The next train is one tap away. Free until December 2026, no ads.
+ctaBody: The next train is one tap away.
 sources:
   - url: https://www.cumberland.nsw.gov.au/sydneycherryblossomfestival
     title: Cumberland City Council, Sydney Cherry Blossom Festival

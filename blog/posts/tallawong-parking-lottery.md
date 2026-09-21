@@ -16,7 +16,7 @@ tags:
   - Tallawong
   - Driving
 ctaTitle: Save the Tallawong trip once.
-ctaBody: The parking counts sit on it every morning. Free until December 2026, no ads.
+ctaBody: The parking counts sit on it every morning.
 sources:
   - url: https://www.sydneymetro.info/article/transport-parkride-opening-soon
     title: Sydney Metro, Transport Park&Ride opening soon
