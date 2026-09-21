@@ -53,7 +53,7 @@ Mum's place, and rename or remove your own labels whenever you like.
 ## Good to know
 
 - Save as many trips as you want. There is no limit.
-- Everything is saved on your phone. There is no account and nothing to sign in to.
+- Everything is saved on your phone.
 - Tap into a saved trip to see live times. The card on the home screen is your shortcut, the live
   times are one tap behind it.
 - Save a trip from a station with a Park & Ride and that station's live parking turns up on your home
