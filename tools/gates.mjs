@@ -127,11 +127,27 @@ const COPY_RULES = [
 ];
 
 const LEGAL_RULES = [
-  { re: /\bT\d\s+[A-Z][A-Za-z]*(\s+(and|&)\s+[A-Z][A-Za-z]*)*\s+Line\b/g,
+  /* Any capitalised name ending in Line, not just the suburban ones
+     that happen to carry a T number.
+
+     The old pair of rules needed either a T-number prefix or a name
+     from a list of five, so "Central Coast and Newcastle Line" and
+     "Blue Mountains Line" both walked through and were sitting in two
+     posts queued to publish. Neither was somebody slipping a product
+     name in. Both were the correct official name of the line, used
+     accurately, which is the hardest kind to catch by eye because it
+     reads right. Only a grep finds it, so the grep has to be the one
+     that would.
+
+     Broad on purpose. A capitalised word followed by Line is a
+     branded service name and nothing else in this vocabulary, and a
+     run across every post body found exactly the two real cases and
+     no false positives. If a legitimate phrase ever trips it, name
+     the phrase rather than narrowing this back to a list, because a
+     list is what failed. */
+  { re: /\b(?:T\d\s+)?[A-Z][A-Za-z]+(?:\s+(?:and|&|[A-Z][A-Za-z]+))*\s+Line\b/g,
     msg: 'Full branded line name.',
-    fix: 'Use the bare line code, such as "the T2 line".' },
-  { re: /\b(Inner West Line|Western Line|Bankstown Line|Airport Line|North Shore Line)\b/gi,
-    msg: 'Branded service name.', fix: 'Use the bare line code or "the train".' },
+    fix: 'Use the bare line code, such as "the T2 line", or describe the service: "an intercity service running through to the Central Coast".' },
   { re: /\bOpal\b/g, msg: 'Opal is a registered wordmark.',
     fix: 'Write "fare" or "off-peak fare". The number is the fact, the brand is not.' },
   { re: /\b(Sydney Trains|Sydney Metro|NSW TrainLink)\b/g,
