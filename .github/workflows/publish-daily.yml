@@ -100,20 +100,43 @@ jobs:
         run: |
           # Oldest first, so the queue drains in the order you approved
           # it rather than newest wins.
-          pr=$(gh pr list \
+          #
+          # Oldest *green* first. The build bot is allowed past the
+          # required checks on main so it can push the generated pages,
+          # and this job runs as that same bot, so the ruleset alone
+          # would not stop it merging a red pull request. This does.
+          # Every check on the latest commit has to have finished and
+          # passed, and one that is red or still running is skipped
+          # rather than holding up the queue behind it.
+          candidates=$(gh pr list \
                  --state open \
                  --label ready-to-publish \
-                 --json number,title,createdAt,mergeable,files \
-                 --jq 'sort_by(.createdAt) | map(select(.mergeable != "CONFLICTING")) | .[0] // empty')
+                 --json number,createdAt,mergeable \
+                 --jq 'sort_by(.createdAt) | map(select(.mergeable != "CONFLICTING")) | .[].number')
+
+          pr=""
+          for n in $candidates; do
+            view=$(gh pr view "$n" --json number,title,headRefOid,files,statusCheckRollup)
+            bad=$(echo "$view" | jq '[.statusCheckRollup[] | (.conclusion // .state // .status) | select(IN("SUCCESS","SKIPPED","NEUTRAL") | not)] | length')
+            gates=$(echo "$view" | jq '[.statusCheckRollup[] | select(.name == "Content, accessibility and legal gates" and .conclusion == "SUCCESS")] | length')
+            if [ "$bad" = "0" ] && [ "$gates" != "0" ]; then
+              pr="$view"
+              break
+            fi
+            echo "- #$n is queued but not green on its latest commit, so it waits." >> "$GITHUB_STEP_SUMMARY"
+          done
 
           if [ -z "$pr" ]; then
             echo "number=" >> "$GITHUB_OUTPUT"
-            echo "Nothing is labelled ready-to-publish, so nothing goes out today." >> "$GITHUB_STEP_SUMMARY"
+            echo "Nothing labelled ready-to-publish is green, so nothing goes out today." >> "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
           number=$(echo "$pr" | jq -r .number)
           title=$(echo "$pr"  | jq -r .title)
+          # The commit the checks passed on. The merge below refuses if
+          # anything was pushed after it.
+          echo "head=$(echo "$pr" | jq -r .headRefOid)" >> "$GITHUB_OUTPUT"
           # The post file is what tells us the slug, and the slug is
           # the live URL we put in Slack.
           post=$(echo "$pr" | jq -r '[.files[].path | select(startswith("blog/posts/"))] | .[0] // ""')
@@ -142,7 +165,8 @@ jobs:
           # build the page and say so in Slack. The gates already ran
           # on the pull request, and a merge that is not allowed fails
           # here loudly rather than silently queueing.
-          gh pr merge "${{ steps.pick.outputs.number }}" --squash --delete-branch
+          gh pr merge "${{ steps.pick.outputs.number }}" --squash --delete-branch \
+            --match-head-commit "${{ steps.pick.outputs.head }}"
 
           for _ in $(seq 1 30); do
             state=$(gh pr view "${{ steps.pick.outputs.number }}" --json state --jq .state)
