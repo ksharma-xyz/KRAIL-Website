@@ -719,6 +719,45 @@ function splitHeadline(title, accent) {
 /* ============================================================
    Post page
    ============================================================ */
+/* ============================================================
+   The closing line.
+
+   Approved posts all end the same way: one sentence, then the two
+   store links as plain lines.
+
+     Plan your public transport trips using KRAIL.
+     Android: https://play.google.com/store/apps/details?id=xyz.ksharma.krail
+     iOS: https://apps.apple.com/us/app/krail-app/id6738934832
+
+   The words are approved and are not ours to change. A store
+   URL printed as text is not how this site shows a store link,
+   though, and the page already ends in a band with the real store
+   buttons, so rendering both would end the post twice. The block is
+   lifted out of the body instead and becomes that band: the sentence
+   is its heading, the links are its buttons. Not one word changes.
+
+   Older posts carry one more line after the links, "KRAIL is an
+   independent app, not affiliated with Transport for NSW." It is
+   approved text too, so it is kept, as fine print under the heading
+   rather than dropped because the footer says something similar.
+
+   Only the two real store URLs are recognised. Anything else stays
+   in the body, where the layout gate flags a store URL as text.
+   ============================================================ */
+const STORE_URLS = new Set([
+  'https://play.google.com/store/apps/details?id=xyz.ksharma.krail',
+  'https://apps.apple.com/us/app/krail-app/id6738934832',
+]);
+const CLOSING = /(?:^|\n)(?:-{3,}[ \t]*\n+)?([^\n]+)\n(Android|iOS):[ \t]*(\S+)[ \t]*\n(Android|iOS):[ \t]*(\S+)[ \t]*(?:\n+([^\n]+))?\s*$/;
+
+function splitClosing(body) {
+  const m = body.match(CLOSING);
+  if (!m || m[2] === m[4] || !STORE_URLS.has(m[3]) || !STORE_URLS.has(m[5])) {
+    return { prose: body, closing: '', note: '' };
+  }
+  return { prose: body.slice(0, m.index).trimEnd(), closing: m[1].trim(), note: (m[6] || '').trim() };
+}
+
 function renderPost(post, prev, next) {
   const { data, html, minutes, date, checked, cat } = post;
   const [lead, accent] = splitHeadline(data.title, data.accent);
@@ -833,8 +872,11 @@ ${sources}
 
     <section class="band anim">
       <div>
-        <h2>${esc(data.ctaTitle || 'Save your trip once.')}</h2>
-        <p>${esc(data.ctaBody || 'The next departure is one tap away, every morning.')}</p>
+        <h2>${esc(data.closing || data.ctaTitle || 'Save your trip once.')}</h2>${data.closing
+          ? (data.closingNote ? `
+        <p class="band-note">${esc(data.closingNote)}</p>` : '')
+          : `
+        <p>${esc(data.ctaBody || 'The next departure is one tap away, every morning.')}</p>`}
       </div>
       <div class="band-actions">
         ${STORE_ROW}
@@ -1083,6 +1125,10 @@ function build() {
         : '');
     data.cardImageAlt = data.heroAlt || data.heroShotAlt || '';
 
+    const { prose, closing, note } = splitClosing(body);
+    data.closing = closing;
+    data.closingNote = note;
+
     const published = parseDate(LIVE_DATES.get(data.slug) || buildDate());
     const checkedOn = parseDate(data.updated);
 
@@ -1099,8 +1145,8 @@ function build() {
          broken markup. The later of the two is the honest answer: a
          post cannot have been revised before it existed. */
       checked: published.iso > checkedOn.iso ? published : checkedOn,
-      minutes: readingTime(body),
-      html: renderMarkdown(body, STYLES.has(data.imageStyle) ? data.imageStyle : 'plain'),
+      minutes: readingTime(prose),
+      html: renderMarkdown(prose, STYLES.has(data.imageStyle) ? data.imageStyle : 'plain'),
     });
   }
 
