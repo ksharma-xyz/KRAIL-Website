@@ -44,6 +44,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # The latest main, not the commit that triggered this run.
+          # Two merges seconds apart queue two builds. The second used
+          # to check out its own merge commit, which predates the first
+          # build's output, so it regenerated every page from a stale
+          # base and its rebase conflicted on every generated file. The
+          # runs are serialised by the concurrency group, so starting
+          # from the tip means each one builds on the one before.
+          ref: main
           # A full history keeps the commit this job makes rebaseable
           # if something else landed while it was running.
           fetch-depth: 0
