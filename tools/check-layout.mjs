@@ -123,6 +123,28 @@ function checkStylesheet() {
         'It is a pull quote, not a stamp. The callout and the blockquote are the boxed devices; a third box flattens the hierarchy.');
   }
 
+  /* ---- the drop cap stays inside the paragraph it opens ----
+     The cap floats two lines deep. Berowra opened on a one line
+     paragraph, and the float hung into the next one and pushed its
+     first line in. A flow root on the opening paragraph contains it. */
+  if (/p:first-of-type::first-letter\s*\{[^}]*float\s*:\s*left/.test(css)) {
+    const opener = ruleBody(css, '.prose-body > p:first-of-type {');
+    if (!/display\s*:\s*flow-root|overflow\s*:\s*hidden/.test(opener)) {
+      add('blog.css', 'The drop cap floats but the opening paragraph does not contain it.',
+          'Give .prose-body > p:first-of-type display: flow-root, or a one line opener lets the cap hang into the next paragraph.');
+    }
+  }
+
+  /* ---- numbered steps are stamps, not plain numbers ---- */
+  /* Anchored on the newline: the shared `.prose-body ul, .prose-body ol {`
+     rule earlier in the file would otherwise match first. */
+  const ol = ruleBody(css, '\n.prose-body ol {');
+  const step = ruleBody(css, '.prose-body ol > li::before {');
+  if (!/list-style\s*:\s*none/.test(ol) || !/counter\(step\)/.test(step)) {
+    add('blog.css', 'Numbered lists render as plain numbers.',
+        'Steps are drawn as stamp squares from a counter. Keep list-style: none on .prose-body ol and content: counter(step) on its ::before.');
+  }
+
   /* ---- the phone stays on the right in both variants ---- */
   if (/\.shot-aside\.reverse\s*>\s*\.shot-aside__(text|device)\s*\{[^}]*order\s*:/.test(css)) {
     add('blog.css', '.shot-aside.reverse reorders its columns.',
@@ -173,6 +195,24 @@ function checkPage(rel) {
   if (bare) {
     add(rel, 'A store URL is printed as text in the body.',
         'Use the store buttons. They carry the App Store and Google Play icons and the stamp styling the rest of the site uses.');
+  }
+
+  /* ---- a wrapped line never becomes a list ----
+     Berowra's source wrapped "leaves from platform" and put "8. It gets
+     to Berowra" at the start of the next line. Markdown read that as
+     item 8 of a new list: the platform number vanished from the
+     sentence and the rest became a nested step. Nothing in the Journal
+     uses a list that starts past 1 or a list inside a step, so either
+     one is a wrapped line. */
+  for (const m of prose.matchAll(/<ol start="(\d+)"/g)) {
+    if (m[1] !== '1') {
+      add(rel, `A numbered list starts at ${m[1]}.`,
+          `A wrapped line began with "${m[1]}." and markdown made it a list, so the number is missing from the sentence above it. Rejoin that line in the post source.`);
+    }
+  }
+  if (/<li>(?:(?!<\/li>)[\s\S])*?<(ol|ul)[ >]/.test(prose)) {
+    add(rel, 'A list is nested inside a list item.',
+        'Usually a wrapped line that began with a number and a full stop, or with "- ". Rejoin the line in the post source.');
   }
 
   /* ---- practical-stuff icon lists keep one straight text column ----
