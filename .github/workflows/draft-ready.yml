@@ -1,0 +1,49 @@
+name: Draft ready to review
+
+# Tells Slack when a new post is waiting for you.
+#
+# The daily writer opens a pull request each afternoon and then waits,
+# and a pull request nobody knows about is a queue that quietly runs
+# dry. This is the knock on the door. It fires for any new post PR,
+# whether the writer opened it or a person did, because what matters
+# is that something is waiting, not who put it there.
+#
+# It says nothing about whether the post is any good. That is still
+# your read, and the ready-to-publish label is still the only way a
+# post reaches krail.app.
+
+on:
+  pull_request:
+    types: [opened, reopened]
+    paths:
+      - 'blog/posts/**'
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    # A fork cannot see secrets, so it would only ever fail here. This
+    # repo is public, so say so explicitly rather than rely on that.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      # The title reaches Slack through the action's inputs, which it
+      # reads as environment variables. It is never pasted into a shell
+      # line here. On a public repo a PR title is text anyone can
+      # write, and interpolating it into run: is how a title becomes a
+      # command.
+      - name: Say a draft is waiting
+        continue-on-error: true
+        uses: ./.github/actions/slack-notify
+        with:
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel: ${{ vars.SLACK_CHANNEL || 'krail-dev-hq' }}
+          title: ${{ github.event.pull_request.title }}
+          url: ${{ github.event.pull_request.html_url }}
+          text: 'Draft to review: ${{ github.event.pull_request.title }}'
+          context: 'Label it ready-to-publish when you are happy and it goes out the next morning. Leave it and nothing happens.'
+          status: warn
