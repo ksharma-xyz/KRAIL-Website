@@ -403,6 +403,7 @@ nav.top .row {
   font-weight: 800; line-height: 1.06; letter-spacing: -0.03em; margin: 0;
 }
 .band p { margin: 14px 0 0; color: rgba(255,255,255,0.72); font-size: 16px; line-height: 1.6; }
+.band p.band-note { font-size: 13px; color: rgba(255,255,255,0.55); }
 .band .stamp {
   background: var(--paper); color: var(--ink); border-color: var(--paper);
   box-shadow: 5px 5px 0 var(--accent);
