@@ -20,7 +20,7 @@ sources:
   - url: https://www.cumberland.nsw.gov.au/sydneycherryblossomfestival
     title: Cumberland City Council, Sydney Cherry Blossom Festival
     for: Dates, hours, ticket prices, shuttle timing, parking, best time to visit.
-  - url: https://transportnsw.info/routes/details/sydney-trains-network/t2/02t2
+  - url: https://transportnsw.info/routes/details/sydney-trains-network/t2/020t2
     title: Transport for NSW, T2 line route and timetable
     for: Which line runs to Auburn Station every day, and which services only touch it early, late or on weekends.
   - url: https://transportnsw.info/news/2026/you-may-see-changes-to-your-trip-fare-from-29-june
