@@ -60,4 +60,4 @@ for you. You never have to go looking for it.
   Tallawong, Kellyville, Bella Vista, Schofields and Hornsby. Street parking and private car parks
   are not in there.
 - Check it before you leave home, not when you are already in the queue at the boom gate.
-- Your cards live on your phone. There is no account to make and nothing to sign in to.
+- Your cards live on your phone.

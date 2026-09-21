@@ -166,8 +166,9 @@ const LEGAL_RULES = [
    Every post used to end "Free until December 2026, no ads.",
    because that was the default call to action. The rule since
    21 Sep 2026 is that the Journal never mentions price or ads at
-   all. It says what KRAIL does for the trip, "Plan your public
-   transport trips with KRAIL", and that is the whole pitch.
+   all, and "no account" is the same pitch. It says what KRAIL does
+   for the trip, "Plan your public transport trips with KRAIL", and
+   that is the whole pitch.
 
    "Free" on its own is not banned, because it is usually a fact
    about the trip: a free shuttle, 18 hours of free parking,
@@ -184,6 +185,11 @@ const SELLING_RULES = [
     msg: 'Mentions ads.', fix: PITCH_FIX },
   { re: /\bfree\*?\s+(?:until|forever|for (?:every|everyone|all)|to (?:download|use|install|try)|app|download)\b|\b(?:KRAIL|the app|this app)\s+(?:is|stays|remains)\s+free\b/gi,
     msg: 'Sells KRAIL as free.', fix: PITCH_FIX },
+  /* Part of the same pitch. "KRAIL is free, no ads, no account" was
+     rejected as a whole line, and the third clause sells as much as
+     the first two. */
+  { re: /\bno account\b|\bnothing to sign (?:in|up) (?:to|for)\b|\bno (?:sign[- ]?(?:in|up)|log[- ]?in)\b/gi,
+    msg: 'Sells KRAIL as needing no account.', fix: PITCH_FIX },
 ];
 
 const CTA_FIELD = /^(ctaTitle|ctaBody):/;
