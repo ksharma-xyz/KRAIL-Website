@@ -52,6 +52,52 @@ const textOf = (html) =>
       .trim();
 
 const posts = readdirSync(POSTS).filter((f) => f.endsWith('.md'));
+/* ============================================================
+   Route pages that are not route pages.
+
+   transportnsw.info answers 200 for any path under /routes/details/,
+   real or not, and renders the route itself in the browser. So a real
+   route page and a made-up one both carry a few hundred characters of
+   text, and the gap between them is too small to trust: on the day
+   this was written, a fake id served 370 characters and real pages
+   served 401 to 494. The threshold below sat inside that gap by luck.
+
+   That is how the Auburn post came to cite
+   /routes/details/sydney-trains-network/t2/02t2 for weeks. It is not
+   the T2. The T2 is 020t2. 02t2 returns the same template byte for
+   byte as a route id invented on purpose, and every check passed it.
+
+   What does separate them is the page itself: a real route embeds its
+   stops and timetable, so it is far bigger than the empty template.
+   Rather than hard-code a size that the next redesign would break,
+   this asks the site for a route that cannot exist on the same
+   network and compares. If the cited page comes back the same size as
+   the impossible one, it is the impossible one. The control is
+   re-measured on every run, so it moves when the site does. */
+const ROUTE_PAGE = /^https?:\/\/(www\.)?transportnsw\.info\/routes\/details\/([^/]+)\//;
+const controls = new Map();
+
+async function bodyOf(url) {
+  const res = await fetch(url, {
+    redirect: 'follow',
+    headers: { 'user-agent': 'Mozilla/5.0 (KRAIL Journal source check)' },
+    signal: AbortSignal.timeout(20000),
+  });
+  return res.text();
+}
+
+async function isRouteShell(url, body) {
+  const m = url.match(ROUTE_PAGE);
+  if (!m) return false;
+  const network = m[2];
+  if (!controls.has(network)) {
+    const control = `https://transportnsw.info/routes/details/${network}/zz9/krail_control_route`;
+    controls.set(network, (await bodyOf(control)).length);
+  }
+  const shell = controls.get(network);
+  return Math.abs(body.length - shell) / shell < 0.03;
+}
+
 const jobs = [];
 
 for (const file of posts) {
@@ -83,9 +129,19 @@ for (const job of jobs) {
     const body = await res.text();
     const text = textOf(body);
 
-    if (!res.ok) {
+    if (/\/trip-planner\//.test(job.url)) {
+      /* A trip planner link is a calculation, not a document. It
+         computes the journey in the browser, so the page a reader lands
+         on proves nothing we cite it for, and the date baked into the
+         query goes stale the day after. Cite the route page instead. */
+      failed++;
+      line = `  [PLANNER ] ${job.url}\n             A trip planner result, not a page. It computes in the browser and the date in it goes stale.\n             Cite the route page for the line, and phrase the time as the regular service for the day. ${job.file}`;
+    } else if (!res.ok) {
       failed++;
       line = `  [FAIL ${res.status}] ${job.url}\n             ${job.file}`;
+    } else if (await isRouteShell(job.url, body)) {
+      failed++;
+      line = `  [NO ROUTE] ${job.url}\n             The same page the site serves for a route that does not exist. Wrong route id.\n             Find the real id on transportnsw.info/routes/train, /routes/bus or /routes/ferry. ${job.file}`;
     } else if (NOT_FOUND.some((re) => re.test(text.slice(0, 4000)))) {
       failed++;
       line = `  [SOFT 404] ${job.url}\n             200, but the page says it is not found. ${job.file}`;
