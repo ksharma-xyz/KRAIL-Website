@@ -113,9 +113,6 @@ const COPY_RULES = [
   { re: /\b(Kotlin|Jetpack Compose|Multiplatform|OLED|sub-second|IDFA|SDK)\b/gi,
     msg: 'Developer jargon on a marketing page.',
     fix: 'Write it the way a commuter would say it.' },
-  { re: /\b(free forever|stays free forever|always be free)\b/gi,
-    msg: 'Promises free forever.',
-    fix: 'Say "Free* until December 2026" with the asterisk line.' },
   { re: /\b(1-bedroom|one-bedroom|long blacks|no investors)\b/gi,
     msg: 'Founder personal detail.',
     fix: 'Stick to the public line, "Built by one Sydney commuter".' },
@@ -162,6 +159,47 @@ const LEGAL_RULES = [
     msg: 'Possible affiliation claim.',
     fix: 'Remove it. The only permitted mention is the disclaimer denying affiliation.' },
 ];
+
+/* ============================================================
+   The Journal never sells.
+
+   Every post used to end "Free until December 2026, no ads.",
+   because that was the default call to action. The rule since
+   21 Sep 2026 is that the Journal never mentions price or ads at
+   all. It says what KRAIL does for the trip, "Plan your public
+   transport trips with KRAIL", and that is the whole pitch.
+
+   "Free" on its own is not banned, because it is usually a fact
+   about the trip: a free shuttle, 18 hours of free parking,
+   children under five travel free. What is banned is free as a
+   claim about us, so the patterns only match that shape. The call
+   to action is the exception. It is about the app and nothing
+   else, so any "free" there is selling, and it is banned outright.
+   ============================================================ */
+
+const PITCH_FIX = 'Leave price and ads out of the Journal entirely. Say what KRAIL does for the trip, such as "Plan your public transport trips with KRAIL."';
+
+const SELLING_RULES = [
+  { re: /\bads\b|\bad[- ]free\b|\badvert(?:s|ising|isements?)\b/gi,
+    msg: 'Mentions ads.', fix: PITCH_FIX },
+  { re: /\bfree\*?\s+(?:until|forever|for (?:every|everyone|all)|to (?:download|use|install|try)|app|download)\b|\b(?:KRAIL|the app|this app)\s+(?:is|stays|remains)\s+free\b/gi,
+    msg: 'Sells KRAIL as free.', fix: PITCH_FIX },
+];
+
+const CTA_FIELD = /^(ctaTitle|ctaBody):/;
+const ANY_FREE = /\bfree\b/i;
+
+/* Frontmatter lines that end up on the page, which is all of them
+   except the cited sources. A source title may quote its publisher
+   word for word, and that is not us selling anything. Blanked
+   rather than dropped so the index is still the line number. */
+const renderedHead = (head) => {
+  let inSources = false;
+  return head.split('\n').map((line) => {
+    if (/^\S/.test(line)) inSources = /^sources:/.test(line);
+    return inSources ? '' : line;
+  });
+};
 
 /* ============================================================
    Per-post checks
@@ -223,6 +261,26 @@ function checkPost(file) {
       rule.re.lastIndex = 0;
     }
   }
+
+  /* ---- the Journal never sells, body and rendered frontmatter ---- */
+  for (const rule of SELLING_RULES) {
+    for (const m of clean.matchAll(rule.re)) {
+      add('error', 'copy', `blog/posts/${file}`, at(m.index),
+          `${rule.msg} Found "${m[0].trim()}".`, rule.fix);
+    }
+  }
+  renderedHead(head).forEach((line, i) => {
+    for (const rule of SELLING_RULES) {
+      for (const m of line.matchAll(rule.re)) {
+        add('error', 'copy', `blog/posts/${file}`, i + 2,
+            `${rule.msg} Found "${m[0].trim()}" in frontmatter.`, rule.fix);
+      }
+    }
+    if (CTA_FIELD.test(line) && ANY_FREE.test(line)) {
+      add('error', 'copy', `blog/posts/${file}`, i + 2,
+          'Says "free" in the call to action.', PITCH_FIX);
+    }
+  });
 
   /* ---- legal, body only, so cited sources keep their publisher ---- */
   for (const rule of LEGAL_RULES) {
@@ -433,6 +491,22 @@ function checkBuilt(htmlPath, label) {
           `${rule.msg} Found in built output.`, rule.fix);
     }
     rule.re.lastIndex = 0;
+  }
+
+  /* The default call to action lives in the generator, not in any
+     post, so it is only visible here. That is where "Free until
+     December 2026, no ads." sat on every page. */
+  for (const rule of SELLING_RULES) {
+    for (const m of body.matchAll(rule.re)) {
+      add('error', 'copy', label, lineOf(body, m.index),
+          `${rule.msg} Found "${m[0].trim()}" in built output.`, rule.fix);
+    }
+  }
+  for (const m of body.matchAll(/<section class="band[^"]*">[\s\S]*?<\/section>/g)) {
+    if (ANY_FREE.test(m[0].replace(/<[^>]+>/g, ' '))) {
+      add('error', 'copy', label, lineOf(body, m.index),
+          'Says "free" in the call to action.', PITCH_FIX);
+    }
   }
 
   /* Belt and braces on "nothing internal escapes". The build strips

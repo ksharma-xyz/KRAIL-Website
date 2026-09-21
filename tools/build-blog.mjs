@@ -834,7 +834,7 @@ ${sources}
     <section class="band anim">
       <div>
         <h2>${esc(data.ctaTitle || 'Save your trip once.')}</h2>
-        <p>${esc(data.ctaBody || 'The next departure is one tap away, every morning. Free until December 2026, no ads.')}</p>
+        <p>${esc(data.ctaBody || 'The next departure is one tap away, every morning.')}</p>
       </div>
       <div class="band-actions">
         ${STORE_ROW}

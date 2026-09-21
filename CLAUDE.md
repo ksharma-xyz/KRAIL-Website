@@ -36,6 +36,7 @@ some are zero-tolerance, others are strong defaults.
 | Founder personal details: `1-bedroom flat`, `paid for in long blacks`, `no investors`, sleeping habits, etc. | Not for the website | Stick to the public founder line: "Built by one Sydney commuter" |
 | Internal/private analytics: `12.6× reopens`, `67% Android dark mode`, `2,204 saved trips`, `175 daily savers`, BigQuery numbers | Don't share private data | Use coverage numbers: `5 modes`, `6+ Park & Ride stations`, `24/7 TfNSW data` |
 | `Stays free forever`, `Anything free today stays free forever` | Avoid promising forever-free | Just say `Free* until December 2026` with the asterisk |
+| Price or ads **anywhere in the Journal**: `free`, `Free until December 2026`, `no ads`, `ad-free`, in posts, endings, summaries or share text | Karan's rule, 21 Sep 2026: the Journal never sells. "never say free in blog post or about ads" | Say what KRAIL does for the trip, and stop: "Plan your public transport trips with KRAIL." Free as a fact about the trip is fine (a free shuttle, 18 hours of free parking, under fives travel free). Enforced by `SELLING_RULES` in `tools/gates.mjs`. |
 | Bashing language: `looks like 1995`, `looks like Windows 95` | Reframe positive | "Sydney commuters deserve a modern way to ride" |
 | Feature H3 with multi-word italic highlights (e.g. `<em>shouldn't hurt your eyes.</em>`) | Hard to scan; squiggle gets too wide | **1-2 words MAX inside `<em>`**. Headlines stay short, only the punch word is highlighted. Examples: `One tap. You're <em>going.</em>` · `Live parking, before the <em>driveway.</em>` · `Walk out the right <em>exit.</em>` |
 | Anything that doesn't pass the **commuter test** (would a non-tech Sydney commuter on the train instantly relate?) | Site fails its audience | Every headline, sub-line, stat, tip and feat-meta must describe a **scenario the commuter has lived** (Tallawong parking, the wrong exit at Town Hall, half-asleep at 6am, etc.) or a **benefit they want** (one tap, never re-typing, knowing before you leave). No abstractions. No app-internals. No "feature counts". |
@@ -46,7 +47,7 @@ some are zero-tolerance, others are strong defaults.
 - `*Free for every Sydney commuter until December 2026.`
 - `*No ads during launch period.`
 
-The `*Free` and `*No ads` claims are the only place asterisks appear. They live in **one place** on the page — currently the CTA section. Don't duplicate them in the footer.
+These are **landing page only**, never in the Journal (see the price rule above). The `*Free` and `*No ads` claims are the only place asterisks appear. They live in **one place** on the page — currently the CTA section. Don't duplicate them in the footer.
 
 ---
 
