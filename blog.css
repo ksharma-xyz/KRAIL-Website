@@ -611,7 +611,7 @@ nav.top .row {
    float box two lines deep, and the float box is what the text wraps
    around. The fallback stack is serif, never the sans, so a failed font
    load degrades to a different serif rather than back to the old problem. */
-.prose-body > p:first-of-type::first-letter {
+.prose-body > p.lede::first-letter {
   float: left;
   font-family: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   font-weight: 900;
@@ -626,7 +626,7 @@ nav.top .row {
    its first line in, which read as a stray indent. A flow root keeps
    the float inside the paragraph it belongs to, so a short opener just
    gets a little air under it. */
-.prose-body > p:first-of-type { display: flow-root; }
+.prose-body > p.lede { display: flow-root; }
 .prose-body h2 {
   font-family: var(--display); font-size: clamp(26px, 3.2vw, 34px);
   font-weight: 800; letter-spacing: -0.03em; line-height: 1.14;

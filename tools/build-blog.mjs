@@ -443,6 +443,15 @@ const ICON_PATHS = {
   phone: '<rect x="6.4" y="2.4" width="11.2" height="19.2" rx="2.4"/><path d="M10.6 18.6h2.8"/>',
   whale: '<path d="M2.6 14.6c0-3.5 3.8-6.4 8.5-6.4 3.4 0 6.3 1.5 7.7 3.7v5.4c-1.4 2.2-4.3 3.7-7.7 3.7-4.7 0-8.5-2.9-8.5-6.4Z"/><path d="M18.8 11.9 21.8 10v9.2l-3-1.9"/><path d="M9.8 8.3C9.8 6.3 10.9 4.8 12.5 4"/><circle cx="7" cy="13" r=".9"/>',
   money: '<circle cx="12" cy="12" r="9"/><path d="M14.6 8.6h-3.4a2.1 2.1 0 0 0 0 4.2h1.6a2.1 2.1 0 0 1 0 4.2H9.4M12 6.8v1.8M12 15.4v1.8"/>',
+  staff: '<circle cx="12" cy="7" r="3.4"/><path d="M5.2 21a6.8 6.8 0 0 1 13.6 0"/><path d="M10.4 15.2h3.2v2.6h-3.2Z"/>',
+  lift: '<rect x="4.4" y="2.8" width="15.2" height="18.4" rx="1.8"/><path d="M8.8 9.6 12 6.4l3.2 3.2M8.8 14.4 12 17.6l3.2-3.2"/>',
+  bike: '<circle cx="5.8" cy="16.2" r="3.6"/><circle cx="18.2" cy="16.2" r="3.6"/><path d="M5.8 16.2 9.4 8.6h6.2l2.6 7.6M9.4 8.6l3.2 7.6h1.4M14.4 5.8h2.4"/>',
+  ferry: '<path d="M3 15.4h18l-2.4 4.2H5.4Z"/><path d="M6 15.4V11h12v4.4"/><path d="M9.2 11V7.4h5.6V11"/><path d="M12 7.4V4.6"/>',
+  taxi: '<path d="M5 12.6 6.8 8a1.6 1.6 0 0 1 1.5-1h7.4a1.6 1.6 0 0 1 1.5 1l1.8 4.6"/><rect x="3.4" y="12.6" width="17.2" height="5" rx="1.4"/><path d="M6.4 17.6v2M17.6 17.6v2M10 4.4h4V7h-4Z"/>',
+  car: '<path d="M5 12.6 6.8 8a1.6 1.6 0 0 1 1.5-1h7.4a1.6 1.6 0 0 1 1.5 1l1.8 4.6"/><rect x="3.4" y="12.6" width="17.2" height="5" rx="1.4"/><path d="M6.4 17.6v2M17.6 17.6v2M7.4 15.1h.01M16.6 15.1h.01"/>',
+  road: '<path d="M8 3 5 21M16 3l3 18"/><path d="M12 4v2.6M12 10.4v3.2M12 17.4V20"/>',
+  /* The fallback for a practical-stuff row nothing else matches. */
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 11.2v5.2M12 7.6h.01"/>',
 };
 
 /* First match wins, so the specific rows sit above the general
@@ -462,15 +471,32 @@ const ICON_RULES = [
   [/shoe|boot|footwear|grip/i, 'shoes'],
   [/phone|signal|reception|battery|offline/i, 'phone'],
   [/whale|dolphin|wildlife|birdlife/i, 'whale'],
-  [/cost|fare|price|money|cash|card/i, 'money'],
+  [/cost|fare|price|money|cash|card|pay|ticket/i, 'money'],
+  [/staff|attendant|help point|customer service/i, 'staff'],
+  [/lift|elevator|escalator|stairs|step.?free/i, 'lift'],
+  [/bike|bicycle|cycl/i, 'bike'],
+  [/ferry|boat|wharf/i, 'ferry'],
+  [/taxi|cab\b/i, 'taxi'],
+  [/rideshare|drop.?off|dropped off|driv|parking|car park|\bcar\b/i, 'car'],
+  [/road|closure|street/i, 'road'],
 ];
+
+const iconSvg = (name) =>
+  `<svg class="li-ico" aria-hidden="true" viewBox="-1.5 -1.5 27 27" fill="none" stroke="currentColor" `
+  + `stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[name]}</svg>`;
 
 function listIcon(label) {
   const hit = ICON_RULES.find(([re]) => re.test(label));
-  if (!hit) return '';
-  return `<svg class="li-ico" aria-hidden="true" viewBox="-1.5 -1.5 27 27" fill="none" stroke="currentColor" `
-    + `stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[hit[1]]}</svg>`;
+  return hit ? iconSvg(hit[1]) : '';
 }
+
+/* "The practical stuff" always renders with icons, every row, on
+   every post. A walk that matched everything got icons and a
+   station guide that matched half did not, so two approved posts
+   ended the same section in two different styles. Under this
+   heading an unmatched row gets the info glyph instead of a blank,
+   and the threshold below does not apply. */
+const ICON_ALWAYS_HEADING = /practical/i;
 
 const ICON_LIST_MIN_ROWS = 4;
 const ICON_LIST_MIN_HIT = 0.7;
@@ -485,6 +511,7 @@ function addListIcons(html) {
   return html.replace(/<h2>([^<]*)<\/h2>\n(\s*)<ul>\n([\s\S]*?)(\s*)<\/ul>/g,
     (whole, heading, pad, items, tail) => {
       if (!ICON_LIST_HEADING.test(heading)) return whole;
+      const always = ICON_ALWAYS_HEADING.test(heading);
       let matched = 0;
       const rows = items.replace(/<li>([\s\S]*?)<\/li>/g, (row, inner) => {
         /* Most rows open on a bold label and that is what gets
@@ -494,7 +521,7 @@ function addListIcons(html) {
            of a long line pull in an icon that misreads it. */
         const bold = (inner.match(/^<strong>([^<]+)<\/strong>/) || [])[1];
         const label = bold || inner.replace(/<[^>]+>/g, ' ').trim().split(/\s+/).slice(0, 8).join(' ');
-        const icon = listIcon(label);
+        const icon = listIcon(label) || (always ? iconSvg('info') : '');
         if (icon) matched++;
         const gutter = icon || '<span class="li-ico" aria-hidden="true"></span>';
         return `<li>${gutter}<span>${inner}</span></li>`;
@@ -508,7 +535,7 @@ function addListIcons(html) {
          Converting only above the line keeps the icons where
          they mean something. */
       const rowCount = (items.match(/<li>/g) || []).length;
-      if (rowCount < ICON_LIST_MIN_ROWS || matched / rowCount < ICON_LIST_MIN_HIT) return whole;
+      if (!always && (rowCount < ICON_LIST_MIN_ROWS || matched / rowCount < ICON_LIST_MIN_HIT)) return whole;
       return `<h2>${heading}</h2>\n${pad}<ul class="ico-list">\n${rows}${tail}</ul>`;
     });
 }
@@ -583,6 +610,31 @@ function publishedDates() {
   return dates;
 }
 
+/* ============================================================
+   The drop cap, only where it fits.
+
+   The cap is two lines deep. On an opening paragraph of one line,
+   or two lines with a stranded word or two, it reads as broken:
+   Berowra opened on "Start the morning at Berowra." and Chatswood
+   on a single sentence, and both looked like a formatting fault.
+   So the cap is opt in. The opening paragraph gets class "lede",
+   and with it the cap, only when it is long enough to wrap the cap
+   fully, about two full lines at the desktop measure. A shorter
+   opener simply starts as plain text. check-layout.mjs holds the
+   same number and blocks a lede below it.
+   ============================================================ */
+const DROP_CAP_MIN = 140;
+
+function markLede(html) {
+  /* The first top-level paragraph. Top-level blocks start a line in
+     marked's output; a placeholder for a container is not prose. */
+  const m = html.match(/^<p>(?!KRAILBLOCK)([\s\S]*?)<\/p>/m);
+  if (!m) return html;
+  const text = m[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+  if (text.length < DROP_CAP_MIN) return html;
+  return html.slice(0, m.index) + '<p class="lede">' + html.slice(m.index + 3);
+}
+
 function renderMarkdown(md, defaultStyle) {
   /* Markdown passes HTML comments straight through, so an editorial
      note to ourselves ends up in the served page where View Source
@@ -606,7 +658,7 @@ function renderMarkdown(md, defaultStyle) {
   };
   marked.use({ renderer, mangle: false, headerIds: false });
 
-  let html = marked.parse(stripped);
+  let html = markLede(marked.parse(stripped));
   html = html.replace(/<p>KRAILBLOCK(\d+)KRAILBLOCK<\/p>/g, (_m, i) => renderContainer(blocks[+i]));
   html = addListIcons(html);
   return html.trim();
