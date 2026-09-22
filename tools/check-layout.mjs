@@ -127,11 +127,15 @@ function checkStylesheet() {
      The cap floats two lines deep. Berowra opened on a one line
      paragraph, and the float hung into the next one and pushed its
      first line in. A flow root on the opening paragraph contains it. */
-  if (/p:first-of-type::first-letter\s*\{[^}]*float\s*:\s*left/.test(css)) {
-    const opener = ruleBody(css, '.prose-body > p:first-of-type {');
+  if (/p:first-of-type::first-letter/.test(css)) {
+    add('blog.css', 'The drop cap applies to every opening paragraph.',
+        'It is opt in: style .prose-body > p.lede::first-letter. The builder adds class "lede" only when the opener is long enough to wrap the cap.');
+  }
+  if (/p\.lede::first-letter\s*\{[^}]*float\s*:\s*left/.test(css)) {
+    const opener = ruleBody(css, '.prose-body > p.lede {');
     if (!/display\s*:\s*flow-root|overflow\s*:\s*hidden/.test(opener)) {
       add('blog.css', 'The drop cap floats but the opening paragraph does not contain it.',
-          'Give .prose-body > p:first-of-type display: flow-root, or a one line opener lets the cap hang into the next paragraph.');
+          'Give .prose-body > p.lede display: flow-root, or the cap can hang into the next paragraph.');
     }
   }
 
@@ -223,6 +227,31 @@ function checkPage(rel) {
      Both halves of the contract are checked: every row carries a
      gutter element, and enough of them carry a real icon that the
      list is worth converting at all. */
+  /* ---- the drop cap only sits on an opener that can carry it ----
+     Same number as DROP_CAP_MIN in build-blog.mjs. Below it the cap
+     is taller than the text beside it and the opening reads broken. */
+  for (const m of prose.matchAll(/<p class="lede">([\s\S]*?)<\/p>/g)) {
+    const len = m[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().length;
+    if (len < 140) {
+      add(rel, `The drop cap sits on a ${len} character opening paragraph.`,
+          'Under 140 characters the cap is taller than the text beside it. The builder should leave a short opener plain; check DROP_CAP_MIN.');
+    }
+  }
+
+  /* ---- the practical stuff always has icons, every row ----
+     Two approved posts ended the same section in two styles, one
+     with icons and one with plain squares, because one matched the
+     icon threshold and one did not. Under this heading every row
+     carries an icon, the info glyph when nothing else fits. */
+  for (const m of prose.matchAll(/<h2>([^<]*practical[^<]*)<\/h2>\s*<ul( class="ico-list")?>([\s\S]*?)<\/ul>/gi)) {
+    const rows = m[3].match(/<li>[\s\S]*?<\/li>/g) || [];
+    const withIcon = rows.filter((r) => /^<li>\s*<svg class="li-ico"/.test(r)).length;
+    if (!m[2] || withIcon !== rows.length) {
+      add(rel, `"${m[1].trim()}" has ${rows.length - withIcon} of ${rows.length} rows without an icon.`,
+          'Practical-stuff lists always render with an icon on every row. Check ICON_ALWAYS_HEADING and the info fallback in build-blog.mjs.');
+    }
+  }
+
   for (const list of prose.match(/<ul class="ico-list">[\s\S]*?<\/ul>/g) || []) {
     const rows = list.match(/<li>[\s\S]*?<\/li>/g) || [];
     const gutters = rows.filter((r) => /^<li>\s*<(svg|span) class="li-ico"/.test(r)).length;
@@ -231,7 +260,8 @@ function checkPage(rel) {
       add(rel, `An icon list has ${rows.length - gutters} row(s) with no gutter element.`,
           'Every row needs the icon slot, empty or not, or the text column steps in and out down the list.');
     }
-    if (rows.length < 4 || icons / rows.length < 0.7) {
+    const practical = /<h2>[^<]*practical[^<]*<\/h2>\s*$/i.test(prose.slice(0, prose.indexOf(list)));
+    if (!practical && (rows.length < 4 || icons / rows.length < 0.7)) {
       add(rel, `An icon list matched only ${icons} of ${rows.length} rows.`,
           'Below the threshold the list is mostly blank gutters, so it should render as plain accent squares instead. Check ICON_LIST_MIN_HIT in build-blog.mjs.');
     }
