@@ -144,11 +144,23 @@ jobs:
             head=$(echo "$view" | jq -r .headRefOid)
             file=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$n/files" \
                      --jq '[.[] | select(.status != "removed") | .filename | select(startswith("blog/posts/") and endswith(".md"))] | .[0] // ""')
-            at=""
+            src=""
             if [ -n "$file" ]; then
-              at=$(gh api "repos/$GITHUB_REPOSITORY/contents/$file?ref=$head" --jq .content \
-                     | base64 -d | sed -n 's/^publishAt:[[:space:]]*//p' | head -1 | tr -d "\r\"'")
+              src=$(gh api "repos/$GITHUB_REPOSITORY/contents/$file?ref=$head" --jq .content | base64 -d)
             fi
+
+            # Stamped posts only. A post is written and approved in
+            # krail-shorts, and the stamp, approvedHash, is how it says
+            # so. A draft without one has not been through that review,
+            # so it never goes out, even if the label lands on it by
+            # mistake. A pull request with no post file is skipped for
+            # the same reason.
+            if ! printf '%s\n' "$src" | grep -q '^approvedHash:[[:space:]]*[0-9a-f]'; then
+              echo "- #$n is queued but its post carries no approval stamp, so it waits." >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+
+            at=$(printf '%s\n' "$src" | sed -n 's/^publishAt:[[:space:]]*//p' | head -1 | tr -d "\r\"'")
 
             if [ -z "$at" ]; then
               # Undated. Oldest first, and only if nothing is picked yet.
