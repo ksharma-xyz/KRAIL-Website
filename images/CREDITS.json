@@ -355,5 +355,13 @@
     "creator": "Roadrunnerz45",
     "source": "https://commons.wikimedia.org/wiki/File:Accor_Stadium_2.jpg",
     "modified": "Cropped from 4000x3000 to a 16:9 band, resized to 1600x900, metadata stripped."
+  },
+  "/images/accor-stadium-800.webp": {
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "creator": "Roadrunnerz45",
+    "source": "https://commons.wikimedia.org/wiki/File:Accor_Stadium_2.jpg",
+    "modified": "Cropped from 4000x3000 to a 16:9 band, resized to 800x450, metadata stripped.",
+    "note": "Phone sized variant of accor-stadium.webp, same photograph."
   }
 }
