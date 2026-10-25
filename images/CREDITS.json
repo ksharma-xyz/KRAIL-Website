@@ -364,6 +364,18 @@
     "modified": "Cropped from 4000x3000 to a 16:9 band, resized to 800x450, metadata stripped.",
     "note": "Phone sized variant of accor-stadium.webp, same photograph."
   },
+  "/images/sculpture-by-the-sea-2022.webp": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "modified": "Two of the photographer's own photos, shot 30 October 2022 at Sculpture by the Sea, Bondi, cropped from portrait 2268x4032 and set side by side as a 16:9 collage, 1600x900, metadata stripped.",
+    "note": "The sculptures are the artists' works. Used at the owner's decision on 25 Oct 2026, after the temporary-artwork copyright risk was raised."
+  },
+  "/images/sculpture-by-the-sea-2022-800.webp": {
+    "licence": "Own work",
+    "creator": "Karan Sharma",
+    "modified": "Two of the photographer's own photos, shot 30 October 2022 at Sculpture by the Sea, Bondi, cropped from portrait 2268x4032 and set side by side as a 16:9 collage, 800x450, metadata stripped.",
+    "note": "Phone sized variant of sculpture-by-the-sea-2022.webp, same collage."
+  },
   "/images/randwick-race-day-ai.webp": {
     "licence": "Own work",
     "creator": "KRAIL",
