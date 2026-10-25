@@ -5,8 +5,15 @@ series: things-to-do
 tone: train
 accent: with a bike
 status: ready
-summary: You finish 80km from where you started, and a bike cannot board a bus. Here is the train back to Sydney from Fairy Meadow, every 30 minutes.
+approved: 2026-10-26
+approvedBy: operator (via krail-website preview)
+approvedHash: fb50bf6c8533
+publishAt: 2026-10-27T06:00+11:00
+summary: Eighty kilometres from Sydney down to the sea at Wollongong, then a train home with your bike every 30 minutes. Here is how to get to the start and back.
 updated: 2026-10-19
+hero: /images/gong-ride-ai.webp
+heroAlt: AI-generated illustration of a pack of cyclists sweeping around a curved bridge on a sea cliff, while a rider lifts her bike onto an orange double-deck train at a seaside platform
+heroCredit: AI-generated image
 sources:
   - url: https://transportnsw.info/events/2026/11/ms-gong-ride-2026
     title: Getting to the MS Gong Ride 2026, Transport for NSW
@@ -28,10 +35,12 @@ tags:
 publishedUrl: null
 ---
 
-You finish this ride at Fairy Meadow, a long way south of where you started. A train takes you and
-the bike back. They leave Fairy Meadow every 30 minutes, from 9.30am until 5.30pm.
+Eighty kilometres. Up to ten thousand riders. Sydney at your back and the sea at Wollongong waiting
+at the end. The MS Gong Ride rolls out for the 45th time on Sunday 1 November, and it is one of the
+best days you can have on a bike.
 
-Ride it for the charity. Let the train do the way home.
+The finish is at Fairy Meadow, a long, long way from your front door. That part is on us. A train
+takes you and the bike home every 30 minutes from 9.30am, so all you have to do is ride.
 
 ::: facts The day, in short
 When: **Sunday 1 November**, 80km from 6am, 53km from 8am
@@ -40,8 +49,6 @@ Finish: Thomas Dalton Park at Fairy Meadow, by **3.30pm**
 Trains home: from Fairy Meadow every **30 minutes**, 9.30am to 5.30pm
 Your ticket home: the ride's **$8** train ticket, bought before you board
 :::
-
-Up to 10,000 riders will be out there. It is the 45th MS Gong Ride.
 
 ## How do you get to the start?
 

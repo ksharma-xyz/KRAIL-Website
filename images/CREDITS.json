@@ -375,5 +375,17 @@
     "creator": "Karan Sharma",
     "modified": "Two of the photographer's own photos, shot 30 October 2022 at Sculpture by the Sea, Bondi, cropped from portrait 2268x4032 and set side by side as a 16:9 collage, 800x450, metadata stripped.",
     "note": "Phone sized variant of sculpture-by-the-sea-2022.webp, same collage."
+  },
+  "/images/gong-ride-ai.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL",
+    "modified": "Cropped from 1376x768 to 16:9, resized to 1600x900, metadata stripped.",
+    "note": "AI-generated with Google Nano Banana 2 Lite (gemini-3.1-flash-lite-image) on 26 Oct 2026 from a KRAIL prompt, labelled AI-generated beside the image. Illustration, not a photograph of any real place. People in it are generated, not real."
+  },
+  "/images/gong-ride-ai-800.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL",
+    "modified": "Cropped from 1376x768 to 16:9, resized to 800x450, metadata stripped.",
+    "note": "Phone sized variant of gong-ride-ai.webp. AI-generated with Google Nano Banana 2 Lite (gemini-3.1-flash-lite-image) on 26 Oct 2026 from a KRAIL prompt, labelled AI-generated beside the image. Illustration, not a photograph of any real place. People in it are generated, not real."
   }
 }
