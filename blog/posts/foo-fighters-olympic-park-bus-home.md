@@ -5,8 +5,14 @@ series: things-to-do
 tone: train
 accent: bus home
 status: ready
+approved: 2026-10-25
+approvedBy: operator (via krail-website preview)
+approvedHash: 6fdd3595e18b
 summary: Up to 60,000 people leave Accor Stadium at once on Tuesday 10 November. The last event bus out of Olympic Park goes at midnight.
 updated: 2026-10-20
+hero: /images/accor-stadium.webp
+heroAlt: The west entrance of Accor Stadium at Sydney Olympic Park under a blue sky, with the white roof truss arching over the stands
+heroCredit: Photo by Roadrunnerz45, cropped and resized. Licensed CC BY-SA 4.0, creativecommons.org/licenses/by-sa/4.0
 sources:
   - url: https://transportnsw.info/events/2026/11/foo-fighters-take-cover-tour
     title: Getting to Foo Fighters at Accor Stadium, Transport for NSW
