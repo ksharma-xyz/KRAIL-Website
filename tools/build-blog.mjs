@@ -906,7 +906,7 @@ ${nav()}
     </div>` : ''}
   </div>
 ${data.hero ? `
-  <div class="container narrow">
+  <div class="container prose">
     <figure class="post-hero anim">
       ${heroImg(data.hero, data.heroAlt || '')}${data.heroCredit ? `
       <figcaption>${renderCredit(data.hero, data.heroCredit)}</figcaption>` : ''}
