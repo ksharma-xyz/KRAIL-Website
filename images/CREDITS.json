@@ -363,5 +363,20 @@
     "source": "https://commons.wikimedia.org/wiki/File:Accor_Stadium_2.jpg",
     "modified": "Cropped from 4000x3000 to a 16:9 band, resized to 800x450, metadata stripped.",
     "note": "Phone sized variant of accor-stadium.webp, same photograph."
+  },
+  "/images/tamarama-beach.webp": {
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "creator": "Sardaka",
+    "source": "https://commons.wikimedia.org/wiki/File:Tamarama_Beach_Sydney.jpg",
+    "modified": "Cropped from 6016x4016 to a 16:9 band, resized to 1600x900, metadata stripped."
+  },
+  "/images/tamarama-beach-800.webp": {
+    "licence": "CC BY-SA 4.0",
+    "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "creator": "Sardaka",
+    "source": "https://commons.wikimedia.org/wiki/File:Tamarama_Beach_Sydney.jpg",
+    "modified": "Cropped from 6016x4016 to a 16:9 band, resized to 800x450, metadata stripped.",
+    "note": "Phone sized variant of tamarama-beach.webp, same photograph."
   }
 }
