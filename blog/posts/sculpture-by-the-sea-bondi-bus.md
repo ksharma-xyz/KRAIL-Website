@@ -10,9 +10,9 @@ approvedBy: operator (via krail-website preview)
 approvedHash: 41ef7ef2ac91
 summary: Around 450,000 people walk the Bondi to Tamarama sculptures over 18 days, and parking goes early. Here is the bus at each end.
 updated: 2026-10-03
-hero: /images/tamarama-beach.webp
-heroAlt: Tamarama Beach from the coastal walk, a small curve of sand between sandstone headlands with houses on the hill behind
-heroCredit: Photo by Sardaka, cropped and resized. Licensed CC BY-SA 4.0, creativecommons.org/licenses/by-sa/4.0
+hero: /images/sculpture-by-the-sea-2022.webp
+heroAlt: Two sculptures on the clifftop at Sculpture by the Sea in Bondi, a bronze traveller in a blue jacket with a bag, and two figures balancing on a curved beam above the ocean
+heroCredit: Photos by Karan Sharma at Sculpture by the Sea, Bondi, 2022. Sculptures by their artists.
 sources:
   - url: https://transportnsw.info/events/2026/10/sculpture-by-sea
     title: Getting to Sculpture by the Sea, Transport for NSW
