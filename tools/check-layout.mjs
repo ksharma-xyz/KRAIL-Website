@@ -194,6 +194,18 @@ function checkPage(rel) {
   const src = read(rel);
   const prose = (src.match(/<div class="prose-body">([\s\S]*?)<\/div>\s*\n(?:<aside|\s*<div class="post-foot")/) || [])[1] || src;
 
+  /* ---- the hero photo sits in the reading column ----
+     The hero shipped inside `container narrow`, 1160px against a 700px
+     column of text, so the photo hung far past both edges of the
+     headline and the paragraphs and read as too wide. It belongs in
+     `container prose`, the same box as the article, so its left and
+     right edges are the text's. */
+  const hero = src.match(/<div class="container ([\w -]+)">\s*<figure class="post-hero/);
+  if (hero && !hero[1].split(/\s+/).includes('prose')) {
+    add(rel, `The hero photo sits in "container ${hero[1]}", wider than the text.`,
+        'Wrap .post-hero in "container prose" in tools/build-blog.mjs so the photo matches the reading column.');
+  }
+
   /* ---- store links are stamps, never pasted URLs ---- */
   const bare = prose.match(new RegExp(`>[^<]*${STORE_HOSTS.source}[^<]*<`));
   if (bare) {
