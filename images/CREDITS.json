@@ -363,5 +363,17 @@
     "source": "https://commons.wikimedia.org/wiki/File:Accor_Stadium_2.jpg",
     "modified": "Cropped from 4000x3000 to a 16:9 band, resized to 800x450, metadata stripped.",
     "note": "Phone sized variant of accor-stadium.webp, same photograph."
+  },
+  "/images/randwick-race-day-ai.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL",
+    "modified": "Cropped from 1376x768 to 16:9, resized to 1600x900, metadata stripped.",
+    "note": "AI-generated with Google Nano Banana 2 Lite (gemini-3.1-flash-lite-image) on 25 Oct 2026 from a KRAIL prompt, labelled AI-generated beside the image. Illustration, not a photograph of any real place. People in it are generated, not real."
+  },
+  "/images/randwick-race-day-ai-800.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL",
+    "modified": "Cropped from 1376x768 to 16:9, resized to 800x450, metadata stripped.",
+    "note": "Phone sized variant of randwick-race-day-ai.webp. AI-generated with Google Nano Banana 2 Lite (gemini-3.1-flash-lite-image) on 25 Oct 2026 from a KRAIL prompt, labelled AI-generated beside the image. Illustration, not a photograph of any real place. People in it are generated, not real."
   }
 }

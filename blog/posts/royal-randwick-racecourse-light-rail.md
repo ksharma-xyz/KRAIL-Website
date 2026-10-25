@@ -5,8 +5,14 @@ series: things-to-do
 tone: lr
 accent: from Central
 status: ready
+approved: 2026-10-26
+approvedBy: operator (via krail-website preview)
+approvedHash: a92a3ca99344
 summary: Two light rail lines leave Central Chalmers Street and only the L2 stops across from the racecourse. Here is the one to board on 31 October.
 updated: 2026-10-16
+hero: /images/randwick-race-day-ai.webp
+heroAlt: AI-generated illustration of racehorses charging down the home straight in front of a packed grandstand, with a red tram gliding past behind the course
+heroCredit: AI-generated image
 sources:
   - url: https://transportnsw.info/events/2026/10/golden-eagle-day-everest-carnival
     title: Golden Eagle Day, Everest Carnival, Transport for NSW
