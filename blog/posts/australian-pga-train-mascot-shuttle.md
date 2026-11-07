@@ -7,6 +7,9 @@ accent: to Mascot
 status: ready
 summary: Four days of championship golf at The Lakes, with play from 7am. There is no parking at the course, so take the train to Mascot and the free shuttle in.
 updated: 2026-10-31
+hero: /images/blog/australian-pga-train-mascot-shuttle.webp
+heroAlt: Orange KRAIL cover card reading Mascot by train, with a train mode badge and a line of stops
+heroCredit: Own work, KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/australian-pga-championship
     title: Getting to the Australian PGA Championship, Transport for NSW
