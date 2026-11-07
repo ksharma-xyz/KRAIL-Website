@@ -1,11 +1,11 @@
 ---
-title: "Seeing Robbie Williams at Olympic Park? Sing all night, then your ticket is the train home"
+title: "Seeing Robbie Williams at Olympic Park? Your train home"
 slug: robbie-williams-olympic-park-train-home
 series: things-to-do
 tone: train
 accent: train home
 status: ready
-summary: "You're seeing Robbie Williams on 14 November, lucky you! Your concert ticket is your ride there and back, so the only thing to pack is your singing voice."
+summary: "You're seeing Robbie Williams at Olympic Park on 14 November, lucky you! Your concert ticket is your ride there and back, so just bring your singing voice."
 updated: 2026-11-03
 hero: /images/blog/robbie-williams-olympic-park-train-home.webp
 heroAlt: Orange KRAIL cover card reading Olympic Park by train, with a train mode badge and a line of stops
