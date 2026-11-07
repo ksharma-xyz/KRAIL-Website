@@ -6,6 +6,9 @@ tone: train
 status: ready
 summary: Harness racing until 11pm, then The Screaming Jets to close it out. Six late trains run from Menangle Park that night, and the last one goes at 12.20am.
 updated: 2026-11-06
+hero: /images/blog/eureka-race-day-menangle-park-train.webp
+heroAlt: Orange KRAIL cover card reading Menangle Park by train, with a train mode badge and a line of stops
+heroCredit: Own work, KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/eureka-harness-race-day
     title: Getting to Eureka Harness Race Day, Transport for NSW
