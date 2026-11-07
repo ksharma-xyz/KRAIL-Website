@@ -1,15 +1,12 @@
 ---
-title: Powerhouse Parramatta by train, and the last ferry
+title: "Parramatta's new Powerhouse is open! Boat up the river, train home"
 slug: powerhouse-parramatta-by-train
 series: things-to-do
 tone: train
 accent: last ferry
 status: ready
-summary: The new museum on Phillip Street opens on 7 November and stays open until 9pm. No ferry leaves Parramatta Wharf that late, so take the train home.
+summary: "Sydney's big new museum is throwing a three-week party in Parramatta, and you're invited! Cruise up the river by boat, then let the train bring you home."
 updated: 2026-10-23
-hero: /images/blog/powerhouse-parramatta-by-train.webp
-heroAlt: Orange KRAIL cover card reading Parramatta by train, with a train mode badge and a line of stops
-heroCredit: Own work, KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/powerhouse-museum-parramatta-opening-festival
     title: Getting to the Powerhouse Museum Parramatta Opening Festival, Transport for NSW
@@ -17,7 +14,7 @@ sources:
   - url: https://transportnsw.info/
     title: Timetables and departures, Transport for NSW
     for: every clock time in this post, read from the published departure listings on 2026-10-23. F3 services leave Circular Quay Wharf 5 for Parramatta hourly at seven minutes past on Saturday 7 November, first at 7.07am and last through to Parramatta at 6.07pm, with later F3 departures terminating at Sydney Olympic Park. Departures from Parramatta Wharf were read for every Thursday to Sunday of the festival, and the last one out never runs later than 7.37pm. Saturday 7 November has seven, at 9.38am, 10.38am, 11.38am, 4.38pm, 5.38pm, 6.38pm and 7.37pm. The last boat out is 6.38pm on Sunday 8 November, 5.38pm on Saturday 14 November, 6.38pm on Sunday 15 November, 7.37pm on Saturday 21 November, 6.38pm on Sunday 22 November, 4.38pm on Saturday 28 November and 5.38pm on Sunday 29 November. On Thursday 12, Friday 13, Thursday 26 and Friday 27 November only two boats leave, at 5.55pm and 6.55pm, and both terminate at Rydalmere. On Thursday 19 and Friday 20 November nothing leaves Parramatta Wharf at all. L4 trams leave the Church Street stop about every ten minutes, and that stop has no departures at all on Tuesday 17 November or Saturday 21 November. City trains leave Parramatta platform 1 on the evening of Saturday 7 November at 9.38pm, 9.51pm and 10.08pm, and the last service towards the city that night is the 12.45am from platform 1 running through to Central. Read 2026-10-23
-lastServiceBack: "These are the last ones out on Saturday 7 November 2026, the opening day. By ferry it is the 7.37pm from Parramatta Wharf to Circular Quay. That is well before the museum shuts at 9pm. The ferry follows the tide and changes every week. The last boat out is the 5.38pm on Saturday 14 November and the 4.38pm on Saturday 28 November. On Thursday 19 and Friday 20 November nothing leaves Parramatta Wharf at all. By train you have all night. City trains leave Parramatta from platform 1 at 9.38pm, 9.51pm and 10.08pm. The last one towards the city is the 12.45am from platform 1, which runs through to Central."
+lastServiceBack: "The train is your ride home. City trains leave Parramatta from platform 1, and on opening night the last one towards the city was the 12.45am all the way to Central. The river boats finish earlier, never later than 7.37pm out of Parramatta Wharf, so ride the ferry in for the view and take the train home whenever you're ready."
 publishedUrl: null
 tags:
   - Event
@@ -25,105 +22,75 @@ tags:
   - Powerhouse
 ---
 
-The Powerhouse opening festival runs from Saturday 7 November to Sunday 29 November, on Phillip
-Street in Parramatta. Take a train to Parramatta station and walk 600 metres. The ferry will get you
-there, and it will not get you back.
+Parramatta has a brand new museum, and it's throwing a three-week party to say hello! The new
+Powerhouse is open, and you're going to love wandering it.
 
-Thursday to Sunday the doors stay open until 9pm. That is the part that catches people, because the
-river stops running long before the museum does.
+Picture your day. A lazy boat ride up the Parramatta River, a little stroll to Phillip Street, then
+hours of poking around a gleaming new museum. Thursday to Sunday the doors stay open until 9pm, so
+you can stay right into the evening. Then the train scoops you up and takes you home.
 
-::: facts The trip, in short
-When: **Saturday 7 to Sunday 29 November**, open until 9pm Thursday to Sunday
-Station: **Parramatta**, then 600 metres on foot, about 8 minutes
-Closest stop: **Church Street** light rail, 300 metres, about 4 minutes
-By bus: Smith Street near Phillip Street, **250 metres**
-Last ferry out: **7.37pm** on 7 November, earlier most other days
+The party runs until Sunday 29 November, so there's still plenty of time to pick your day.
+
+::: callout Fun tip
+Take the boat in and the train out. You get the river in the daylight and the whole evening at the museum.
 :::
 
-::: callout Do this first
-Decide how you are getting home before you go. The last boat out of Parramatta Wharf changes every
-week, and on some days there is none at all.
-:::
+## How do I get there by train?
 
-## How do you get there?
+Hop on a train to Parramatta and you're nearly there! The museum is on Phillip Street, and it's an
+easy eight-minute stroll from the station, about 600 metres.
 
-Take a train to Parramatta. The museum is on Phillip Street, 600 metres from the station.
+Already on the light rail? Ride it to Church Street and you're four minutes from the door, just 300
+metres along Phillip Street. A light rail comes by about every ten minutes, so you'll never wait long.
 
-That is about eight minutes on foot. Walk it rather than wait for anything.
+Coming by bus? Hop off on Smith Street near Phillip Street, the closest stop of the lot, only 250
+metres away. Other buses run to Parramatta Interchange, which means a slightly longer walk and a bit
+more of Parramatta to look at on the way. Not a bad trade!
 
-If you are already on the light rail, stay on it. Get off at Church Street, 300 metres from the door,
-and finish the walk along Phillip Street.
+## Can I take the ferry?
 
-Church Street is closer than the station. Trams go about every ten minutes.
+You sure can, and it's the prettiest way in! Jump on the F3 at Circular Quay Wharf 5. Then watch
+the river roll by all the way to Parramatta Wharf, the closest wharf to the museum.
 
-Coming by bus, get off on Smith Street near Phillip Street. That stop is the closest of the three, at
-250 metres. Other buses run to Parramatta Interchange instead, which leaves you a longer walk.
+The boat is the pretty way up the river. The train is the easy way home in the evening. You get the
+best of both! The last boat back leaves Parramatta Wharf by 7.37pm. So ferry in, spend a long day
+inside, and train home.
 
-## Why not take the ferry home?
+Going on a Thursday or Friday? Take the train both ways. The evening boats on those days stop at
+Rydalmere. On Thursday 19 and Friday 20 November the boats have the day off.
 
-The F3 drops you at Parramatta Wharf, a short walk from the museum along the river foreshore. It
-leaves Circular Quay from Wharf 5.
+The F3 is a local favourite and the boats can fill up. Get to the wharf early and grab a window seat.
+When the tide is low, buses fill in between Rydalmere and Parramatta, so you'll still get there.
 
-On Saturday 7 November it goes hourly at seven minutes past. The first is the 7.07am. The last one
-that runs all the way to Parramatta is the 6.07pm.
+## Coming the week of 16 November?
 
-Getting back is the problem, and it is a different problem each week. The boats out of Parramatta
-follow the tide rather than the clock.
+That week the train to Parramatta is the easy way in, and it's an eight-minute stroll to the door.
 
-Opening Saturday you get seven of them. The last is the 7.37pm.
+The light rail is getting some love from Monday 16 to Friday 20 November, with buses filling in
+between Westmead and Parramatta Square. On the weekend of 21 and 22 November the whole line from
+Westmead to Carlingford takes a rest, and buses step in again. So hop on a train and give yourself a
+little extra time.
 
-A week later the last boat out is the 5.38pm. By Saturday 28 November it is the 4.38pm.
+## Heading home after dark? Easy, the train's got you
 
-On Thursday 19 and Friday 20 November nothing leaves Parramatta Wharf all day.
+Had your fill of the museum? Wander back to the station. City trains leave Parramatta from platform 1. On opening night the last one towards the city was the
+12.45am, running all the way to Central, so there's no rush to leave.
 
-The other Thursdays and Fridays are thin. Two boats go, at 5.55pm and 6.55pm. Both stop short at
-Rydalmere.
+When you're ready to head off, tap the [live times](/blog/live-sydney-train-bus-ferry-times/) and
+you'll see exactly what's leaving Parramatta next.
 
-Low tide between Parramatta and Rydalmere is what does that. Buses replace the ferry when it happens.
+## Good to know
 
-The museum is open until 9pm Thursday to Sunday. No boat leaves Parramatta Wharf that late on any of
-those nights.
+- **The doors are open** 10am to 5pm Monday to Wednesday, and 10am to 9pm Thursday to Sunday.
+- **There's some trackwork on** during the festival, so take a quick peek at your line the morning you go.
+- **Driving?** Try the Eat Street car park off George Street. The Justice Precinct one is off Hunter
+  Street, and the Parramatta Station one is off Wentworth Street.
+- **Match night** is Friday 20 November, with a game at CommBank Stadium next door, so it's a buzzy
+  one! Give yourself a bit of extra time and stroll in with the crowd.
+- **Taxis and rideshare** drop off and pick up right on Phillip Street.
 
-So take the ferry in and the train home. Not the other way round.
-
-## What if you come the week of 16 November?
-
-The light rail is shut that week. From Monday 16 to Friday 20 November nothing runs between Westmead
-and Parramatta Square.
-
-On the weekend of 21 and 22 November the whole route closes, Westmead right through to Carlingford.
-
-The Church Street stop has no trams at all on those days. Buses replace the service, so allow extra
-time.
-
-Walk from Parramatta station that week. It is 600 metres and it is running.
-
-## What is the last way home?
-
-The train, and it runs long after the museum closes.
-
-City trains leave Parramatta from platform 1. On the Saturday evening they go at 9.38pm, 9.51pm and
-10.08pm.
-
-The last one towards the city that night is the 12.45am from platform 1. It is an intercity service
-running through to Central.
-
-Check the [live times](/blog/live-sydney-train-bus-ferry-times/) before you leave Phillip Street. A
-timetable is the plan. The countdown is what is turning up.
-
-## The practical stuff
-
-- **Opening hours**: 10am to 5pm Monday to Wednesday. 10am to 9pm Thursday to Sunday.
-- **Trackwork** is on during the festival, so check your line the morning you go.
-- **No parking** at the museum itself.
-- **Car parks** nearby: Eat Street via George Street, Justice Precinct via Hunter Street, and
-  Parramatta Station via Wentworth Street.
-- **Friday 20 November** there is a match at CommBank Stadium nearby. Allow longer if you drive.
-- **Taxis and rideshare** set down and pick up on Phillip Street.
-- **F3 ferries** are popular and can reach capacity, so leave yourself a spare boat.
-
-Give yourself the evening rather than the middle of the day. Thursday to Sunday you have until 9pm,
-and the trains home do not care what time you leave.
+My pick? Come in the evening, Thursday to Sunday. You've got the museum until 9pm, and the train is
+happy to take you home whenever you're done.
 
 ---
 
