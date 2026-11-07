@@ -1,5 +1,5 @@
 ---
-title: "Catch the train to Menangle Park, cheer the horses home, then sing along with The Screaming Jets!"
+title: "Menangle Park races, then the train home to Campbelltown"
 slug: eureka-race-day-menangle-park-train
 series: things-to-do
 tone: train
