@@ -7,6 +7,9 @@ accent: last ferry
 status: ready
 summary: The new museum on Phillip Street opens on 7 November and stays open until 9pm. No ferry leaves Parramatta Wharf that late, so take the train home.
 updated: 2026-10-23
+hero: /images/blog/powerhouse-parramatta-by-train.webp
+heroAlt: Orange KRAIL cover card reading Parramatta by train, with a train mode badge and a line of stops
+heroCredit: Own work, KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/powerhouse-museum-parramatta-opening-festival
     title: Getting to the Powerhouse Museum Parramatta Opening Festival, Transport for NSW
