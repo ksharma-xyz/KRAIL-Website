@@ -1,11 +1,11 @@
 ---
-title: "Robbie Williams at Olympic Park: your train home"
+title: "Seeing Robbie Williams at Olympic Park? Sing all night, then your ticket is the train home"
 slug: robbie-williams-olympic-park-train-home
 series: things-to-do
 tone: train
 accent: train home
 status: ready
-summary: Two concerts, one precinct, more than seventy thousand people on Saturday 14 November. The last bus out of Olympic Park goes at 11.30pm.
+summary: "You're seeing Robbie Williams on 14 November, lucky you! Your concert ticket is your ride there and back, so the only thing to pack is your singing voice."
 updated: 2026-11-03
 hero: /images/blog/robbie-williams-olympic-park-train-home.webp
 heroAlt: Orange KRAIL cover card reading Olympic Park by train, with a train mode badge and a line of stops
@@ -17,7 +17,7 @@ sources:
   - url: https://www.sydneyolympicpark.nsw.gov.au/parking
     title: Parking at Sydney Olympic Park, Sydney Olympic Park Authority
     for: the pre-booked parking rules. Pre-booked tickets cannot be bought on the same day as the event, the pre-book system closes at 11.59pm the day before, and the confirmation barcode has to be shown at the gate either printed or on a phone. Read 2026-11-03
-lastServiceBack: "These are the last ones out on the night of Saturday 14 November 2026. Event buses leave Olympic Park about every five minutes once the show finishes, and the last bus on each of the nine routes is out of the precinct by 11.30pm. Express trains to Central run every five minutes from 10.30pm to 12.30am. Trains west to Blacktown or Schofields run every seven to eight minutes until 12.30am. If you are heading out of Sydney, the extra late services are Lidcombe to Campbelltown at 10.52pm and 11.20pm, Central at 11.19pm through to Newcastle Interchange, and Central at 11.43pm through to Wollongong. Your concert ticket stays valid on public transport until 4am on Sunday 15 November."
+lastServiceBack: "Here's your ride home on the night of Saturday 14 November 2026. Event buses roll out of Olympic Park about every five minutes once the show finishes, and the last bus on each of the nine routes is out of the precinct by 11.30pm. Express trains to Central leave every five minutes from 10.30pm to 12.30am. Trains west to Blacktown or Schofields go every seven to eight minutes until 12.30am. Heading further out? The extra late services are Lidcombe to Campbelltown at 10.52pm and 11.20pm, Central at 11.19pm through to Newcastle Interchange, and Central at 11.43pm through to Wollongong. Your concert ticket works on public transport until 4am on Sunday 15 November."
 publishedUrl: null
 tags:
   - Event
@@ -25,49 +25,51 @@ tags:
   - Concerts
 ---
 
-More than seventy thousand people in one precinct, on a Saturday night. Robbie Williams plays Accor
-Stadium on 14 November, and a second concert runs next door at Afterpay Arena at the same time.
-Your concert ticket covers the trip both ways.
+Oh, you're seeing Robbie Williams at Accor Stadium on Saturday 14 November? You're going to have the
+best night!
 
-Getting there is the easy half. The part worth a plan is leaving, with seventy thousand other people,
-all at once. That part is on us.
+There's a second concert next door at Afterpay Arena too. Picture more than seventy thousand people
+in one park, all singing their hearts out. And here's the lovely bit. Your concert ticket is your
+ride there and home. It works on trains, metro, buses, light rail and ferries.
+
+So getting home is the easy part. Honestly, the hardest bit of your night will be picking a favourite song, and I can't help you there. Everything else? Let me show you.
 
 ::: facts The night, in short
 When: **Saturday 14 November**, Accor Stadium
 Station: **Olympic Park**, then a 10 minute walk
 Your fare: **included in the concert ticket**, until 4am
-Buses in: nine routes, the last one leaves at **7.05pm**
+Event buses: rolling in from **3.05pm**, with time for dinner
 Buses home: last one out of the precinct by **11.30pm**
 :::
 
-::: callout Do this first
-Keep your concert ticket once you are through the gate. It is your fare home as well as your fare
-there. Show it to staff when you board.
+::: callout Keep your ticket handy
+Your concert ticket is your ride home too, so tuck it somewhere safe once you're through the gate.
+Show it to staff each time you hop on.
 :::
 
 ## How do you get there from the city?
 
-Take an express train from Central. They go every 7 to 8 minutes from 5pm to 10.30pm.
+Hop on an express train at Central. They leave every 7 to 8 minutes from 5pm to 10.30pm, stopping at
+Redfern and Strathfield on the way to Olympic Park. Regular trains run to Lidcombe as well, and you
+can change there for Olympic Park.
 
-They stop at Redfern, then Strathfield, then Olympic Park. Regular services also run to Lidcombe,
-where you change for Olympic Park.
+Step off the train and the stadium is a 10 minute walk, straight down Olympic Boulevarde. Just follow
+the crowd already humming Angels, because everyone's heading the same way!
 
-From the platform it is a 10 minute walk to the stadium, down Olympic Boulevarde.
+Coming in from further out? There are extra trains just for tonight. Three leave Campbelltown, at
+5.38pm, 5.53pm and 6.08pm. They run all the way to Olympic Park, no change.
 
-Coming in from further out, there are extra services on the night. Three leave Campbelltown, at
-5.38pm, 5.53pm and 6.08pm. Those ones run through to Olympic Park.
-
-One more leaves Newcastle Interchange at 4.37pm and runs down to Central. Change there for the
-express.
+Up in Newcastle? One leaves Newcastle Interchange at 4.37pm and runs down to Central. Swap to the
+express there and you're nearly at the show.
 
 ## Coming from the Hills or the beaches?
 
-Nine event bus routes run in for this show. They come from the northern beaches, the inner west and
-the Sutherland Shire. Also from the north west, the Hills and the southern suburbs. Your concert
-ticket covers them.
+Lucky you! You get your own buses. Nine event bus routes run in just for this show, and your ticket is your fare. They come
+from the northern beaches, the inner west and the Sutherland Shire. Others start in the north west,
+the Hills and the southern suburbs.
 
-The catch is the clock. Every route has finished running in by 7.05pm, hours before the headline
-act. Each bus picks up along the way, so the times below are from the far end.
+They start rolling in the afternoon, so you'll arrive with plenty of time to grab dinner and a good
+spot. Each bus picks people up along the way, so these times are from the start of the route.
 
 - **Route 1A** from Narrabeen Lakes: first bus 3.05pm, last bus 6.35pm.
 - **Route 1B** from Warriewood: first bus 3.12pm, last bus 6.42pm.
@@ -79,94 +81,93 @@ act. Each bus picks up along the way, so the times below are from the far end.
 - **Route 7** from Shark Park at Cronulla: first bus 3.05pm, last bus 6.25pm.
 - **Route 8** from Dural: first bus 3.35pm, last bus 7.05pm.
 
-Route 7 out of Cronulla is the earliest one to stop. After 6.25pm there is nothing.
+Shire crew, hop on route 7 from Cronulla by 6.25pm and you'll have time for a bite before the show.
 
-On the metro, route 1A also picks up at Chatswood and North Ryde, and route 1B at Macquarie Park.
+On the metro? Route 1A also picks up at Chatswood and North Ryde, and route 1B at Macquarie Park.
 Route 5A comes through Castle Hill. Route 5B stops at Rouse Hill, Kellyville, Bella Vista and
-Norwest.
-
-At metro stations a gate is kept open for people holding a concert ticket.
+Norwest. The metro stations keep a gate open for people with a concert ticket, so you can walk
+straight through.
 
 ## Which terminal does your bus home leave from?
 
-There are two bus terminals at Olympic Park, and they are not next to each other. Sort out which one
-is yours before the lights come up.
+Olympic Park has two bus terminals, a little way apart. Pick yours before the encore and you'll
+stroll right to it.
 
-- **Routes 1A, 1B, 2 and 4** use the Aquatic Terminal on Olympic Boulevarde near Herb Elliott Avenue.
-- **Routes 5A, 5B, 6, 7 and 8** use the Plaza Terminal further along near Kevin Coombs Avenue,
-  opposite Afterpay Arena.
+- **Routes 1A, 1B, 2 and 4** leave from the Aquatic Terminal. It's on Olympic Boulevarde, near Herb
+  Elliott Avenue.
+- **Routes 5A, 5B, 6, 7 and 8** go from the Plaza Terminal. It's a bit further along, near Kevin
+  Coombs Avenue, right across from Afterpay Arena.
 
-Buses leave about every five minutes once the show is over. The last one on each route is out of the
-precinct by 11.30pm.
+Once the show finishes, buses leave about every five minutes. The last one on each route is out of
+the precinct by 11.30pm.
 
-## What is the last train out of Sydney?
+## Which train takes you home?
 
-This is the question to settle before you go, if home is not in the city.
+Pick your train before you go, then sing your heart out without a single glance at the clock.
 
-- **To Central**, express trains leave Olympic Park every 5 minutes from 10.30pm to 12.30am, stopping
-  at Strathfield and Redfern.
-- **To the west**, trains leave every 7 to 8 minutes from 9.30pm to 12.30am, running to Blacktown or
-  Schofields. For Penrith you change trains.
-- **To Campbelltown**, extra services leave Lidcombe at 10.52pm and 11.20pm.
-- **Through to Newcastle**, an extra service leaves Central at 11.19pm. It calls at Strathfield and
-  Epping. Then Hornsby, Berowra and all stations.
-- **Through to Wollongong**, an extra service leaves Central at 11.43pm. It calls at Redfern, Wolli
-  Creek and Hurstville. Then Sutherland, Waterfall and all stations.
+- **To Central**, express trains leave Olympic Park every 5 minutes from 10.30pm to 12.30am. They
+  stop at Strathfield and Redfern.
+- **To the west**, trains leave every 7 to 8 minutes from 9.30pm to 12.30am. They run to Blacktown
+  or Schofields. For Penrith, you change trains.
+- **To Campbelltown**, extra trains leave Lidcombe at 10.52pm and 11.20pm.
+- **Through to Newcastle**, an extra train leaves Central at 11.19pm. It calls at Strathfield and
+  Epping, then Hornsby, Berowra and all stations.
+- **Through to Wollongong**, an extra train leaves Central at 11.43pm. It calls at Redfern, Wolli
+  Creek and Hurstville. After that it stops at Sutherland, Waterfall and all stations.
 
-Your concert ticket stays valid on public transport until 4am on Sunday.
+Your concert ticket works on public transport until 4am on Sunday. Hours of breathing room!
 
-Check the [live times](/blog/live-sydney-train-bus-ferry-times/) before you walk back to the
-platform. A published frequency is the plan. The countdown is what is turning up.
+Peek at the [live times](/blog/live-sydney-train-bus-ferry-times/) as you wander back to the
+platform. The timetable is the plan, and the countdown shows you exactly what's pulling in.
 
-## Is there trackwork that day?
+## Heading in that morning?
 
-Yes, and most of it is done before lunch. From 6.30am to 10.30am the T1, the T2 and the T3 run to
-changed timetables. So does the T6. The T4 is altered from 5.40am to 8am.
+Making a whole day of it? A few trains run on a slightly different timetable that morning, so peek at
+KRAIL before you leave and you'll be fine. On the T1, T2, T3 and T6 the new times run from 6.30am to
+10.30am, and on the T4 they run from 5.40am to 8am. By lunchtime it's all back to normal.
 
-One runs much later. Buses replace trains between Goulburn, Moss Vale and Campbelltown until 5.30pm.
-T8 trains cover Campbelltown to the city instead. The first train out of Moss Vale leaves at 4.50pm
-and reaches Campbelltown at 6.10pm.
+Down south the changes last a little longer. Buses fill in for trains between Goulburn, Moss Vale and
+Campbelltown until 5.30pm, and T8 trains run from Campbelltown to the city. The first train out of
+Moss Vale leaves at 4.50pm and reaches Campbelltown at 6.10pm.
 
-So if you are coming up from the Southern Highlands, plan the morning around a bus.
+Coming up from the Southern Highlands? Your day starts on a bus, and the views out the window make a
+pretty good warm-up act.
 
-## If you were going to drive
+## Driving in?
 
-Do not drive into the precinct without pre-booked parking. There is no sorting it out on the night.
+Park at a station and ride in! Park & Ride gives you up to 18 hours of free parking a day once you
+finish a public transport trip. Your concert ticket counts! When you leave, press the intercom at
+the exit gate and show your concert ticket. The train home is the easy bit, and you'll be humming
+Angels before you've found your seat.
 
-Parking is a flat $40 and you cannot buy it on the day. Booking closes at 11.59pm the night before.
-Have the confirmation barcode ready at the gate, printed or on your phone.
-
-Even with a space, allow up to an hour to get out of the car park afterwards. Two shows finish at
-once and everyone leaves together.
-
-Driving to a station is the version that works. Park & Ride gives you up to 18 hours of free parking
-a day when you complete a public transport trip. Your concert ticket covers that parking too.
-
-On the way out, press the intercom at the exit gate and show your concert ticket.
-
-The car parks at the metro stations are big. Tallawong has 1,000 spaces and Bella Vista has 800.
-Kellyville has 1,389 with 150 more at the Decora Drive overflow. Hills Showground has 600. You can
+The metro car parks are roomy. Tallawong has 1,000 spaces and Bella Vista has 800. Kellyville has
+1,389, plus 150 more at the Decora Drive overflow. Hills Showground has 600. You can
 [check the spaces before you leave](/blog/sydney-park-and-ride-live-spaces/).
 
-## The practical stuff
+Fancy parking at the stadium instead? Book it before the day for a flat $40, because booking closes
+at 11.59pm the night before. Have your barcode ready at the gate, printed or on your phone. Two shows
+finish together, so pop Robbie on the car stereo and give yourself up to an hour to roll out.
 
-- **Ferry**: Sydney Olympic Park Wharf is 3.6km from the stadium, about a 40 minute walk. The 526 bus
-  connects.
-- **F3 ferries** are popular and can reach capacity. Low tide between Parramatta and Rydalmere can
-  put them on buses instead.
-- **Light rail** runs from about 5am to 1am. Change at Central for the express trains.
-- **Route buses**: the 526 runs through the precinct from Strathfield. The 526 and the 533 divert
-  while the roads are closed.
-- **Taxi ranks** on Herb Elliott Avenue at the Pullman Hotel, and on Edwin Flack Avenue opposite the
-  stadium. That second one opens 30 minutes before the finish time.
-- **Rideshare** is geo-fenced across the precinct, and prices surge after the show.
-- **Roads** in the precinct close before, during and after the concert.
-- **Airport stations**: the station access fee is not covered by your concert ticket.
-- **Before the show** there are food trucks and entertainment at Fig Grove, and the local cafes and
-  restaurants are open.
+## A few handy extras
 
-Get there early and eat in the precinct. With two crowds walking out at the same moment, letting the
-first wave go without you is no sacrifice at all.
+- **Ferry fans**, Sydney Olympic Park Wharf is 3.6km from the stadium. That's about a 40 minute
+  walk, or hop on the 526 bus.
+- **F3 ferries** are popular and fill up fast. At low tide between Parramatta and Rydalmere, buses
+  step in for them.
+- **Light rail** runs too. Ride it to Central and grab the express train there.
+- **Route buses** work as well. The 526 runs through the precinct from Strathfield. The 526 and the
+  533 take a little detour while the precinct roads are closed for the concert.
+- **Taxi ranks** are on Herb Elliott Avenue at the Pullman Hotel, and on Edwin Flack Avenue opposite
+  the stadium. That second one opens 30 minutes before the finish time.
+- **Rideshare** works across the precinct inside a set zone, and prices climb after the show. Your
+  train ride is already paid for!
+- **Heading to the airport after?** Those stations have their own access fee, so keep a little extra
+  handy.
+- **Before the show**, there are food trucks and entertainment at Fig Grove, and the local cafes and
+  restaurants are open too.
+
+Get there early, grab dinner in the precinct, and soak it all up. When the last song ends, hang back
+a minute and let the first wave go. Keep singing. A comfy ride home is waiting, and it's already in your pocket.
 
 ---
 
