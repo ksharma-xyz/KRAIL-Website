@@ -1,10 +1,10 @@
 ---
-title: "Eureka Harness Race Day: train or bus from Campbelltown"
+title: "Catch the train to Menangle Park, cheer the horses home, then sing along with The Screaming Jets!"
 slug: eureka-race-day-menangle-park-train
 series: things-to-do
 tone: train
 status: ready
-summary: Harness racing until 11pm, then The Screaming Jets to close it out. Six late trains run from Menangle Park that night, and the last one goes at 12.20am.
+summary: Pick your horse, scream it home, then sing along with The Screaming Jets. The train runs right out to the track and brings you home after.
 updated: 2026-11-06
 hero: /images/blog/eureka-race-day-menangle-park-train.webp
 heroAlt: Orange KRAIL cover card reading Menangle Park by train, with a train mode badge and a line of stops
@@ -19,7 +19,7 @@ sources:
   - url: https://transportnsw.info/
     title: Timetables and service information, Transport for NSW
     for: Live times and alerts on the day, for when the published timetable and the service in front of you are not the same thing. Read 2026-11-06
-lastServiceBack: "The last train out of Menangle Park on Saturday 21 November leaves at 12.20am, which is really the small hours of Sunday morning. It is the last of six extra services laid on for the night. The others go at 9.34pm, 10.19pm, 10.34pm, 11.15pm and 11.36pm. Each one stops at Macarthur and then Campbelltown, so change at Campbelltown to carry on into the city. Racing finishes at 11pm, which leaves a comfortable gap before that last one."
+lastServiceBack: "The last train out of Menangle Park leaves at 12.20am after the Saturday 21 November race night, so you're technically getting home on Sunday! It's the last of six extra trains, and the others go at 9.34pm, 10.19pm, 10.34pm, 11.15pm and 11.36pm. They all stop at Macarthur and then Campbelltown, where you can change for the city. The racing wraps up at 11pm, so you've got loads of time to wander back."
 tags:
   - Event
   - Menangle Park
@@ -27,11 +27,15 @@ tags:
 publishedUrl: null
 ---
 
-Six hours of harness racing at Menangle Park, and The Screaming Jets playing the last set of the
-night. It runs from 5pm to 11pm on Saturday 21 November. Make a night of it.
+Oh, you're going to love this one! The horses come flying round the track at Menangle Park and the
+whole crowd jumps up for the finish. Then The Screaming Jets take the stage to close the night.
 
-The track is a long way south of the city, and the fear is being stuck there at midnight. That part
-is on us. Six trains leave Menangle Park that night and the last one goes at 12.20am.
+It's Eureka Harness Race Day, from 5pm to 11pm on Saturday 21 November. Pick your horse. Grab a spot
+by the rail and yell its name like you've known that horse your whole life. Even if you only picked
+it for the colours.
+
+The train takes you right out to the track, and it's there to bring you home too, all the way up
+to 12.20am.
 
 ::: facts The night, in short
 When: **Saturday 21 November**, 5pm to 11pm
@@ -43,66 +47,54 @@ Shuttles: courtesy buses from Campbelltown, Macarthur, Narellan and Camden
 
 ## How do you get there without a car?
 
-Take a train to Campbelltown. Three extra trains run from there out to the track. They leave at
-3.58pm, 5.29pm and 6.17pm.
+Ride the train to Campbelltown, then jump on one of three extra trains running straight out to the
+track. They leave at 3.58pm, 5.29pm and 6.17pm.
 
-Each one stops at Macarthur first. So if Macarthur is your closer station, board there instead.
+They all stop at Macarthur on the way, so if Macarthur is closer to you, hop on there instead.
 
-Get off at Menangle Park. The gates are a 300m walk away.
+Get off at Menangle Park and it's a 300m stroll to the gates. Follow the noise!
 
-The 5.29pm is the one to aim for if you want to be there from the first race. The 6.17pm still gets
-you most of the night.
+Catch the 3.58pm or 5.29pm to see the whole night, or the 6.17pm if you'd like a slower afternoon.
 
-## The trackwork on the way in
+## Coming through the city?
 
-There is trackwork that Saturday. If you are coming through the city, buses replace trains between
-Central and Sydenham.
+Heads up, the trains are doing something different that Saturday, so here's the easy way in. Buses
+are filling in for trains between Central and Sydenham.
 
-The T8 is the way around it. Those trains run to the normal timetable between the City and
-Macarthur, going via the airport.
+Hop on the T8 instead. It goes via the airport and runs like normal all the way down to Macarthur.
+Sit back, enjoy the ride and let the train do all the work. Sorted!
 
-So plan the trip rather than guessing at the platform. Check the
-[live times](/blog/live-sydney-train-bus-ferry-times/) the night before. A replacement bus in your
-plan at 4pm is a problem you want to find at home.
+Peek at the [live times](/blog/live-sydney-train-bus-ferry-times/) the night before, and you'll know
+your train before you've even found your lucky shirt.
 
-## The shuttles, if the train does not suit
+## Rather take a bus?
 
-Courtesy shuttle buses run for the night as well. They come from Campbelltown, from Macarthur
-station, and from Narellan and Camden.
+You can! Courtesy shuttle buses run from Campbelltown, from Macarthur station, and from Narellan and
+Camden. The club's event page has the pick-up spots and times.
 
-Check the club's event page for the pick-up points and times.
-
-Regular bus route 889 also stops within walking distance of Menangle Park, so a bus trip works too.
+The regular 889 bus stops a short walk from the club too. And if a mate is driving, there's free
+parking on site!
 
 ## What about getting home?
 
-Racing and music finish at 11pm. Six extra trains leave Menangle Park across the evening.
+The racing and music finish at 11pm, and six extra trains leave Menangle Park across the evening. Take your pick!
 
-- **9.34pm** and **10.19pm**, if you are slipping out before the end.
-- **10.34pm**, **11.15pm** and **11.36pm**, for when the night actually wraps up.
-- **12.20am**, the last one out.
+- **9.34pm** and **10.19pm** are there if you'd like an early one.
+- **10.34pm**, **11.15pm** and **11.36pm** are perfect once the last race is run.
+- **12.20am** is the last one out, for everyone still singing the final Screaming Jets song.
 
-Each one stops at Macarthur and then Campbelltown. Change at Campbelltown to carry on into the city.
-
-## The practical stuff
-
-- **The walk** from Menangle Park station to the club gates is 300m.
-- **Wait in the light.** On a dark platform, stand where it is brightly lit.
-- **Help buttons** are on every train, and the big interchanges have Emergency Help Points.
-- **Tell someone** which train you are on and when you expect to be home.
-- **Charge your phone** before you go, so the live times are there when you need them.
-- **Bus 889** stops within walking distance, if your trip home works better that way.
-- **If someone drives**, the on-site car park costs nothing and the entry is on Racecourse Avenue.
+Every one stops at Macarthur and then Campbelltown. Change at Campbelltown for the city.
 
 ## The last train out
 
-The last train out of Menangle Park goes at 12.20am. The night ends at 11pm, so you have well over
-an hour spare.
+Your last train leaves Menangle Park at 12.20am. With everything wrapping up at 11pm, that's well
+over an hour to celebrate your winner and relive that big finish.
 
-Pick your train before the last race, not after it. Then check the
-[departure board](/blog/sydney-stop-departure-board/) while you walk back up to the platform.
+Sing the last chorus, wander back to the station with your new racing mates, and the train takes you
+home. Pop open the [departure board](/blog/sydney-stop-departure-board/) on the walk and watch your
+train count down.
 
-A timetable is the plan. The countdown is the train.
+Have the best night at the trots!
 
 Plan your public transport trips using KRAIL.
 Android: https://play.google.com/store/apps/details?id=xyz.ksharma.krail
