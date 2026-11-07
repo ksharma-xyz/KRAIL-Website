@@ -1,11 +1,11 @@
 ---
-title: "Australian PGA golf: the train from Central to Mascot"
+title: "Off to the Australian PGA? Here's the easy, sunny train ride to The Lakes"
 slug: australian-pga-train-mascot-shuttle
 series: things-to-do
 tone: train
 accent: to Mascot
 status: ready
-summary: Four days of championship golf at The Lakes, with play from 7am. There is no parking at the course, so take the train to Mascot and the free shuttle in.
+summary: Golf fans, you're in for a treat! Championship golf at The Lakes, and your day starts on the train to Mascot, then a free shuttle right to the gate.
 updated: 2026-10-31
 hero: /images/blog/australian-pga-train-mascot-shuttle.webp
 heroAlt: Orange KRAIL cover card reading Mascot by train, with a train mode badge and a line of stops
@@ -17,7 +17,7 @@ sources:
   - url: https://transportnsw.info/
     title: Timetables and service information, Transport for NSW
     for: every clock time quoted for a train, read from the departure listings for Mascot Station and Central Station on 2026-10-31. The 8.57am from Central on Thursday 26 November leaves platform 23 and is at Mascot platform 2 at 9.04am. City bound trains leave Mascot platform 1 every 15 minutes or better through the evening on both Thursday 26 and Sunday 29 November. The last city bound train from Mascot platform 1 is 11.58pm on Thursday 26 November and 11.47pm on Sunday 29 November. Read 2026-10-31
-lastServiceBack: "The shuttle is the first thing to run out, not the train. On all four days it stops at 8.45pm, so be back at the gate before then. From Mascot, city bound trains leave platform 1 every 15 minutes or better through the evening. On Sunday 29 November the last one goes at 11.47pm. On Thursday 26 November you have until 11.58pm."
+lastServiceBack: "The free shuttle runs until 8.45pm on all four days, so that's your time to be back at the stop. From Mascot, city bound trains leave platform 1 every 15 minutes or better through the evening, and the last one goes at 11.47pm on Sunday 29 November and 11.58pm on Thursday 26 November."
 publishedUrl: null
 tags:
   - Event
@@ -25,98 +25,85 @@ tags:
   - Golf
 ---
 
-Play starts at 7am. On Thursday and Friday it is still going at half past seven at night. Four days
-of championship golf at The Lakes in Eastlakes, from Thursday 26 November.
+Golf fans, you're going to love this one! The Australian PGA is at The Lakes in Eastlakes from
+Thursday 26 November.
 
-Here is the catch, and it is the reason people talk themselves out of going. The roads around the
-course shut from 5.30am and the club has no parking at all. That part is on us. A train to Mascot
-and a free shuttle put you at the gate.
+It runs for four whole days. The first players tee off at 7am. On Thursday and Friday the golf
+rolls on until half past seven at night. Stay late and watch the sun go down over the fairways!
+
+Four days of golf on the sunny Lakes course, and the best seat is already on the train. Ride to
+Mascot, hop on the free shuttle, and you're at the gate with your coffee still warm.
 
 ::: facts The golf, in short
 When: **Thursday 26 to Sunday 29 November**, play from 7am daily
 Finishes: **7.30pm** Thursday and Friday, **5pm** Saturday and Sunday
 Station: **Mascot**, on the T8
 Shuttle in: free, from **Coward Street, Stand A**
-Parking: **none** at the course
+Driving in: park at **Park on King**, 338 King Street Mascot
 :::
 
-::: callout Do this first
-Decide now that you are not driving. Roads around the course close from 5.30am, and there is no
-parking at the club.
+::: callout Pick your train the night before
+Choose your train before the big day and the morning is easy. Train to Mascot, shuttle to the gate,
+first tee shot with a coffee in hand.
 :::
 
-## How do you get there without a car?
+## How do you get there by train?
 
-Take a T8 train from Central towards the airport. Get off at Mascot.
+Jump on a T8 from Central that's heading to the airport, sit back for a few stops, and hop off at Mascot when you see the sign. Simple!
 
-It is a seven minute ride. On Thursday 26 November the 8.57am from Central leaves platform 23, and
-it is at Mascot on platform 2 at 9.04am.
+Seven minutes. That's it! On Thursday 26 November the 8.57am from
+Central leaves platform 23 and pulls into Mascot on platform 2 at 9.04am.
 
-Leave the station and walk to Coward Street. The free shuttle picks up there at Stand A. It runs
-from 5am to 8.45pm on all four days of the event.
+Out of the station, head to Coward Street. The free shuttle picks you up at Stand A, and it runs
+from 5am to 8.45pm on all four days.
 
 ## Would you rather catch a regular bus?
 
-Routes 301 and 306 both stop a short walk from the course.
+Sure! Routes 301 and 306 both stop a short walk from the course.
 
-Route 301 runs between Eastgardens and Rosebery as a loop. Route 306 runs between Redfern and Mascot
-Station as a loop. If you are not sure which stand is yours, you can
+The 301 loops between Eastgardens and Rosebery, and the 306 loops between Redfern and Mascot
+Station. If you're not sure which stand is yours, you can
 [find it by the route number](/blog/find-sydney-bus-stop-by-number/).
 
 ## Coming in on the metro or the light rail?
 
-Change at Central, whichever one you are on. From there take a T8 train to Mascot and pick up the
-shuttle.
+Easy. Change at Central, whichever one you're on. Grab a train to Mascot, then the shuttle.
 
-That goes for the L1 as well, and for the L2 and the L3 from Circular Quay. From the L4 at
-Parramatta, take a train to Central first.
+That works for the L1, the L2 and the L3. On the L4 at Parramatta? Take a train to Central first,
+and you're on your way.
 
 ## What gets you home afterwards?
 
-Thursday and Friday play finishes at 7.30pm. Saturday and Sunday it is done at 5pm.
+Play wraps up at 7.30pm on Thursday and Friday, and at 5pm on Saturday and Sunday.
 
-The shuttle keeps going until 8.45pm every day of the event. It is the first part of the trip to
-stop for the night, so do not be the last one on the eighteenth.
+The shuttle keeps going until 8.45pm every day. Plenty of time for one last look at the eighteenth!
 
-From Mascot, city bound trains leave platform 1 every 15 minutes or better through the evening. The
-last one on Sunday goes at 11.47pm. On Thursday you have until 11.58pm.
+From Mascot, city bound trains leave platform 1 every 15 minutes or better through the evening. On
+Sunday the last one goes at 11.47pm, and on Thursday you've got until 11.58pm.
 
-Check the [live times](/blog/live-sydney-train-bus-ferry-times/) before you walk back to the shuttle
-stop. A timetable is the plan. The countdown is what is actually turning up.
+Peek at the [live times](/blog/live-sydney-train-bus-ferry-times/) as you go.
+The timetable is the plan, and the countdown shows you what's really on its way.
 
-## If you were going to drive
+## Bringing the car anyway?
 
-There is no parking at the golf club, and the streets around it have very little. Park & Ride is the
-version that works. Park at Park on King Airport Parking, 338 King Street Mascot, then take the free
-shuttle from O'Riordan Street.
+No stress, there's a Park & Ride just for you! Leave the car at Park on King Airport Parking, 338
+King Street Mascot, and the free shuttle picks you up on O'Riordan Street. Then the day is just golf.
 
-These roads close from 5.30am to 7.30pm daily, with managed local access only.
+A few streets around the course are closed to cars from 5.30am each day, which is one more reason
+the shuttle is a joy.
 
-- Vernon Avenue between Florence Avenue and King Street
-- O'Connor Street between Florence Avenue and Vernon Avenue
-- King Street between Florence Avenue and Vernon Avenue
-
-Special event clearways run from 5am to 8pm daily.
-
-- Florence Avenue between King Street and Kyogle Street
-- King Street between St Helena Parade and Florence Avenue, northern side
-- King Street between Florence Avenue and 18 King Street, southern side
-
-A clearway is a strict no parking zone. It applies to residents too. A car left in one gets towed,
-and you pay the fee to get it back.
-
-## The practical stuff
+## The handy bits
 
 - **Shuttle** from Mascot Station at Coward Street, Stand A. It runs 5am to 8.45pm on all four days.
+- **Park & Ride** at Park on King, 338 King Street Mascot, with the free shuttle from O'Riordan Street.
 - **Trains** leave Mascot for the city every 15 minutes or better through the evening.
 - **Buses** 301 and 306 stop a short walk from the course.
-- **Accessible trips** show with a wheelchair icon when you plan the trip. You can ask to see
+- **Accessible trips** show a wheelchair icon when you plan the trip, and you can choose to see
   accessible services only.
-- **Parking** at the course: none. On the street nearby: very little.
 - **Play** starts at 7am on every day of the event.
 
-Thursday and Friday give you twelve and a half hours of golf. Go early, stay late, and let the
-traffic on King Street be somebody else's afternoon.
+Thursday and Friday give you twelve and a half hours of golf. Get there early, stay for the last
+putt, and let the train do the driving.
 
 ---
 
