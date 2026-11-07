@@ -1,5 +1,5 @@
 ---
-title: "Off to the Australian PGA? Here's the easy, sunny train ride to The Lakes"
+title: "Off to the Australian PGA? The easy train from Central"
 slug: australian-pga-train-mascot-shuttle
 series: things-to-do
 tone: train
