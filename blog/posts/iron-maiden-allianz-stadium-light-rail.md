@@ -7,6 +7,9 @@ accent: Central
 status: ready
 summary: Iron Maiden at Allianz Stadium on Sunday 15 November, and the band is still going at half past ten. Here is the light rail from Central, and the ride home.
 updated: 2026-10-30
+hero: /images/blog/iron-maiden-allianz-stadium-light-rail.webp
+heroAlt: Red KRAIL cover card reading Moore Park by light rail, with a light rail mode badge and a line of stops
+heroCredit: Own work, KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/iron-maiden
     title: Getting to Iron Maiden at Allianz Stadium, Transport for NSW
