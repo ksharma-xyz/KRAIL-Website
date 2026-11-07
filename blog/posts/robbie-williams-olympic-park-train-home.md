@@ -7,6 +7,9 @@ accent: train home
 status: ready
 summary: Two concerts, one precinct, more than seventy thousand people on Saturday 14 November. The last bus out of Olympic Park goes at 11.30pm.
 updated: 2026-11-03
+hero: /images/blog/robbie-williams-olympic-park-train-home.webp
+heroAlt: Orange KRAIL cover card reading Olympic Park by train, with a train mode badge and a line of stops
+heroCredit: Own work, KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/robbie-williams-britpop-world-tour-sydney-show
     title: Getting to Robbie Williams at Accor Stadium, Transport for NSW
