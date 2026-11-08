@@ -8,8 +8,8 @@ status: ready
 summary: "You're seeing Robbie Williams at Olympic Park on 14 November, lucky you! Your concert ticket is your ride there and back, so just bring your singing voice."
 updated: 2026-11-03
 hero: /images/blog/robbie-williams-olympic-park-train-home.webp
-heroAlt: Orange KRAIL cover card reading Olympic Park by train, with a train mode badge and a line of stops
-heroCredit: Own work, KRAIL
+heroAlt: A happy concert crowd walking along the Olympic Park plaza towards a stadium glowing in the sunset
+heroCredit: Image generated with Google Gemini for KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/robbie-williams-britpop-world-tour-sydney-show
     title: Getting to Robbie Williams at Accor Stadium, Transport for NSW
