@@ -7,8 +7,8 @@ status: ready
 summary: Pick your horse, scream it home, then sing along with The Screaming Jets. The train runs right out to the track and brings you home after.
 updated: 2026-11-06
 hero: /images/blog/eureka-race-day-menangle-park-train.webp
-heroAlt: Orange KRAIL cover card reading Menangle Park by train, with a train mode badge and a line of stops
-heroCredit: Own work, KRAIL
+heroAlt: Harness racers pulling sulkies down the home straight while a cheering race-day crowd watches from the rail
+heroCredit: Image generated with Google Gemini for KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/eureka-harness-race-day
     title: Getting to Eureka Harness Race Day, Transport for NSW
