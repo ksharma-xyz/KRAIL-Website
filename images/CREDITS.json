@@ -351,7 +351,7 @@
   },
   "/images/blog/powerhouse-parramatta-by-train.webp": {
     "licence": "Own work",
-    "creator": "KRAIL",
-    "modified": "Original KRAIL cover card, rendered at 1600x900."
+    "creator": "KRAIL, generated with Google Gemini",
+    "modified": "Generated with Gemini (Nano Banana 2 Lite) in Google AI Studio on 2026-11-08, 1376x768."
   }
 }
