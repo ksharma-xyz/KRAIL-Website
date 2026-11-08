@@ -8,8 +8,8 @@ status: ready
 summary: Golf fans, you're in for a treat! Championship golf at The Lakes, and your day starts on the train to Mascot, then a free shuttle right to the gate.
 updated: 2026-10-31
 hero: /images/blog/australian-pga-train-mascot-shuttle.webp
-heroAlt: Orange KRAIL cover card reading Mascot by train, with a train mode badge and a line of stops
-heroCredit: Own work, KRAIL
+heroAlt: Golf fans strolling beside a green fairway lined with gum trees while a plane climbs into the blue sky
+heroCredit: Image generated with Google Gemini for KRAIL
 sources:
   - url: https://transportnsw.info/events/2026/11/australian-pga-championship
     title: Getting to the Australian PGA Championship, Transport for NSW
