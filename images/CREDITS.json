@@ -348,5 +348,10 @@
     "licence": "Own work",
     "creator": "Karan Sharma",
     "note": "KRAIL app screen recording, iPhone simulator"
+  },
+  "/images/blog/leura-to-katoomba-walk-by-train.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL, generated with Google Gemini",
+    "modified": "Generated with Gemini (Nano Banana 2 Lite) in Google AI Studio on 2026-11-08, 1376x768."
   }
 }
