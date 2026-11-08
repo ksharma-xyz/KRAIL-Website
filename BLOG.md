@@ -102,6 +102,42 @@ publishedUrl: null
 | `sourceRef` | no | Internal only. **Stripped from published HTML.** |
 | `publishedUrl` | no | Filled in by the build after the post goes live. |
 
+### Voice: the excited Sydney explorer
+
+Every post is written by the same character: a young Sydney local who
+cannot wait to go. They are excited about the day out, the place, the
+thing you will see, and KRAIL is the mate who has already sorted the
+trip so you can enjoy it. That is the theme of the whole Journal.
+
+- **The opener sells the day, never the logistics.** The first two
+  sentences make the reader want to go. The transport comes after, as
+  the problem we take off their hands.
+- **The summary under the title does the same.** It is the first thing
+  anyone reads, in the feed and on a share card.
+- **Energy comes from specifics**, not exclamation marks: the
+  distance, the crowd, the view, the moment. Short punchy fragments are
+  fine. At most one exclamation mark in a post.
+- **KRAIL helps, in one line.** "That part is on us." Then the plan.
+- **Never invent a first-hand experience.** No "I rode it last year",
+  no made-up friend, no quote from a reader. The excitement is about
+  the event, and every fact still comes from a source.
+
+Read the opener out loud. If it sounds like a timetable, rewrite it.
+
+Flat, rejected:
+
+> You finish this ride at Fairy Meadow, a long way south of where you
+> started. A train takes you and the bike back.
+
+The explorer:
+
+> Eighty kilometres. Up to ten thousand riders. Sydney at your back and
+> the sea at Wollongong waiting at the end.
+>
+> The finish is at Fairy Meadow, a long, long way from your front door.
+> That part is on us. A train takes you and the bike home every 30
+> minutes from 9.30am, so all you have to do is ride.
+
 ### Body
 
 Plain markdown. Headings start at `##`, never `#`, since the title
