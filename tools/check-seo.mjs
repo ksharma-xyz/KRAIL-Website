@@ -67,6 +67,7 @@ const PLACES = [
   'bundeena', 'cronulla', 'berowra', 'cowan', 'cremorne', 'mosman',
   'wentworth falls', 'blue mountains', 'balmain', 'barangaroo', 'seven hills',
   'north sydney', 'milsons point', 'darling harbour', 'olympic park', 'hurstville',
+  'three sisters', 'katoomba', 'leura', 'echo point',
 ];
 
 /* The thing half. A mode or the job being done. */
@@ -283,10 +284,9 @@ for (const p of posts) {
 
     const places = has(t, PLACES);
     const topics = has(t, TOPICS);
-    if (!topics.length) {
-      add(p.file, 'Title names no mode and no transport topic.',
-          'Say train, bus, ferry, metro, stop, timetable, trip or Park & Ride. Without one the title matches nothing anybody searches.');
-    }
+    // No transport word is required in a title (owner, 2026-11-08: "no need to put public transport
+    // stuff in titles"). The title names the place people know; the body carries the transport.
+    void topics;
     if (!places.length) {
       add(p.file, 'Title names no place.',
           'Say Sydney, or name the station the post is about. Without it the post competes with every transit app on earth.');
