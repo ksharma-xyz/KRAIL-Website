@@ -6,6 +6,9 @@ tone: train
 accent: last ferry
 status: ready
 summary: "Sydney's big new museum is throwing a three-week party in Parramatta, and you're invited! Cruise up the river by boat, then let the train bring you home."
+hero: /images/blog/powerhouse-parramatta-by-train.webp
+heroAlt: A river ferry cruising up the Parramatta River towards a latticed museum building, with families on the waterfront path
+heroCredit: Image generated with Google Gemini for KRAIL
 updated: 2026-10-23
 sources:
   - url: https://transportnsw.info/events/2026/11/powerhouse-museum-parramatta-opening-festival
