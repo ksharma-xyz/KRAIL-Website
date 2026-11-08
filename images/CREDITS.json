@@ -387,5 +387,16 @@
     "creator": "KRAIL",
     "modified": "Cropped from 1376x768 to 16:9, resized to 800x450, metadata stripped.",
     "note": "Phone sized variant of gong-ride-ai.webp. AI-generated with Google Nano Banana 2 Lite (gemini-3.1-flash-lite-image) on 26 Oct 2026 from a KRAIL prompt, labelled AI-generated beside the image. Illustration, not a photograph of any real place. People in it are generated, not real."
+  },
+  "/images/blog/australian-pga-train-mascot-shuttle.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL, generated with Google Gemini",
+    "modified": "Generated with Gemini (Nano Banana 2 Lite) in Google AI Studio on 2026-11-08, 1376x768."
+  },
+  "/images/blog/australian-pga-train-mascot-shuttle-800.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL, generated with Google Gemini",
+    "modified": "Centre cropped from 1376x768 to 16:9, resized to 800x450, metadata stripped.",
+    "note": "Phone sized variant of australian-pga-train-mascot-shuttle.webp, same generated image."
   }
 }
