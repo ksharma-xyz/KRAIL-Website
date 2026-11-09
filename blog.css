@@ -137,7 +137,7 @@ a { color: inherit; text-decoration: none; }
 
 .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 32px; }
 .container.narrow { max-width: 1160px; }
-.container.prose { max-width: 760px; }
+.container.prose { max-width: 964px; }
 
 /* ============================================================
    WORDMARK
@@ -497,10 +497,16 @@ nav.top .row {
 
    Checked by tools/check-layout.mjs, which fails the build if these drift. */
 .post-wrap {
-  --measure: 700px;
+  --measure: 900px;
   --device-col: 224px;
   --col-gap: 64px;
 }
+/* A post with a phone beside the text keeps the narrower column, so the
+   phone still has its own column inside the 1160px page. A post with a
+   photo on top uses the full 900px: on a desktop screen 700px read as a
+   thin strip down the middle of the page. */
+.post-head--split,
+.post-column { --measure: 700px; }
 .post-column > * { max-width: none; }
 .prose-body > * { max-width: var(--measure); }
 /* The two blocks that own a phone column of their own. Capping these at the
