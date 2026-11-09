@@ -31,7 +31,11 @@ on:
     # The window below is what keeps those retries in the morning
     # rather than letting a post appear at three in the afternoon
     # because the earlier runs were dropped.
-    - cron: '0 * * * *'
+    #
+    # Every 15 minutes since 2026-11-09: a post approved in KRAIL studio
+    # with a go-live time should appear close to that time, not up to
+    # an hour after it.
+    - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -60,17 +64,19 @@ jobs:
       - name: Is this the right time of day
         id: window
         run: |
-          # 6am to noon in Sydney, so seven attempts at the morning
-          # rather than one. A run by hand ignores the window, which is
-          # how a missed morning gets published later the same day.
+          # The job always runs; this only says whether it is morning.
+          # 6am to noon in Sydney is when UNDATED posts may go. A post with
+          # a publishAt goes at that time whatever the hour (operator,
+          # 2026-11-09: approved in the studio with a time, "post it at that
+          # time"). A run by hand counts as morning, which is how a missed
+          # morning gets published later the same day.
           hour=$(TZ=Australia/Sydney date +%-H)
-          if [ "${{ github.event_name }}" != "schedule" ]; then
-            echo "open=yes" >> "$GITHUB_OUTPUT"
-          elif [ "$hour" -ge 6 ] && [ "$hour" -lt 12 ]; then
-            echo "open=yes" >> "$GITHUB_OUTPUT"
+          echo "open=yes" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" != "schedule" ] || { [ "$hour" -ge 6 ] && [ "$hour" -lt 12 ]; }; then
+            echo "morning=yes" >> "$GITHUB_OUTPUT"
           else
-            echo "open=no" >> "$GITHUB_OUTPUT"
-            echo "It is ${hour}:00 in Sydney, outside the 6am to noon window. Nothing to do." >> "$GITHUB_STEP_SUMMARY"
+            echo "morning=no" >> "$GITHUB_OUTPUT"
+            echo "It is ${hour}:00 in Sydney: only posts with a publishAt that is due can go now." >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Has something already gone out today
@@ -101,6 +107,7 @@ jobs:
         if: steps.window.outputs.open == 'yes' && steps.today.outputs.already == 'no'
         env:
           GH_TOKEN: ${{ github.token }}
+          MORNING: ${{ steps.window.outputs.morning }}
         run: |
           # Oldest first, so the queue drains in the order you approved
           # it rather than newest wins.
@@ -163,8 +170,8 @@ jobs:
             at=$(printf '%s\n' "$src" | sed -n 's/^publishAt:[[:space:]]*//p' | head -1 | tr -d "\r\"'")
 
             if [ -z "$at" ]; then
-              # Undated. Oldest first, and only if nothing is picked yet.
-              if [ -z "$pr" ]; then pr="$view"; post="$file"; fi
+              # Undated. Mornings only, oldest first, and only if nothing is picked yet.
+              if [ "$MORNING" = "yes" ] && [ -z "$pr" ]; then pr="$view"; post="$file"; fi
               continue
             fi
 
