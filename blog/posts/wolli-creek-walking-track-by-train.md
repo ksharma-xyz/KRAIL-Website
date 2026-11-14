@@ -1,5 +1,5 @@
 ---
-title: "Wolli Creek: gum trees, pelicans and a picnic"
+title: "Wolli Creek, Sydney: gum trees, pelicans and a picnic"
 slug: wolli-creek-walking-track-by-train
 series: things-to-do
 tone: train
