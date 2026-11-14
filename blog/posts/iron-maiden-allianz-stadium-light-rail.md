@@ -1,15 +1,15 @@
 ---
-title: "Your Iron Maiden night at Allianz Stadium"
+title: "Your Iron Maiden night: Allianz Stadium, Sydney light rail"
 slug: iron-maiden-allianz-stadium-light-rail
 series: things-to-do
 tone: lr
-accent: Central
+accent: light rail
 status: ready
 approved: 2026-11-14
 approvedBy: operator
 approvedHash: ee36702fcfbe
 publishAt: 2026-11-15T07:00+11:00
-summary: "Iron Maiden are rolling into Moore Park and you're going to have the best night! Your show ticket even covers the ride there and back, so sing all the way."
+summary: "Iron Maiden are rolling into Moore Park and you're going to have the best night! Your show ticket covers the light rail there and back, so sing all the way."
 updated: 2026-11-09
 hero: /images/blog/iron-maiden-allianz-stadium-light-rail.webp
 heroAlt: Crowd of Iron Maiden fans in black band tees walking toward Allianz Stadium at dusk, a woman in a denim jacket smiling at the camera
