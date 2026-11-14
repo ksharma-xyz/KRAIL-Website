@@ -398,5 +398,16 @@
     "creator": "KRAIL, generated with Google Gemini",
     "modified": "Phone sized variant of leura-to-katoomba-walk-by-train.webp, 800x447.",
     "note": "Same generated image. The hero srcset hands a phone this one, which is what the mobile LCP budget needed."
+  },
+  "/images/blog/bondi-junction-which-bus-stand.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL, generated with Google Gemini",
+    "modified": "Generated with Gemini (Nano Banana 2 Lite) in Google AI Studio, 1376x768."
+  },
+  "/images/blog/bondi-junction-which-bus-stand-800.webp": {
+    "licence": "Own work",
+    "creator": "KRAIL, generated with Google Gemini",
+    "modified": "Phone sized variant of bondi-junction-which-bus-stand.webp, 800x446.",
+    "note": "Same generated image, made by blog-ship on 2026-11-14 for the mobile hero srcset."
   }
 }
