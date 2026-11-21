@@ -1,5 +1,5 @@
 ---
-title: "Milk Beach: skyline views and a swim at Nielsen Park"
+title: "Milk Beach: a Sydney swim and the bus to Nielsen Park"
 slug: milk-beach-nielsen-park-by-bus
 series: things-to-do
 tone: bus
