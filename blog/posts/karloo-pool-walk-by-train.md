@@ -1,9 +1,9 @@
 ---
-title: Swim in the bush at Karloo Pool
+title: Swim in the bush at Karloo Pool, by train from Central
 slug: karloo-pool-walk-by-train
 series: things-to-do
 tone: train
-accent: Heathcote
+accent: Central
 status: ready
 approved: 2026-11-20
 approvedBy: operator
@@ -12,8 +12,8 @@ publishAt: 2026-11-21T07:00+11:00
 hero: /images/blog/karloo-pool-walk-by-train.webp
 heroAlt: Friends float in a calm green bush rock pool beside sandstone ledges and gum trees on a sunny afternoon.
 heroCredit: Image generated with Google Gemini for KRAIL
-summary: Oh, you're going to love this one! Ride the T4 to Heathcote, wander into Royal National Park and swim at Karloo Pool. Here's the easy way there and back.
-updated: 2026-09-27
+summary: Oh, you're going to love this one! Ride the T4 train to Heathcote, wander into Royal National Park and swim at Karloo Pool. Here's the easy way there and back.
+updated: 2026-11-20
 sources:
   - url: https://www.nationalparks.nsw.gov.au/things-to-do/walking-tracks/karloo-walking-track
     title: Karloo walking track, NSW National Parks
@@ -29,11 +29,11 @@ sources:
     for: The track starts at the rear of the carpark at Waterfall train station. The nearest toilet facilities are at Waterfall train station. Read 2026-09-27
   - url: https://transportnsw.info/routes/details/sydney-trains-network/t4/020t4
     title: T4 line, Transport for NSW
-    for: The T4 to Heathcote and Waterfall. Times read off the Transport for NSW departure information for Saturday 3 October 2026 and Wednesday 30 September 2026 on 2026-09-27. Route page confirmed a real page by size, 210KB against a 92KB empty shell
+    for: The T4 to Heathcote and Waterfall. Every train time on this page was re-read off the Transport for NSW departure information on 2026-11-20, for Saturday 28 November 2026 and Wednesday 25 November 2026. Route page confirmed a real page by size, 210KB against a 92KB empty shell
   - url: https://transportnsw.info/
     title: Transport for NSW, timetables and service information
     for: Live times and alerts on the day, when a published time and the actual service are not the same thing
-lastServiceBack: "The trains keep running for hours after the park closes at 8.30pm, so take your time over that last swim. On a Saturday the last city trains leave Heathcote at 11.06pm and 11.36pm, and an intercity heads to Central at 12.42am. On a weeknight the 11.29pm is the last train all the way to the city, and the 12.29am goes as far as Hurstville."
+lastServiceBack: "The trains keep running for hours after the park closes at 8.30pm, so take your time over that last swim. On a Saturday the last city trains leave Heathcote at 11.06pm and 11.36pm, and an intercity heads to Central at 12.36am. On a weeknight the 11.29pm is the last train all the way to the city, and the 12.29am goes as far as Hurstville."
 publishedUrl: null
 tags:
   - Walk
@@ -113,7 +113,7 @@ that last swim.
 
 On a Saturday, trains leave Heathcote for the city twice an hour. The 5.13pm has you at Central by
 6.03pm, just in time for dinner. Fancy a late one? The last city trains go at 11.06pm and 11.36pm, and
-an intercity heads to Central at 12.42am.
+an intercity heads to Central at 12.36am.
 
 On a weeknight, the 11.29pm is the last train all the way to the city. The 12.29am goes as far as
 Hurstville, so the 11.29pm is the one to aim for.
