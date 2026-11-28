@@ -1,5 +1,5 @@
 ---
-title: Your Wanderers night at CommBank Stadium
+title: Your Wanderers night at CommBank Stadium, Parramatta
 slug: wanderers-commbank-stadium-parramatta
 series: things-to-do
 tone: lr
@@ -12,7 +12,7 @@ publishAt: 2026-11-29T07:00+11:00
 hero: /images/blog/wanderers-commbank-stadium-parramatta.webp
 heroAlt: Five friends in red and black striped scarves walk along a tree-lined path beside a light rail tram, with stadium floodlights rising above the trees.
 heroCredit: Image generated with Google Gemini for KRAIL
-summary: Hello, football fans! You're off to see the Wanderers take on Perth Glory on Saturday 5 December, and here's the easy way to CommBank Stadium.
+summary: Hello, football fans! You're off to see the Wanderers take on Perth Glory on Saturday 5 December, and here's the easy way to Parramatta by train and tram.
 updated: 2026-11-23
 sources:
   - url: https://transportnsw.info/events/2026/12/league-men-western-sydney-wanderers-v-perth-glory
@@ -97,7 +97,7 @@ Trackwork plans can move, so peek at the [live times](/blog/live-sydney-train-bu
 
 ## What else will make the night easy?
 
-- Prince Alfred Square is the light rail stop with wheelchair access, so it's an easy way in if you use a wheelchair.
+- Prince Alfred Square has wheelchair access, so it's an easy way in if you use a wheelchair.
 - Paying is easy. Just tap on and tap off with a contactless card or a linked device.
 - Planning to drive? You can, and the car parks around the ground are expected to be popular. The roads get busy after the match as every car park empties at once, so bring some patience and a good playlist.
 - Grabbing a rideshare home? Meet your driver a little way from the stadium and you'll glide past the crawl.
